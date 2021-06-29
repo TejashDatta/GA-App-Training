@@ -12,15 +12,15 @@ val integer: Int = 10
 val b1 = integer.toByte()
 println(b1)
 
-// type mismatch error
 val b2: Byte = 1
 
+// type mismatch error
 val i1: Int = b2
 val i2: String = b2
 
 // OK
 val i4: Int = b2.toInt()
-val i5: Int = b2.toString()
+val i5: String = b2.toString()
 
 val ten_thousand = 10_000
 

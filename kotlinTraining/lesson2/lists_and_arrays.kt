@@ -1,7 +1,7 @@
 // REPLに実行
 
 val peopleList = listOf("John", "James", "Adam")
-println(people_list)
+println(peopleList)
 
 val mutablePeopleList = mutableListOf("John", "James", "Adam")
 mutablePeopleList.remove("James")
