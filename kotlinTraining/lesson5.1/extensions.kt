@@ -2,7 +2,7 @@ fun String.hasSpaces() = find { it == ' ' } != null
 
 open class AquariumPlant(val color: String, private val size: Int)
 fun AquariumPlant.isRed() = color == "red"
-// error
+// error: cannot access 'size': it is private in 'AquariumPlant'
 fun AquariumPlant.isBig() = size > 50
 
 class GreenLeafyPlant(size: Int): AquariumPlant("green", size)
