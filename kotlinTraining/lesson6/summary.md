@@ -1,4 +1,4 @@
-lambda function を前に実装しましたので今回割愛します。
+基本的なlambda function の実装を前にしましたので今回割愛します。
 
 # 学んだこと：
 annotations
