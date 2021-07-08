@@ -7,6 +7,10 @@ import android.widget.TextView
 import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
+  companion object {
+    const val DICE_MAX_VALUE = 6
+  }
+
   var resultText: String
     get() = findViewById<TextView>(R.id.result_text).text.toString()
     set(value) {
@@ -25,19 +29,12 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun rollDice() {
-    val randomInt = (1..6).random()
+    val randomInt = (1..DICE_MAX_VALUE).random()
     resultText = randomInt.toString()
-
-//    Toast.makeText(this, "button clicked",
-//      Toast.LENGTH_SHORT).show()
   }
 
   private fun countUp() {
-    val resultNumber = resultText.toIntOrNull()
-
-    resultText = when {
-      resultNumber == null -> 1
-      resultNumber < 6 -> resultNumber + 1
-      else -> 6
-    }.toString()
+    val resultNumber = resultText.toIntOrNull() ?: 0
+    resultText = Math.min(resultNumber.inc(), DICE_MAX_VALUE).toString()
   }
+}
