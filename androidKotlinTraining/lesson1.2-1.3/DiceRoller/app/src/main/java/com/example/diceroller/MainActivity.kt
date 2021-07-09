@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 
 class MainActivity : AppCompatActivity() {
   lateinit var diceImage1: ImageView
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     diceImage2.setImageResource(getRandomDiceImage())
   }
 
+  @DrawableRes
   private fun getRandomDiceImage(): Int {
     return when ((1..6).random()) {
       1 -> R.drawable.dice_1
