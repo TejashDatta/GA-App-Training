@@ -3,5 +3,4 @@
 * Button の使い方
 
 # 気づき：
-とくにない
-
+input method manager のメソッドの引数の意味をわからない
