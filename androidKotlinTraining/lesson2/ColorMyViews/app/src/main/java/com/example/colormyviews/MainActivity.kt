@@ -33,29 +33,36 @@ class MainActivity : AppCompatActivity() {
   private fun setListeners() {
     val clickableViews: List<View> =
       BoxTexts.values().map { findViewById<TextView>(it.id) } +
-      ColorButtons.values().map { findViewById<Button>(it.id) } +
       findViewById<View>(R.id.constraint_layout)
+    val buttons = ColorButtons.values().map { findViewById<Button>(it.id) }
 
     for (clickableView in clickableViews) {
       clickableView.setOnClickListener { setBackground(it) }
+    }
+    for (button in buttons) {
+      button.setOnClickListener { setBackgroundFromButton(it as Button) }
     }
   }
 
   private fun setBackground(view: View) {
     when(view.id) {
-      R.id.box_one_text -> view.setBackgroundColor(Color.DKGRAY)
-      R.id.box_two_text -> view.setBackgroundResource(R.drawable.sky)
-      R.id.box_three_text -> view.setBackgroundColor(Color.BLUE)
-      R.id.box_four_text -> view.setBackgroundColor(Color.MAGENTA)
-      R.id.box_five_text -> view.setBackgroundColor(Color.BLUE)
-      R.id.red_button ->
-        findViewById<TextView>(BoxTexts.BOX_THREE_TEXT.id).setBackgroundResource(R.color.my_red)
-      R.id.yellow_button ->
-        findViewById<TextView>(BoxTexts.BOX_FOUR_TEXT.id).setBackgroundResource(R.color.my_yellow)
-      R.id.green_button ->
-        findViewById<TextView>(BoxTexts.BOX_FIVE_TEXT.id).setBackgroundResource(R.color.my_green)
-
+      BoxTexts.BOX_ONE_TEXT.id -> view.setBackgroundColor(Color.DKGRAY)
+      BoxTexts.BOX_TWO_TEXT.id -> view.setBackgroundResource(R.drawable.sky)
+      BoxTexts.BOX_THREE_TEXT.id -> view.setBackgroundColor(Color.BLUE)
+      BoxTexts.BOX_FOUR_TEXT.id -> view.setBackgroundColor(Color.MAGENTA)
+      BoxTexts.BOX_FIVE_TEXT.id -> view.setBackgroundColor(Color.BLUE)
       else -> view.setBackgroundColor(Color.LTGRAY)
+    }
+  }
+
+  private fun setBackgroundFromButton(button: Button) {
+    when(button.id) {
+      ColorButtons.RED_BUTTON.id ->
+        findViewById<TextView>(BoxTexts.BOX_THREE_TEXT.id).setBackgroundResource(R.color.my_red)
+      ColorButtons.YELLOW_BUTTON.id ->
+        findViewById<TextView>(BoxTexts.BOX_FOUR_TEXT.id).setBackgroundResource(R.color.my_yellow)
+      ColorButtons.GREEN_BUTTON.id ->
+        findViewById<TextView>(BoxTexts.BOX_FIVE_TEXT.id).setBackgroundResource(R.color.my_green)
     }
   }
 }
