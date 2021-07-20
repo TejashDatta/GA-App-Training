@@ -29,4 +29,4 @@ view model factory:
 調べてもわからない
 
 # 気付き
-特にない
+view model factory の create method は一見複雑に見えますが、分解すれば理解できます。
