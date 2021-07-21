@@ -1,11 +1,13 @@
 # 学んだこと
 model-view-view model (MVVM) architecture
+  * model： アプリのデータとビジネスロジックを管理する。例：データベースやAPIから情報を取得するクラス。
+  * view： データの表示を管理する。例：UI controller, XML layout
+  * view-model: view に与えて表示するデータを決定する。表示のためにビューに与えるデータを管理する。
 UI controller: 
   * Activity, fragment など
   * business logic を含めない
   * 表示のロジックを担う
 view model
-  * 表示するデータを持つ
   * データ（インプットなど）変換を行う
   * UI controller を参照すべきじゃない
 view model factory:
@@ -26,7 +28,7 @@ view model factory:
 
 `viewModel = ViewModelProvider(this).get(GameViewModel::class.java)` で何でクラス参照はjava の型です？
 要すると、何で `viewModel = ViewModelProvider(this).get(GameViewModel::class)` にしない？
-調べてもわからない
+AndroidSDKが処理するときにClassオブジェクトの期待値は、kotlinのclassオブジェクトではなくて、javaのclassオブジェクトを期待します。
 
 # 気付き
 view model factory の create method は一見複雑に見えますが、分解すれば理解できます。
