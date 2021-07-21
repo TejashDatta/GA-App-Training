@@ -31,14 +31,12 @@ import com.example.android.guesstheword.databinding.GameFragmentBinding
 
 class GameFragment : Fragment() {
   private lateinit var binding: GameFragmentBinding
-
   private lateinit var viewModel: GameViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-
     binding = DataBindingUtil.inflate(
       inflater,
       R.layout.game_fragment,
@@ -52,10 +50,11 @@ class GameFragment : Fragment() {
     binding.correctButton.setOnClickListener { onCorrect() }
     binding.skipButton.setOnClickListener { onSkip() }
     binding.endGameButton.setOnClickListener { onEndGame() }
+
     updateScoreText()
     updateWordText()
-    return binding.root
 
+    return binding.root
   }
 
   private fun onSkip() {

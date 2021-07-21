@@ -36,7 +36,6 @@ class ScoreFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-
     val binding: ScoreFragmentBinding = DataBindingUtil.inflate(
       inflater,
       R.layout.score_fragment,

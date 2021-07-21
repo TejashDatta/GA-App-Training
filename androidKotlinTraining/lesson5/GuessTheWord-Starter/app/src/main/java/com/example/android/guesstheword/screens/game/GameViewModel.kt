@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 
 class GameViewModel: ViewModel() {
-
   var word = ""
-
   var score = 0
 
   private lateinit var wordList: MutableList<String>
