@@ -61,19 +61,14 @@ class GameFragment : Fragment() {
     })
 
     binding.viewModel = viewModel
-    binding.endGameButton.setOnClickListener { onEndGame() }
 
     return binding.root
-  }
-
-  private fun onEndGame() {
-    gameFinished()
   }
 
   private fun gameFinished() {
     Toast.makeText(activity, "Games has finished", Toast.LENGTH_SHORT).show()
     val action = GameFragmentDirections.actionGameToScore()
-    action.score = viewModel.score.value?:0
+    action.score = viewModel.score.value ?: 0
     NavHostFragment.findNavController(this).navigate(action)
     viewModel.onGameFinishComplete()
   }

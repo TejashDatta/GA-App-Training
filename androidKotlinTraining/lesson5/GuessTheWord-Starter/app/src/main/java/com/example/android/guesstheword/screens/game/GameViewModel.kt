@@ -49,7 +49,7 @@ class GameViewModel: ViewModel() {
     }
   }
 
-  private fun onGameFinish() {
+  fun onGameFinish() {
     _eventGameFinish.value = true
   }
 
@@ -58,12 +58,12 @@ class GameViewModel: ViewModel() {
   }
 
   fun onSkip() {
-    _score.value = (score.value)?.minus(1)
+    _score.value = score.value?.minus(1)
     nextWord()
   }
 
   fun onCorrect() {
-    _score.value = (score.value)?.plus(1)
+    _score.value = score.value?.plus(1)
     nextWord()
   }
 }
