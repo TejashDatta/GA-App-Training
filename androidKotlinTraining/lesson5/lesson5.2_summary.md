@@ -2,6 +2,10 @@
 * LiveData, MutableLiveData の特定の使い方
   * observable: LiveData に observer を設定して、LiveData の変化に応じて対応ができる
   * lifecycle aware: LiveData を observe すれば、observer は lifecycle owner と紐付いて、その lifecycle owner の状態は active じゃないと更新しない
+  * setValue vs postValue:
+    * setValue: main thread のみから呼び出せる
+    * postValue: main thread に値を設定するタスクを求める。background thread から値を設定するのに使う
+  
 * observer の使い方
 * viewLifeCycleOwner
   * fragment の view lifecycle を track する
