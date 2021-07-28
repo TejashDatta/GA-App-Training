@@ -58,12 +58,12 @@ class GameViewModel: ViewModel() {
   }
 
   fun onSkip() {
-    _score.value = score.value?.minus(1)
+    score.value?.let { _score.setValue(it.dec()) }
     nextWord()
   }
 
   fun onCorrect() {
-    _score.value = score.value?.plus(1)
+    score.value?.let { _score.setValue(it.inc()) }
     nextWord()
   }
 }
