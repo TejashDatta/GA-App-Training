@@ -9,8 +9,11 @@ binding adapter の定義と使い方
   * transformations のようにデータをビューで表示するために変化できる
 
 # 気づき：
-binding utils ファイル内で binding utils クラスは空だったから削除した
+DiffUtilを使用する場合、リストがいっぱいの状態でリストの最初にアイテムを追加するとアイテムが表示されない。 新しく追加されたアイテムを見るために、上にスクロールする必要があります。
+
+binding utils ファイル内で binding utils クラスは空だったから削除した。
 
 transformations, livedata with viewmodel binding と binding adapter の実装を比較してみた。
 どの場合にどれがもっと適切でしょうか？
 binding adapterの使用の方は間接的な感じがする。
+transformation での lambda 関数は main thread で実行するから重い処理はいけない。もしかして、binding adapter の関数をbackground thread に実装させられる？
