@@ -74,7 +74,7 @@ class SleepTrackerFragment : Fragment() {
 
     // Specify the current activity as the lifecycle owner of the binding.
     // This is necessary so that the binding can observe LiveData updates.
-    binding.lifecycleOwner = this
+    binding.lifecycleOwner = viewLifecycleOwner
 
     // Add an Observer on the state variable for showing a Snackbar message
     // when the CLEAR button is pressed.
