@@ -20,11 +20,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerBinding
@@ -67,10 +69,13 @@ class SleepTrackerFragment : Fragment() {
 
     val adapter = SleepNightAdapter()
 
+    val layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+
     // To use the View Model with data binding, you have to explicitly
     // give the binding object a reference to it.
     binding.sleepTrackerViewModel = sleepTrackerViewModel
     binding.sleepList.adapter = adapter
+    binding.sleepList.layoutManager = layoutManager
 
     // Specify the current activity as the lifecycle owner of the binding.
     // This is necessary so that the binding can observe LiveData updates.
