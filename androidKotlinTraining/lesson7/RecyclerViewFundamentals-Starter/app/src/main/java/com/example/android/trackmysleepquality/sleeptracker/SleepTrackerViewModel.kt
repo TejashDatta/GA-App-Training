@@ -97,7 +97,7 @@ class SleepTrackerViewModel(
   val navigateToSleepQuality: LiveData<SleepNight>
     get() = _navigateToSleepQuality
 
-  val _navigateToSleepDetail = MutableLiveData<Long>()
+  private val _navigateToSleepDetail = MutableLiveData<Long>()
   val navigateToSleepDetail
     get() = _navigateToSleepDetail
 
