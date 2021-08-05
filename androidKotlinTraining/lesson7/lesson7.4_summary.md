@@ -9,6 +9,7 @@ recycler view のアイテムに click handler を追加することは簡単だ
 
 SleepNightListener class is only used by ViewHolder in the adapter. So I think it might be better to define it inside the view holder class.
 SleepNightListener class は ViewHolder だけに使われるから、ViewHolder クラス内に定義した方が良くないか思った。
+問題：Fragment側でViewHolderの存在を意識する必要がある
 
 It's important to conceptually understand the flow of events and event handling, otherwise it becomes very confusing.
 イベントのフローとイベント handling 処理の流れをイメージするのが大事。しないとコードの動作は把握しにくい。
