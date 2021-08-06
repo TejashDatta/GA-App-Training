@@ -74,6 +74,12 @@ class SleepTrackerFragment : Fragment() {
     })
 
     val layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+    layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+      override fun getSpanSize(position: Int) = when(position) {
+        0 -> 3
+        else -> 1
+      }
+    }
 
     // To use the View Model with data binding, you have to explicitly
     // give the binding object a reference to it.
