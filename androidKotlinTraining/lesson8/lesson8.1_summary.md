@@ -12,3 +12,5 @@ coroutine を用いた実装は callback object を用いた実装より簡単�
   何度も引数で Call と Callback の使用を避ける
     従って、割と少ない import (call や callback object の import は不要)
     Call を使えば最終的な return type を一回囲むことになる： eg String -> Call<String>
+
+binding の lifecycle owner は this と設定されていたけど、viewLifecycleOwner に更新した。
