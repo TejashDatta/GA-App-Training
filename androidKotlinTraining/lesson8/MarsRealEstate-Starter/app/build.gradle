@@ -22,41 +22,41 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
-    compileSdkVersion 30
-    defaultConfig {
-        applicationId "com.example.android.marsrealestate"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+  compileSdkVersion 30
+  defaultConfig {
+    applicationId "com.example.android.marsrealestate"
+    minSdkVersion 21
+    targetSdkVersion 30
+    versionCode 1
+    versionName "1.0"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    buildFeatures {
-        dataBinding true
-    }
+  }
+  buildFeatures {
+    dataBinding true
+  }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
+  // Kotlin
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
 
-    // Constraint Layout
-    implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
+  // Constraint Layout
+  implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
 
-    // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
+  // ViewModel
+  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
 
-    // Navigation
-    implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
-    implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
+  // Navigation
+  implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
+  implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
 
-    // Core with Ktx
-    implementation "androidx.core:core-ktx:$version_core"
+  // Core with Ktx
+  implementation "androidx.core:core-ktx:$version_core"
 }
