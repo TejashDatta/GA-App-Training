@@ -34,6 +34,7 @@ class OverviewFragment : Fragment() {
     val binding = FragmentOverviewBinding.inflate(inflater)
 
     binding.lifecycleOwner = viewLifecycleOwner
+
     binding.viewModel = viewModel
 
     setHasOptionsMenu(true)
