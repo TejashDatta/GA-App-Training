@@ -36,6 +36,7 @@ class OverviewFragment : Fragment() {
     binding.lifecycleOwner = viewLifecycleOwner
 
     binding.viewModel = viewModel
+    binding.photosGrid.adapter = PhotoGridAdapter()
 
     setHasOptionsMenu(true)
     return binding.root
