@@ -33,7 +33,8 @@ class OverviewFragment : Fragment() {
                             savedInstanceState: Bundle?): View? {
     val binding = FragmentOverviewBinding.inflate(inflater)
 
-    binding.lifecycleOwner = this
+    binding.lifecycleOwner = viewLifecycleOwner
+
     binding.viewModel = viewModel
 
     setHasOptionsMenu(true)
