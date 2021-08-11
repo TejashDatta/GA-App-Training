@@ -39,6 +39,9 @@ import com.google.android.material.snackbar.Snackbar
  * (Because we have not learned about RecyclerView yet.)
  * The Clear button will clear all data from the database.
  */
+
+const val GRID_COLUMNS = 3
+
 class SleepTrackerFragment : Fragment() {
 
   /**
@@ -73,10 +76,10 @@ class SleepTrackerFragment : Fragment() {
       sleepTrackerViewModel.onSleepNightClicked(nightId)
     })
 
-    val layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+    val layoutManager = GridLayoutManager(activity, GRID_COLUMNS, GridLayoutManager.VERTICAL, false)
     layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
       override fun getSpanSize(position: Int) = when(position) {
-        0 -> 3
+        0 -> GRID_COLUMNS
         else -> 1
       }
     }
@@ -126,9 +129,8 @@ class SleepTrackerFragment : Fragment() {
     })
 
     sleepTrackerViewModel.nights.observe(viewLifecycleOwner, Observer {
-      it?.let {
-        adapter.addHeaderAndSubmitList(it)
-      }
+      val safeSleepNightList = it ?: return@Observer
+      adapter.addHeaderAndSubmitList(safeSleepNightList)
     })
 
     sleepTrackerViewModel.navigateToSleepDetail.observe(viewLifecycleOwner, Observer { night ->
