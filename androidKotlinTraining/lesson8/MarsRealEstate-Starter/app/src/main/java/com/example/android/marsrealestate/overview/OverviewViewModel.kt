@@ -49,7 +49,6 @@ class OverviewViewModel : ViewModel() {
         _status.value = MarsApiStatus.DONE
       }
       catch (e: Exception) {
-        _properties.value = ArrayList()
         _status.value = MarsApiStatus.ERROR
       }
     }
