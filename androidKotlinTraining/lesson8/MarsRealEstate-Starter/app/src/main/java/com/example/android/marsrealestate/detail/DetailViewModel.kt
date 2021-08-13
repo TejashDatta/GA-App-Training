@@ -30,24 +30,16 @@ class DetailViewModel(marsProperty: MarsProperty, app: Application) : AndroidVie
     get() = _selectedProperty
   
   val displayPropertyPrice = Transformations.map(selectedProperty) {
-    app.applicationContext.getString(
-      when (it.isRental) {
-        true -> R.string.display_price_monthly_rental
-        false -> R.string.display_price
-      },
-      it.price
-    )
+    val formatStringResId =
+      if(it.isRental) R.string.display_price_monthly_rental else R.string.display_price
+    app.applicationContext.getString(formatStringResId, it.price)
   }
 
   val displayPropertyType = Transformations.map(selectedProperty) {
+    val propertyTypeStringResId = if(it.isRental) R.string.type_rent else R.string.type_sale
     app.applicationContext.getString(
       R.string.display_type,
-      app.applicationContext.getString(
-        when (it.isRental) {
-          true -> R.string.type_rent
-          false -> R.string.type_sale
-        }
-      )
+      app.applicationContext.getString(propertyTypeStringResId)
     )
   }
 
