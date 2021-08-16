@@ -43,16 +43,16 @@ class PhotoGridAdapter(
     fun onClick(marsProperty: MarsProperty) = clickListener(marsProperty)
   }
 
-  class MarsPropertyViewHolder
-    (private var binding: GridViewItemBinding): RecyclerView.ViewHolder(binding.root) {
+  class MarsPropertyViewHolder(
+    private var binding: GridViewItemBinding): RecyclerView.ViewHolder(binding.root) {
     fun bind(marsProperty: MarsProperty) {
       binding.property = marsProperty
       binding.executePendingBindings()
     }
   }
 
-  override fun onCreateViewHolder
-    (parent: ViewGroup, viewType: Int): PhotoGridAdapter.MarsPropertyViewHolder {
+  override fun onCreateViewHolder(
+    parent: ViewGroup, viewType: Int): PhotoGridAdapter.MarsPropertyViewHolder {
     return MarsPropertyViewHolder(GridViewItemBinding.inflate(LayoutInflater.from(parent.context)))
   }
 

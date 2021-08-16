@@ -9,19 +9,22 @@ import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 
 @BindingAdapter("sleepDurationFormatted")
-fun TextView.setSleepDurationFormatted(item: SleepNight) {
-  text = convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, context.resources)
+fun TextView.setSleepDurationFormatted(item: SleepNight?) {
+  val safeItem = item ?: return
+  text = convertDurationToFormatted(safeItem.startTimeMilli, safeItem.endTimeMilli, context.resources)
 }
 
 @BindingAdapter("sleepQualityString")
-fun TextView.setSleepQualityString(item: SleepNight) {
-  text = convertNumericQualityToString(item.sleepQuality, context.resources)
+fun TextView.setSleepQualityString(item: SleepNight?) {
+  val safeItem = item ?: return
+  text = convertNumericQualityToString(safeItem.sleepQuality, context.resources)
 }
 
 @BindingAdapter("sleepImage")
-fun ImageView.setSleepImage(item: SleepNight) {
+fun ImageView.setSleepImage(item: SleepNight?) {
+  val safeItem = item ?: return
   setImageResource(
-    when (item.sleepQuality) {
+    when (safeItem.sleepQuality) {
       0 -> R.drawable.ic_sleep_0
       1 -> R.drawable.ic_sleep_1
       2 -> R.drawable.ic_sleep_2
