@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".MainActivity">
+
+  <TextView
+    android:id="@+id/resultTextView"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/largeMargin"
+    android:layout_marginTop="@dimen/largeMargin"
+    android:layout_marginEnd="@dimen/largeMargin"
+    android:textAlignment="textEnd"
+    android:textSize="@dimen/largeTextSize"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="2 + 3 = 5" />
+
+  <Button
+    android:id="@+id/clearButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/largeMargin"
+    android:text="@string/clear"
+    android:textSize="@dimen/largeTextSize"
+    android:paddingTop="@dimen/buttonPadding"
+    android:paddingBottom="@dimen/buttonPadding"
+    app:layout_constraintEnd_toEndOf="@+id/resultTextView"
+    app:layout_constraintStart_toStartOf="@+id/resultTextView"
+    app:layout_constraintTop_toBottomOf="@+id/resultTextView" />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    app:spanCount="4"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="@+id/resultTextView"
+    app:layout_constraintStart_toStartOf="@+id/resultTextView"
+    app:layout_constraintTop_toBottomOf="@+id/clearButton"
+    tools:itemCount="16"
+    tools:listitem="@layout/grid_view_button" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
