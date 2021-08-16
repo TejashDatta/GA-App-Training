@@ -20,9 +20,12 @@ package com.example.android.marsrealestate.overview
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.android.marsrealestate.R
 import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
+import com.example.android.marsrealestate.network.MarsApiFilter
 
 class OverviewFragment : Fragment() {
   private val viewModel: OverviewViewModel by lazy {
@@ -36,6 +39,17 @@ class OverviewFragment : Fragment() {
     binding.lifecycleOwner = viewLifecycleOwner
 
     binding.viewModel = viewModel
+    binding.photosGrid.adapter = PhotoGridAdapter(
+      PhotoGridAdapter.OnClickListener { marsProperty ->
+        viewModel.displayPropertyDetails(marsProperty)
+      }
+    )
+
+    viewModel.navigateToSelectedProperty.observe(this, Observer {
+      val safeMarsProperty = it ?: return@Observer
+      this.findNavController().navigate(OverviewFragmentDirections.actionShowDetail(safeMarsProperty))
+      viewModel.displayPropertyDetailsComplete()
+    })
 
     setHasOptionsMenu(true)
     return binding.root
@@ -44,5 +58,16 @@ class OverviewFragment : Fragment() {
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     inflater.inflate(R.menu.overflow_menu, menu)
     super.onCreateOptionsMenu(menu, inflater)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    viewModel.updateFilter(
+      when (item.itemId) {
+        R.id.show_rent_menu -> MarsApiFilter.SHOW_RENT
+        R.id.show_buy_menu -> MarsApiFilter.SHOW_BUY
+        else -> MarsApiFilter.SHOW_ALL
+      }
+    )
+    return true
   }
 }
