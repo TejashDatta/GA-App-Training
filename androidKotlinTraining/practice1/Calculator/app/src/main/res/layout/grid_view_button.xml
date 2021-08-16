@@ -4,6 +4,10 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
 
+  <data>
+    <variable name="buttonLabel" type="String" />
+  </data>
+
   <Button
     android:id="@+id/button"
     android:layout_width="match_parent"
@@ -13,5 +17,6 @@
     android:paddingTop="@dimen/buttonPadding"
     android:paddingBottom="@dimen/buttonPadding"
     android:textSize="@dimen/largeTextSize"
+    android:text="@{buttonLabel}"
     tools:text="5" />
 </layout>
