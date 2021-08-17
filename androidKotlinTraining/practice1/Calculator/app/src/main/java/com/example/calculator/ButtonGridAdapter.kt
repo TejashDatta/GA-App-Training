@@ -18,6 +18,8 @@ class ButtonGridAdapter(
     }
   }
 
+  //TODO: class の代わりに interface を使おう
+
   class OperandClickListener(val clickListener: (operand: Char) -> Unit) {
     fun onClick(operand: Char) = clickListener(operand)
   }
