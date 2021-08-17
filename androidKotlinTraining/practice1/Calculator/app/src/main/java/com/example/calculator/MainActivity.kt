@@ -3,6 +3,7 @@ package com.example.calculator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.example.calculator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -10,13 +11,17 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    val viewModel =
+      ViewModelProvider(this, MainActivityViewModelFactory()).get(MainActivityViewModel::class.java)
+
     binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+    binding.lifecycleOwner = this
 
     binding.buttonGrid.adapter = ButtonGridAdapter(
       ButtonGridAdapter.OperandClickListener { operand ->  viewModel.operandInput(operand) },
       ButtonGridAdapter.OperatorClickListener { operator ->  viewModel.operatorInput(operator) },
       ButtonGridAdapter.DecimalPointClickListener { viewModel.decimalPointInput() },
-      ButtonGridAdapter.ResultClickListener { viewModel.resultRequested() }
+      ButtonGridAdapter.ResultClickListener { viewModel.requestResult() }
     )
   }
 }
