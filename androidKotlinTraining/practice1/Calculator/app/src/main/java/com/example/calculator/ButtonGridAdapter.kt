@@ -18,8 +18,8 @@ class ButtonGridAdapter(
     }
   }
 
-  class OperandClickListener(val clickListener: (operand: Int) -> Unit) {
-    fun onClick(operand: Int) = clickListener(operand)
+  class OperandClickListener(val clickListener: (operand: Char) -> Unit) {
+    fun onClick(operand: Char) = clickListener(operand)
   }
 
   class OperatorClickListener(val clickListener: (operator: Char) -> Unit) {
@@ -49,7 +49,7 @@ class ButtonGridAdapter(
     viewHolder.bind(buttonLabel)
 
     val clickListener: () -> Unit = when(buttonLabel) {
-      in '0'..'9' -> { { operandClickListener.onClick(Character.getNumericValue(buttonLabel)) } }
+      in '0'..'9' -> { { operandClickListener.onClick(buttonLabel) } }
       '+', '-', '%', '*' -> { { operatorClickListener.onClick(buttonLabel) } }
       '.' -> { { decimalPointClickListener.onClick() } }
       '=' -> { { resultClickListener.onClick() } }

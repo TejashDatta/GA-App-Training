@@ -5,7 +5,9 @@
   xmlns:tools="http://schemas.android.com/tools">
 
   <data>
-    <variable name="buttonLabel" type="String" />
+    <variable
+      name="buttonLabel"
+      type="String" />
   </data>
 
   <Button
