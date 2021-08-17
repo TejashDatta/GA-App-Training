@@ -35,7 +35,11 @@ class ButtonGridAdapter(
   }
 
   private val buttonLabels = charArrayOf(
-    '+', '9', '8', '7', '-', '6', '5', '4', '*', '3', '2', '1', '%', '=', '0', '.')
+    '+', '9', '8', '7',
+    '-', '6', '5', '4',
+    '*', '3', '2', '1',
+    '%', '=', '0', '.'
+  )
 
   override fun getItemCount() = buttonLabels.size
 
@@ -45,17 +49,17 @@ class ButtonGridAdapter(
 
   override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
     val buttonLabel = buttonLabels[position]
-
     viewHolder.bind(buttonLabel)
+    viewHolder.itemView.setOnClickListener { onClickButton(buttonLabel) }
+  }
 
-    val clickListener: () -> Unit = when(buttonLabel) {
-      in '0'..'9' -> { { operandClickListener.onClick(buttonLabel) } }
-      '+', '-', '%', '*' -> { { operatorClickListener.onClick(buttonLabel) } }
-      '.' -> { { decimalPointClickListener.onClick() } }
-      '=' -> { { resultClickListener.onClick() } }
+  private fun onClickButton(buttonLabel: Char) {
+    when(buttonLabel) {
+      in '0'..'9' -> operandClickListener.onClick(buttonLabel)
+      '+', '-', '%', '*' -> operatorClickListener.onClick(buttonLabel)
+      '.' -> decimalPointClickListener.onClick()
+      '=' -> resultClickListener.onClick()
       else -> throw Exception("No click listener for button label $buttonLabel")
     }
-
-    viewHolder.itemView.setOnClickListener { clickListener() }
   }
 }
