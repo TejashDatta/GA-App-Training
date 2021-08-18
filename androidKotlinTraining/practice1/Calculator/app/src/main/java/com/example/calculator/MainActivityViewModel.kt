@@ -24,12 +24,8 @@ class MainActivityViewModel: ViewModel() {
 
   fun operandInput(digit: Char) {
     if (result != null) return reset()
-    if (operator.value == null) {
-      operand1.value += digit
-    }
-    else {
-      operand2.value += digit
-    }
+    val operand = if (operator.value == null) operand1 else operand2
+    operand.value += digit
   }
 
   fun operatorInput(operatorSymbol: Char) {
@@ -41,19 +37,17 @@ class MainActivityViewModel: ViewModel() {
 
   fun decimalPointInput() {
     if(decimalPointIsSet) return
-    if (operator.value == null) {
-      operand1.value += '.'
-    }
-    else {
-      operand2.value += '.'
-    }
+    val operand = if (operator.value == null) operand1 else operand2
+    if (operand.value == "") operand.value = "0"
+    operand.value += '.'
     decimalPointIsSet = true
   }
 
   fun requestResult() {
     val safeOperand1 = operand1.value?.toFloat() ?: return
     val safeOperand2 = operand2.value?.toFloat() ?: return
-    result.value = when(operator.value) {
+    val safeOperator = operator.value ?: return
+    result.value = when(safeOperator) {
       '+' -> safeOperand1 + safeOperand2
       '-' -> safeOperand1 - safeOperand2
       '*' -> safeOperand1 * safeOperand2
