@@ -13,10 +13,10 @@ class MainActivity : AppCompatActivity() {
     binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
     binding.buttonGrid.adapter = ButtonGridAdapter(
-      ButtonGridAdapter.OperandClickListener { operand ->  viewModel.operandInput(operand) },
-      ButtonGridAdapter.OperatorClickListener { operator ->  viewModel.operatorInput(operator) },
-      ButtonGridAdapter.DecimalPointClickListener { viewModel.decimalPointInput() },
-      ButtonGridAdapter.ResultClickListener { viewModel.resultRequested() }
+      { operand ->  viewModel.operandInput(operand) },
+      { operator ->  viewModel.operatorInput(operator) },
+      { viewModel.decimalPointInput() },
+      { viewModel.resultRequested() }
     )
   }
 }
