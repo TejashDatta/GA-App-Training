@@ -22,7 +22,7 @@ class ButtonGridAdapter(
     '+', '9', '8', '7',
     '-', '6', '5', '4',
     '*', '3', '2', '1',
-    '%', '=', '0', '.'
+    '/', '=', '0', '.'
   )
 
   override fun getItemCount() = buttonLabels.size
@@ -40,7 +40,7 @@ class ButtonGridAdapter(
   private fun onClickButton(buttonLabel: Char) {
     when(buttonLabel) {
       in '0'..'9' -> operandClickListener(buttonLabel)
-      '+', '-', '%', '*' -> operatorClickListener(buttonLabel)
+      '+', '-', '*', '/' -> operatorClickListener(buttonLabel)
       '.' -> decimalPointClickListener()
       '=' -> resultClickListener()
       else -> throw Exception("No click listener for button label $buttonLabel")
