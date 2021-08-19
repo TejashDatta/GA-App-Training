@@ -24,7 +24,7 @@ class MainActivityViewModel: ViewModel() {
   }
 
   private fun MutableLiveData<String>.completeDecimalPoint(): MutableLiveData<String> {
-    if (this.value?.last() == '.') this.value += '0'
+    if (this.value?.lastOrNull() == '.') this.value += '0'
     return this
   }
 
