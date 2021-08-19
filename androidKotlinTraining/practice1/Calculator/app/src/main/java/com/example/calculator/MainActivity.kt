@@ -20,10 +20,10 @@ class MainActivity : AppCompatActivity() {
     binding.viewModel = viewModel
 
     binding.buttonGrid.adapter = ButtonGridAdapter(
-      { operand ->  viewModel.operandInput(operand) },
-      { operator ->  viewModel.operatorInput(operator) },
-      { viewModel.decimalPointInput() },
-      { viewModel.requestResult() }
+      operandClickListener = { operand ->  viewModel.operandInput(operand) },
+      operatorClickListener = { operator ->  viewModel.operatorInput(operator) },
+      decimalPointClickListener = { viewModel.decimalPointInput() },
+      resultClickListener = { viewModel.requestResult() }
     )
   }
 }

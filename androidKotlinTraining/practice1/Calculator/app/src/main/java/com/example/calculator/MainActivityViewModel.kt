@@ -1,5 +1,6 @@
 package com.example.calculator
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -33,6 +34,13 @@ class MainActivityViewModel: ViewModel() {
     return this.value?.toFloat()
   }
 
+  private fun logDisplay() {
+    Log.d(
+      "MainActivityViewModel",
+      "${operand1.value} ${operator.value ?: ""} ${operand2.value} = ${result.value ?: ""}"
+    )
+  }
+
   fun reset(){
     operand1.value = ""
     operand2.value = ""
@@ -45,6 +53,8 @@ class MainActivityViewModel: ViewModel() {
     checkForResult()
     val operand = if (operator.value == null) operand1 else operand2
     operand.value += digit
+
+    logDisplay()
   }
 
   fun operatorInput(operatorSymbol: Char) {
@@ -52,6 +62,8 @@ class MainActivityViewModel: ViewModel() {
     if (operand1.completeDecimalPoint().value == "" || operator.value != null) return
     operator.value = operatorSymbol
     beginNewOperandInput()
+
+    logDisplay()
   }
 
   fun decimalPointInput() {
@@ -61,6 +73,8 @@ class MainActivityViewModel: ViewModel() {
     if (operand.value == "") operand.value = "0"
     operand.value += '.'
     decimalPointIsSet = true
+
+    logDisplay()
   }
 
   fun requestResult() {
@@ -76,5 +90,7 @@ class MainActivityViewModel: ViewModel() {
       '/' -> safeOperand1 / safeOperand2
       else -> throw Exception("Unknown operator")
     }
+
+    logDisplay()
   }
 }
