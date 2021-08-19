@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+    <variable
+      name="viewModel"
+      type="com.example.calculator.MainActivityViewModel" />
+  </data>
+
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,6 +23,10 @@
       android:layout_marginEnd="@dimen/largeMargin"
       android:textAlignment="textEnd"
       android:textSize="@dimen/largeTextSize"
+      app:operand1="@{viewModel.operand1}"
+      app:operand2="@{viewModel.operand2}"
+      app:operator="@{viewModel.operator}"
+      app:result="@{viewModel.result}"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
@@ -30,6 +41,7 @@
       android:textSize="@dimen/largeTextSize"
       android:paddingTop="@dimen/buttonPadding"
       android:paddingBottom="@dimen/buttonPadding"
+      android:onClick="@{() -> viewModel.reset()}"
       app:layout_constraintEnd_toEndOf="@+id/resultTextView"
       app:layout_constraintStart_toStartOf="@+id/resultTextView"
       app:layout_constraintTop_toBottomOf="@+id/resultTextView" />
