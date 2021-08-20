@@ -32,7 +32,7 @@ class MainActivityViewModel: ViewModel() {
     decimalPointIsSet = false
   }
 
-  private fun checkForResult() {
+  private fun resetIfCalculationCompleted() {
     if (result.value != null) reset()
   }
 
@@ -41,9 +41,11 @@ class MainActivityViewModel: ViewModel() {
     return this
   }
 
-  private fun MutableLiveData<String>.toFloat(): Float? {
-    if (this.value == "") return null
-    return this.value?.toFloat()
+  private fun logDisplay() {
+    Log.d(
+      "MainActivityViewModel",
+      "${operand1.value} ${operator.value ?: ""} ${operand2.value} = ${result.value ?: ""}"
+    )
   }
 
   fun reset(){
@@ -55,20 +57,23 @@ class MainActivityViewModel: ViewModel() {
   }
 
   fun operandInput(digit: Char) {
-    checkForResult()
+    resetIfCalculationCompleted()
+
     val operand = if (operator.value == null) operand1 else operand2
     operand.value += digit
   }
 
   fun operatorInput(operatorSymbol: Char) {
-    checkForResult()
+    resetIfCalculationCompleted()
+
     if (operand1.completeDecimalPoint().value == "" || operator.value != null) return
     operator.value = operatorSymbol
     beginNewOperandInput()
   }
 
   fun decimalPointInput() {
-    checkForResult()
+    resetIfCalculationCompleted()
+
     if (decimalPointIsSet) return
     val operand = if (operator.value == null) operand1 else operand2
     if (operand.value == "") operand.value = "0"
@@ -77,9 +82,10 @@ class MainActivityViewModel: ViewModel() {
   }
 
   fun requestResult() {
-    checkForResult()
-    val safeOperand1 = operand1.toFloat() ?: return
-    val safeOperand2 = operand2.completeDecimalPoint().toFloat() ?: return
+    resetIfCalculationCompleted()
+
+    val safeOperand1 = operand1.value?.toFloatOrNull() ?: return
+    val safeOperand2 = operand2.completeDecimalPoint().value?.toFloatOrNull() ?: return
     val safeOperator = operator.value ?: return
 
     result.value = when(safeOperator) {
