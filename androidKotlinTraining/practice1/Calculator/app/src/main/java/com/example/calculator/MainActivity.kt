@@ -30,6 +30,6 @@ class MainActivity : AppCompatActivity() {
       resultClickListener = { viewModel.requestResult() }
     )
 
-    binding.buttonGrid.addItemDecoration(GridMarginItemDecoration(columns = GRID_COLUMNS))
+    binding.buttonGrid.addItemDecoration(GridMarginItemDecoration(GRID_COLUMNS, applicationContext))
   }
 }
