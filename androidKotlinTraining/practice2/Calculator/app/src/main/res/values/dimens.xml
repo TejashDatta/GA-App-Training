@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="largeMargin">32dp</dimen>
+  <dimen name="largeTextSize">34sp</dimen>
+  <dimen name="smallMargin">8sp</dimen>
+  <dimen name="buttonPadding">16dp</dimen>
+</resources>
