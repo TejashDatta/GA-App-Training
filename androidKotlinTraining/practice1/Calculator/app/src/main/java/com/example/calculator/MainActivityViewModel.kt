@@ -1,19 +1,25 @@
 package com.example.calculator
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class MainActivityViewModel: ViewModel() {
   private var decimalPointIsSet = false
 
-  val operand1 = MutableLiveData<String>()
-  val operand2 = MutableLiveData<String>()
-  val operator = MutableLiveData<Char>()
-  val result = MutableLiveData<Float>()
+  private var operand1: String = ""
+  private var operand2: String = ""
+  private var operator: Char? = null
+  private var result: Float? = null
+
+  val output = MutableLiveData<String>()
 
   init {
     reset()
+  }
+
+  private fun updateOutput() {
+    val formattedResult = if (result == null) "" else "= ${result}"
+    output.value = "${operand1} ${operator ?: ""} ${operand2} $formattedResult"
   }
 
   private fun beginNewOperandInput() {
@@ -21,68 +27,66 @@ class MainActivityViewModel: ViewModel() {
   }
 
   private fun resetIfCalculationCompleted() {
-    if (result.value != null) reset()
+    if (result != null) reset()
   }
 
-  private fun MutableLiveData<String>.completeDecimalPoint(): MutableLiveData<String> {
-    if (this.value?.lastOrNull() == '.') this.value += '0'
-    return this
-  }
-
-  private fun logDisplay() {
-    Log.d(
-      "MainActivityViewModel",
-      "${operand1.value} ${operator.value ?: ""} ${operand2.value} = ${result.value ?: ""}"
-    )
+  private fun String.completeDecimalPoint(): String {
+    return if (this.lastOrNull() == '.') this + '0' else this
   }
 
   fun reset(){
-    operand1.value = ""
-    operand2.value = ""
-    operator.value = null
-    result.value = null
+    operand1 = ""
+    operand2 = ""
+    operator = null
+    result = null
     beginNewOperandInput()
+
+    updateOutput()
   }
 
   fun operandInput(digit: Char) {
     resetIfCalculationCompleted()
 
-    val operand = if (operator.value == null) operand1 else operand2
-    operand.value += digit
+    if (operator == null) operand1 += digit else operand2 += digit
 
-    logDisplay()
+    updateOutput()
   }
 
   fun operatorInput(operatorSymbol: Char) {
     resetIfCalculationCompleted()
 
-    if (operand1.completeDecimalPoint().value == "" || operator.value != null) return
-    operator.value = operatorSymbol
+    operand1 = operand1.completeDecimalPoint()
+    
+    if (operand1 == "" || operator != null) return
+    operator = operatorSymbol
     beginNewOperandInput()
 
-    logDisplay()
+    updateOutput()
   }
 
   fun decimalPointInput() {
     resetIfCalculationCompleted()
 
     if (decimalPointIsSet) return
-    val operand = if (operator.value == null) operand1 else operand2
-    if (operand.value == "") operand.value = "0"
-    operand.value += '.'
+    var operand = if (operator == null) operand1 else operand2
+    operand = operand.ifEmpty { "0" }
+    operand += '.'
+    if (operator == null) operand1 = operand else operand2 = operand
     decimalPointIsSet = true
 
-    logDisplay()
+    updateOutput()
   }
 
   fun requestResult() {
     resetIfCalculationCompleted()
 
-    val safeOperand1 = operand1.value?.toFloatOrNull() ?: return
-    val safeOperand2 = operand2.completeDecimalPoint().value?.toFloatOrNull() ?: return
-    val safeOperator = operator.value ?: return
+    operand2 = operand2.completeDecimalPoint()
 
-    result.value = when(safeOperator) {
+    val safeOperand1 = operand1.toFloatOrNull() ?: return
+    val safeOperand2 = operand2.toFloatOrNull() ?: return
+    val safeOperator = operator ?: return
+
+    result = when(safeOperator) {
       '+' -> safeOperand1 + safeOperand2
       '-' -> safeOperand1 - safeOperand2
       '*' -> safeOperand1 * safeOperand2
@@ -90,6 +94,6 @@ class MainActivityViewModel: ViewModel() {
       else -> throw Exception("Unknown operator")
     }
 
-    logDisplay()
+    updateOutput()
   }
 }

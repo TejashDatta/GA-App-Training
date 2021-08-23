@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
     binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
     binding.lifecycleOwner = this
 
+    binding.viewModel = viewModel
+
     binding.buttonGrid.adapter = ButtonGridAdapter(
       operandClickListener = { operand ->  viewModel.operandInput(operand) },
       operatorClickListener = { operator ->  viewModel.operatorInput(operator) },
