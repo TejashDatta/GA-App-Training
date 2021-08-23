@@ -1,7 +1,11 @@
 package com.example.calculator
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.calculator.Network.CalculatorApi
+import kotlinx.coroutines.launch
 
 class MainActivityViewModel: ViewModel() {
   companion object {
@@ -19,6 +23,18 @@ class MainActivityViewModel: ViewModel() {
 
   init {
     reset()
+    calculate()
+  }
+
+  private fun calculate() {
+    val expression = "5 * 5.325"
+    viewModelScope.launch {
+      try {
+        Log.d("MainActivityViewModel", CalculatorApi.retrofitService.requestCalculation(expression))
+      } catch (e: Exception) {
+        Log.d("MainActivityViewModel", e.message ?: "")
+      }
+    }
   }
 
   private fun updateOutput() {
