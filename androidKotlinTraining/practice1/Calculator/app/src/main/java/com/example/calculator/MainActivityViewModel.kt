@@ -81,7 +81,7 @@ class MainActivityViewModel: ViewModel() {
 
     if (decimalPointIsSet) return
     var operand = if (operator == null) operand1 else operand2
-    if (operand == "") operand = "0"
+    operand = operand.ifEmpty { "0" }
     operand += '.'
     if (operator == null) operand1 = operand else operand2 = operand
     decimalPointIsSet = true
