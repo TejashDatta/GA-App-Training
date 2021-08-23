@@ -7,6 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.calculator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+  companion object {
+    val GRID_COLUMNS = 4
+  }
+
   private lateinit var binding: ActivityMainBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,5 +29,7 @@ class MainActivity : AppCompatActivity() {
       decimalPointClickListener = { viewModel.decimalPointInput() },
       resultClickListener = { viewModel.requestResult() }
     )
+
+    binding.buttonGrid.addItemDecoration(GridMarginItemDecoration(GRID_COLUMNS, applicationContext))
   }
 }

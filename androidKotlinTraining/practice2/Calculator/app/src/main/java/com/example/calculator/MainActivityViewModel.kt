@@ -4,12 +4,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class MainActivityViewModel: ViewModel() {
+  companion object {
+    const val MAX_RESULT_LENGTH = 12
+  }
+
   private var decimalPointIsSet = false
 
   private var operand1: String = ""
   private var operand2: String = ""
   private var operator: Char? = null
-  private var result: Float? = null
+  private var result: Double? = null
 
   val output = MutableLiveData<String>()
 
@@ -18,8 +22,16 @@ class MainActivityViewModel: ViewModel() {
   }
 
   private fun updateOutput() {
-    val formattedResult = if (result == null) "" else "= ${result}"
-    output.value = "${operand1} ${operator ?: ""} ${operand2} $formattedResult"
+    output.value = "${operand1} ${operator ?: ""} ${operand2} ${formattedResult()}"
+  }
+
+  private fun formattedResult(): String{
+    if (result == null) return ""
+
+    val formattedResult = "%f".format(result).trim('0').trim('.')
+    val abbreviatedResult = formattedResult.substring(0, Math.min(formattedResult.length, MAX_RESULT_LENGTH))
+    val abbreviationIndicator = if (formattedResult.length > MAX_RESULT_LENGTH) "..." else ""
+    return "= $abbreviatedResult$abbreviationIndicator"
   }
 
   private fun beginNewOperandInput() {
@@ -56,7 +68,7 @@ class MainActivityViewModel: ViewModel() {
     resetIfCalculationCompleted()
 
     operand1 = operand1.completeDecimalPoint()
-    
+
     if (operand1 == "" || operator != null) return
     operator = operatorSymbol
     beginNewOperandInput()
@@ -82,8 +94,8 @@ class MainActivityViewModel: ViewModel() {
 
     operand2 = operand2.completeDecimalPoint()
 
-    val safeOperand1 = operand1.toFloatOrNull() ?: return
-    val safeOperand2 = operand2.toFloatOrNull() ?: return
+    val safeOperand2 = operand2.toDoubleOrNull() ?: return
+    val safeOperand1 = operand1.toDoubleOrNull() ?: return
     val safeOperator = operator ?: return
 
     result = when(safeOperator) {
