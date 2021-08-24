@@ -1,4 +1,4 @@
-package com.example.calculator.Network
+package com.example.calculator.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
