@@ -111,7 +111,6 @@ class MainActivityViewModel(private val app: Application) : AndroidViewModel(app
           CalculatorApi.retrofitService.requestCalculation("$safeOperand1$safeOperator$safeOperand2")
         if (calculatorResponse.status == CalculatorApiResponseStatus.OK.status_code) {
           result = calculatorResponse.result
-          
           setOutputToExpression()
         } else {
           throw Exception(calculatorResponse.message)
