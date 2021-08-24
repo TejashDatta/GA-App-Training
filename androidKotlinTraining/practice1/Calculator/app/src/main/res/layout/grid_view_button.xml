@@ -18,7 +18,7 @@
     android:layout_marginEnd="@dimen/smallMargin"
     android:paddingTop="@dimen/buttonPadding"
     android:paddingBottom="@dimen/buttonPadding"
-    android:textSize="@dimen/largeTextSize"
+    android:textSize="@dimen/mediumTextSize"
     android:text="@{buttonLabel}"
     tools:text="5" />
 </layout>
