@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.calculator.Network.CalculatorApi
-import com.example.calculator.Network.CalculatorApiResponseStatus
+import com.example.calculator.network.CalculatorApi
+import com.example.calculator.network.CalculatorApiResponseStatus
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel(private val app: Application) : AndroidViewModel(app) {
