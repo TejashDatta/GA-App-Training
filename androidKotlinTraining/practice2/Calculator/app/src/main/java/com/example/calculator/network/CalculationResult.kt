@@ -1,4 +1,4 @@
-package com.example.calculator.Network
+package com.example.calculator.network
 
 import com.squareup.moshi.Json
 

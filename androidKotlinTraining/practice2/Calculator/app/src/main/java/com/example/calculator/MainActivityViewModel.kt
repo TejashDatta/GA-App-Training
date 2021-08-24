@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.calculator.Network.CalculatorApi
+import com.example.calculator.network.CalculatorApi
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel: ViewModel() {
