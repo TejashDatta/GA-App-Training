@@ -1,6 +1,7 @@
 package com.example.calculator
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -110,11 +111,13 @@ class MainActivityViewModel(private val app: Application) : AndroidViewModel(app
           CalculatorApi.retrofitService.requestCalculation("$safeOperand1$safeOperator$safeOperand2")
         if (calculatorResponse.status == CalculatorApiResponseStatus.OK.status_code) {
           result = calculatorResponse.result
+          
           setOutputToExpression()
         } else {
           throw Exception(calculatorResponse.message)
         }
       } catch (e: Exception) {
+        e.message?.let { Log.d("MainActivityViewModel", it) }
         output.value = app.applicationContext.getString(R.string.error_notice)
       }
     }
