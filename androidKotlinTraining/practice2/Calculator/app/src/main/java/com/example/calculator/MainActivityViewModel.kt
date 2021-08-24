@@ -1,13 +1,14 @@
 package com.example.calculator
 
-import android.util.Log
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.calculator.Network.CalculatorApi
+import com.example.calculator.Network.CalculatorApiResponseStatus
 import kotlinx.coroutines.launch
 
-class MainActivityViewModel: ViewModel() {
+class MainActivityViewModel(private val app: Application) : AndroidViewModel(app) {
   companion object {
     const val MAX_RESULT_LENGTH = 12
   }
@@ -23,30 +24,16 @@ class MainActivityViewModel: ViewModel() {
 
   init {
     reset()
-    calculate()
   }
 
-  private fun calculate() {
-    val expression = "5 * 5.325"
-    viewModelScope.launch {
-      try {
-        Log.d("MainActivityViewModel",
-          CalculatorApi.retrofitService.requestCalculation(expression).toString()
-        )
-      } catch (e: Exception) {
-        Log.d("MainActivityViewModel", e.message ?: "")
-      }
-    }
-  }
-
-  private fun updateOutput() {
+  private fun setOutputToExpression() {
     output.value = "${operand1} ${operator ?: ""} ${operand2} ${formattedResult()}"
   }
 
   private fun formattedResult(): String{
     if (result == null) return ""
 
-    val formattedResult = "%f".format(result).trim('0').trim('.')
+    val formattedResult = "%.${MAX_RESULT_LENGTH}f".format(result).trim('0').trim('.')
     val abbreviatedResult = formattedResult.substring(0, Math.min(formattedResult.length, MAX_RESULT_LENGTH))
     val abbreviationIndicator = if (formattedResult.length > MAX_RESULT_LENGTH) "..." else ""
     return "= $abbreviatedResult$abbreviationIndicator"
@@ -71,7 +58,7 @@ class MainActivityViewModel: ViewModel() {
     result = null
     beginNewOperandInput()
 
-    updateOutput()
+    setOutputToExpression()
   }
 
   fun operandInput(digit: Char) {
@@ -79,7 +66,7 @@ class MainActivityViewModel: ViewModel() {
 
     if (operator == null) operand1 += digit else operand2 += digit
 
-    updateOutput()
+    setOutputToExpression()
   }
 
   fun operatorInput(operatorSymbol: Char) {
@@ -91,7 +78,7 @@ class MainActivityViewModel: ViewModel() {
     operator = operatorSymbol
     beginNewOperandInput()
 
-    updateOutput()
+    setOutputToExpression()
   }
 
   fun decimalPointInput() {
@@ -104,7 +91,7 @@ class MainActivityViewModel: ViewModel() {
     if (operator == null) operand1 = operand else operand2 = operand
     decimalPointIsSet = true
 
-    updateOutput()
+    setOutputToExpression()
   }
 
   fun requestResult() {
@@ -112,18 +99,24 @@ class MainActivityViewModel: ViewModel() {
 
     operand2 = operand2.completeDecimalPoint()
 
-    val safeOperand2 = operand2.toDoubleOrNull() ?: return
-    val safeOperand1 = operand1.toDoubleOrNull() ?: return
+    val safeOperand1 = operand1.ifEmpty { return }
+    val safeOperand2 = operand2.ifEmpty { return }
     val safeOperator = operator ?: return
 
-    result = when(safeOperator) {
-      '+' -> safeOperand1 + safeOperand2
-      '-' -> safeOperand1 - safeOperand2
-      '*' -> safeOperand1 * safeOperand2
-      '/' -> safeOperand1 / safeOperand2
-      else -> throw Exception("Unknown operator")
+    viewModelScope.launch {
+      output.value = app.applicationContext.getString(R.string.loading)
+      try {
+        val calculatorResponse =
+          CalculatorApi.retrofitService.requestCalculation("$safeOperand1$safeOperator$safeOperand2")
+        if (calculatorResponse.status == CalculatorApiResponseStatus.OK.status_code) {
+          result = calculatorResponse.result
+          setOutputToExpression()
+        } else {
+          throw Exception(calculatorResponse.message)
+        }
+      } catch (e: Exception) {
+        output.value = app.applicationContext.getString(R.string.error_notice)
+      }
     }
-
-    updateOutput()
   }
 }
