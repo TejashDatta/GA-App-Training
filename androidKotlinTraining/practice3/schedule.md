@@ -45,4 +45,4 @@ recycler view item の click handler の実装：
     電卓画面の view model の refactoring
 見積もり： 5時間
 
-終了日：8月31日
+終了日：9月1日
