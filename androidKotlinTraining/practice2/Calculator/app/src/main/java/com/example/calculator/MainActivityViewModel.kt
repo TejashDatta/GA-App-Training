@@ -30,7 +30,9 @@ class MainActivityViewModel: ViewModel() {
     val expression = "5 * 5.325"
     viewModelScope.launch {
       try {
-        Log.d("MainActivityViewModel", CalculatorApi.retrofitService.requestCalculation(expression))
+        Log.d("MainActivityViewModel",
+          CalculatorApi.retrofitService.requestCalculation(expression).toString()
+        )
       } catch (e: Exception) {
         Log.d("MainActivityViewModel", e.message ?: "")
       }
