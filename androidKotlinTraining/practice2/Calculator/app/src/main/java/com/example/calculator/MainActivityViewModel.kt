@@ -1,15 +1,16 @@
 package com.example.calculator
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.calculator.network.CalculatorApi
 import com.example.calculator.network.CalculatorApiResponseStatus
 import kotlinx.coroutines.launch
 
-class MainActivityViewModel(private val app: Application) : AndroidViewModel(app) {
+enum class CalculatorState { READY, LOADING, COMPLETED, ERROR }
+
+class MainActivityViewModel : ViewModel() {
   companion object {
     const val MAX_RESULT_LENGTH = 12
   }
@@ -21,6 +22,7 @@ class MainActivityViewModel(private val app: Application) : AndroidViewModel(app
   private var operator: Char? = null
   private var result: Double? = null
 
+  val calculatorState = MutableLiveData<CalculatorState>()
   val output = MutableLiveData<String>()
 
   init {
@@ -45,14 +47,25 @@ class MainActivityViewModel(private val app: Application) : AndroidViewModel(app
   }
 
   private fun resetIfCalculationCompleted() {
-    if (result != null) reset()
+    if (calculatorState.value == CalculatorState.COMPLETED) reset()
   }
 
   private fun String.completeDecimalPoint(): String {
     return if (this.lastOrNull() == '.') this + '0' else this
   }
 
+  private suspend fun requestCalculation(expression: String): Double {
+    val response = CalculatorApi.retrofitService.requestCalculation(expression)
+    if (response.status == CalculatorApiResponseStatus.OK.status_code) {
+      return response.result
+    } else {
+      throw Exception(response.message)
+    }
+  }
+
   fun reset(){
+    calculatorState.value = CalculatorState.READY
+
     operand1 = ""
     operand2 = ""
     operator = null
@@ -105,19 +118,14 @@ class MainActivityViewModel(private val app: Application) : AndroidViewModel(app
     val safeOperator = operator ?: return
 
     viewModelScope.launch {
-      output.value = app.applicationContext.getString(R.string.loading)
+      calculatorState.value = CalculatorState.LOADING
       try {
-        val calculatorResponse =
-          CalculatorApi.retrofitService.requestCalculation("$safeOperand1$safeOperator$safeOperand2")
-        if (calculatorResponse.status == CalculatorApiResponseStatus.OK.status_code) {
-          result = calculatorResponse.result
-          setOutputToExpression()
-        } else {
-          throw Exception(calculatorResponse.message)
-        }
+        result = requestCalculation("$safeOperand1$safeOperator$safeOperand2")
+        setOutputToExpression()
+        calculatorState.value = CalculatorState.COMPLETED
       } catch (e: Exception) {
-        e.message?.let { Log.d("MainActivityViewModel", it) }
-        output.value = app.applicationContext.getString(R.string.error_notice)
+        Log.d("MainActivityViewModel", e.message ?: "error")
+        calculatorState.value = CalculatorState.ERROR
       }
     }
   }

@@ -1,13 +1,12 @@
 package com.example.calculator
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class MainActivityViewModelFactory(private val application: Application): ViewModelProvider.Factory {
+class MainActivityViewModelFactory(): ViewModelProvider.Factory {
   override fun <T : ViewModel?> create(modelClass: Class<T>): T {
     if (modelClass.isAssignableFrom(MainActivityViewModel::class.java)) {
-      return MainActivityViewModel(application) as T
+      return MainActivityViewModel() as T
     }
     throw IllegalArgumentException("Unknown ViewModel class")
   }
