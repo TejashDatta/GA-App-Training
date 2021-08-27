@@ -1,8 +1,9 @@
-package com.example.calculator
+package com.example.calculator.calculator
 
 import android.content.Context
 import android.graphics.Rect
 import androidx.recyclerview.widget.RecyclerView
+import com.example.calculator.R
 
 class GridMarginItemDecoration(val column_count: Int, context: Context): RecyclerView.ItemDecoration() {
   val column_margin = context.resources.getDimensionPixelSize(R.dimen.gridColumnMargin)
