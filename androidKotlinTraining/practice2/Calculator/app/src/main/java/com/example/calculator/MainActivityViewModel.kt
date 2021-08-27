@@ -120,7 +120,7 @@ class MainActivityViewModel : ViewModel() {
     viewModelScope.launch {
       calculatorState.value = CalculatorState.LOADING
       try {
-        result = requestCalculation("$safeOperand1$safeOperator$safeOperand2")
+        result = requestCalculation(safeOperand1 + safeOperator + safeOperand2)
         setOutputToExpression()
         calculatorState.value = CalculatorState.COMPLETED
       } catch (e: Exception) {
