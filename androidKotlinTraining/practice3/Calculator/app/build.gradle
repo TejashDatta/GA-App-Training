@@ -44,6 +44,8 @@ dependencies {
   implementation 'com.google.android.material:material:1.4.0'
   implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
   implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+  implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+  implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
   implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
   implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
   implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
