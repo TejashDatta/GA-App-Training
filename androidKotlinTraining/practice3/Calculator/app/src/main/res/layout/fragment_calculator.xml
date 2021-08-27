@@ -30,19 +30,6 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:text="2 + 3 = 5" />
 
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/buttonGrid"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@+id/resultTextView"
-      app:layout_constraintStart_toStartOf="@+id/resultTextView"
-      app:layout_constraintTop_toBottomOf="@+id/historyButton"
-      app:spanCount="4"
-      tools:itemCount="16"
-      tools:listitem="@layout/grid_view_button" />
-
     <Button
       android:id="@+id/historyButton"
       android:layout_width="0dp"
@@ -72,5 +59,18 @@
       app:layout_constraintHorizontal_bias="0.5"
       app:layout_constraintStart_toEndOf="@+id/historyButton"
       app:layout_constraintTop_toTopOf="@+id/historyButton" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/buttonGrid"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/resultTextView"
+      app:layout_constraintStart_toStartOf="@+id/resultTextView"
+      app:layout_constraintTop_toBottomOf="@+id/historyButton"
+      app:spanCount="4"
+      tools:itemCount="16"
+      tools:listitem="@layout/grid_view_button" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
