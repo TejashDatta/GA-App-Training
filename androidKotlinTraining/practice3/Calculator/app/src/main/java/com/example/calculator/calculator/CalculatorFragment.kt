@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.calculator.CalculatorViewModel
+import com.example.calculator.R
 import com.example.calculator.databinding.FragmentCalculatorBinding
 
 class CalculatorFragment : Fragment() {
@@ -25,6 +28,10 @@ class CalculatorFragment : Fragment() {
     binding.lifecycleOwner = viewLifecycleOwner
 
     binding.viewModel = viewModel
+
+    binding.historyButton.setOnClickListener { view : View ->
+      view.findNavController().navigate(R.id.action_calculatorFragment_to_historyFragment)
+    }
 
     binding.buttonGrid.adapter = ButtonGridAdapter(
       operandClickListener = { operand ->  viewModel.operandInput(operand) },

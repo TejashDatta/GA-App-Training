@@ -7,5 +7,13 @@
   <fragment
     android:id="@+id/calculatorFragment"
     android:name="com.example.calculator.calculator.CalculatorFragment"
-    android:label="CalculatorFragment" />
+    android:label="@string/app_name" >
+    <action
+      android:id="@+id/action_calculatorFragment_to_historyFragment"
+      app:destination="@id/historyFragment" />
+  </fragment>
+  <fragment
+    android:id="@+id/historyFragment"
+    android:name="com.example.calculator.history.HistoryFragment"
+    android:label="@string/history" />
 </navigation>

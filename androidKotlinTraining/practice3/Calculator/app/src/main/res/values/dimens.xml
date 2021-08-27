@@ -2,8 +2,8 @@
 <resources>
   <dimen name="largeMargin">32dp</dimen>
   <dimen name="gridColumnMargin">10dp</dimen>
+  <dimen name="gridColumnMarginHalf">5dp</dimen>
   <dimen name="gridRowMargin">3dp</dimen>
   <dimen name="mediumTextSize">24sp</dimen>
-  <dimen name="smallMargin">8sp</dimen>
   <dimen name="buttonPadding">16dp</dimen>
 </resources>
