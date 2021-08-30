@@ -123,7 +123,7 @@ class CalculatorViewModel(private val historyManager: HistoryManager) : ViewMode
       try {
         result = requestCalculation(safeOperand1 + safeOperator + safeOperand2)
         setOutputToExpression()
-        historyManager.add(output.value ?: throw NullPointerException())
+        historyManager.addItem(output.value ?: throw NullPointerException())
         calculatorState.value = CalculatorState.COMPLETED
       } catch (e: Exception) {
         Log.d("CalculatorViewModel", e.message ?: "error")

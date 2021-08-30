@@ -33,7 +33,7 @@ class HistoryManager(private val sharedPreferences: SharedPreferences) {
     items = Gson().fromJson(safeJson, ArrayDeque::class.java) as ArrayDeque<String>
   }
 
-  fun add(item: String) {
+  fun addItem(item: String) {
     if (items.size >= QUEUE_SIZE) items.removeFirst()
     items.addLast(item)
     saveItems()
