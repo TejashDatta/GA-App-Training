@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 enum class CalculatorState { READY, LOADING, COMPLETED, ERROR }
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(private val historyManager: HistoryManager) : ViewModel() {
   companion object {
     const val MAX_RESULT_LENGTH = 12
   }
@@ -123,7 +123,7 @@ class CalculatorViewModel : ViewModel() {
       try {
         result = requestCalculation(safeOperand1 + safeOperator + safeOperand2)
         setOutputToExpression()
-        HistoryManager.add(output.value ?: throw NullPointerException())
+        historyManager.add(output.value ?: throw NullPointerException())
         calculatorState.value = CalculatorState.COMPLETED
       } catch (e: Exception) {
         Log.d("CalculatorViewModel", e.message ?: "error")
