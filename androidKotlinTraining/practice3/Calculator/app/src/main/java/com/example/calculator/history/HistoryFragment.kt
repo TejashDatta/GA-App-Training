@@ -1,18 +1,11 @@
 package com.example.calculator.history
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import com.example.calculator.CalculatorViewModel
-import com.example.calculator.R
-import com.example.calculator.calculator.ButtonGridAdapter
-import com.example.calculator.calculator.CalculatorFragment
-import com.example.calculator.calculator.CalculatorViewModelFactory
-import com.example.calculator.calculator.GridMarginItemDecoration
-import com.example.calculator.databinding.FragmentCalculatorBinding
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.calculator.databinding.FragmentHistoryBinding
 
 class HistoryFragment : Fragment() {
@@ -22,6 +15,12 @@ class HistoryFragment : Fragment() {
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     binding = FragmentHistoryBinding.inflate(inflater)
     binding.lifecycleOwner = viewLifecycleOwner
+
+    with(binding.historyList) {
+      adapter = HistoryListAdapter()
+      addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+    }
+
     return binding.root
   }
 }
