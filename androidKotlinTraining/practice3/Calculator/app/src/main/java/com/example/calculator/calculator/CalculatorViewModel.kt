@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.calculator.history.HistoryManager
 import com.example.calculator.network.CalculatorApi
 import com.example.calculator.network.CalculatorApiResponseStatus
 import kotlinx.coroutines.launch
@@ -36,7 +37,7 @@ class CalculatorViewModel : ViewModel() {
   private fun formattedResult(): String{
     if (result == null) return ""
 
-    val formattedResult = "%.${MAX_RESULT_LENGTH}f".format(result).trim('0').trim('.')
+    val formattedResult = "%.${MAX_RESULT_LENGTH}f".format(result).trimEnd('0').trimEnd('.')
     val abbreviatedResult = formattedResult.substring(0, Math.min(formattedResult.length, MAX_RESULT_LENGTH))
     val abbreviationIndicator = if (formattedResult.length > MAX_RESULT_LENGTH) "..." else ""
     return "= $abbreviatedResult$abbreviationIndicator"
@@ -122,6 +123,7 @@ class CalculatorViewModel : ViewModel() {
       try {
         result = requestCalculation(safeOperand1 + safeOperator + safeOperand2)
         setOutputToExpression()
+        HistoryManager.add(output.value!!)
         calculatorState.value = CalculatorState.COMPLETED
       } catch (e: Exception) {
         Log.d("CalculatorViewModel", e.message ?: "error")
