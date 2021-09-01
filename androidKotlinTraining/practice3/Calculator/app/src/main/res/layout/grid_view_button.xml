@@ -14,8 +14,6 @@
     android:id="@+id/button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/smallMargin"
-    android:layout_marginEnd="@dimen/smallMargin"
     android:paddingTop="@dimen/buttonPadding"
     android:paddingBottom="@dimen/buttonPadding"
     android:textSize="@dimen/mediumTextSize"

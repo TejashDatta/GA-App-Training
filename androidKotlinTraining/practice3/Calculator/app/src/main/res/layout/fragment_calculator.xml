@@ -31,29 +31,45 @@
       tools:text="2 + 3 = 5" />
 
     <Button
-      android:id="@+id/clearButton"
+      android:id="@+id/historyButton"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/largeMargin"
-      android:text="@string/clear"
-      android:textSize="@dimen/mediumTextSize"
+      android:layout_marginEnd="@dimen/gridColumnMarginHalf"
       android:paddingTop="@dimen/buttonPadding"
       android:paddingBottom="@dimen/buttonPadding"
-      android:onClick="@{() -> viewModel.reset()}"
-      app:layout_constraintEnd_toEndOf="@+id/resultTextView"
+      android:text="@string/history"
+      android:textSize="@dimen/mediumTextSize"
+      app:layout_constraintEnd_toStartOf="@+id/clearButton"
+      app:layout_constraintHorizontal_bias="0.5"
       app:layout_constraintStart_toStartOf="@+id/resultTextView"
       app:layout_constraintTop_toBottomOf="@+id/resultTextView" />
+
+    <Button
+      android:id="@+id/clearButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/gridColumnMarginHalf"
+      android:onClick="@{() -> viewModel.reset()}"
+      android:paddingTop="@dimen/buttonPadding"
+      android:paddingBottom="@dimen/buttonPadding"
+      android:text="@string/clear"
+      android:textSize="@dimen/mediumTextSize"
+      app:layout_constraintEnd_toEndOf="@+id/resultTextView"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toEndOf="@+id/historyButton"
+      app:layout_constraintTop_toTopOf="@+id/historyButton" />
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/buttonGrid"
       android:layout_width="0dp"
       android:layout_height="0dp"
       app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-      app:spanCount="4"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="@+id/resultTextView"
       app:layout_constraintStart_toStartOf="@+id/resultTextView"
-      app:layout_constraintTop_toBottomOf="@+id/clearButton"
+      app:layout_constraintTop_toBottomOf="@+id/historyButton"
+      app:spanCount="4"
       tools:itemCount="16"
       tools:listitem="@layout/grid_view_button" />
   </androidx.constraintlayout.widget.ConstraintLayout>
