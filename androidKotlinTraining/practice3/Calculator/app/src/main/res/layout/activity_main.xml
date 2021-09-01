@@ -1,60 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
 
-  <data>
-    <variable
-      name="viewModel"
-      type="com.example.calculator.MainActivityViewModel" />
-  </data>
-
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <TextView
-      android:id="@+id/resultTextView"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/largeMargin"
-      android:layout_marginTop="@dimen/largeMargin"
-      android:layout_marginEnd="@dimen/largeMargin"
-      android:textAlignment="textEnd"
-      android:textSize="@dimen/mediumTextSize"
-      app:calculatorState="@{viewModel.calculatorState}"
-      app:output="@{viewModel.output}"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:text="2 + 3 = 5" />
-
-    <Button
-      android:id="@+id/clearButton"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/largeMargin"
-      android:text="@string/clear"
-      android:textSize="@dimen/mediumTextSize"
-      android:paddingTop="@dimen/buttonPadding"
-      android:paddingBottom="@dimen/buttonPadding"
-      android:onClick="@{() -> viewModel.reset()}"
-      app:layout_constraintEnd_toEndOf="@+id/resultTextView"
-      app:layout_constraintStart_toStartOf="@+id/resultTextView"
-      app:layout_constraintTop_toBottomOf="@+id/resultTextView" />
-
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/buttonGrid"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-      app:spanCount="4"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@+id/resultTextView"
-      app:layout_constraintStart_toStartOf="@+id/resultTextView"
-      app:layout_constraintTop_toBottomOf="@+id/clearButton"
-      tools:itemCount="16"
-      tools:listitem="@layout/grid_view_button" />
-  </androidx.constraintlayout.widget.ConstraintLayout>
+    <fragment
+      android:id="@+id/navHostFragment"
+      android:name="androidx.navigation.fragment.NavHostFragment"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:navGraph="@navigation/navigation"
+      app:defaultNavHost="true" />
+  </FrameLayout>
 </layout>

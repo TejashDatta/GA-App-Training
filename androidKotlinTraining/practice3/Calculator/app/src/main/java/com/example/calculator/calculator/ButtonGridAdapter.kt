@@ -1,4 +1,4 @@
-package com.example.calculator
+package com.example.calculator.calculator
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
