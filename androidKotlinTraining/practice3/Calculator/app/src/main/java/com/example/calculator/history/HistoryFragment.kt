@@ -1,5 +1,6 @@
 package com.example.calculator.history
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,14 @@ class HistoryFragment : Fragment() {
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+    val historyManager = HistoryManager(requireActivity().getPreferences(Context.MODE_PRIVATE))
+
     binding = FragmentHistoryBinding.inflate(inflater)
     binding.lifecycleOwner = viewLifecycleOwner
 
     with(binding.historyList) {
-      adapter = HistoryListAdapter()
+      adapter = HistoryListAdapter(historyManager.items)
       addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
 
