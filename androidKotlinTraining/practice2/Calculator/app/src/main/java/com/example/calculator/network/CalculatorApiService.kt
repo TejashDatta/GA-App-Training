@@ -22,10 +22,12 @@ private val retrofit = Retrofit
                         .baseUrl(BASE_URL)
                         .build()
 
+enum class CalculatorApiResponseStatus(val status_code: Int) { OK(0) }
+
 interface CalculatorApiService {
   @GET(CALCULATOR_ENDPOINT)
   suspend fun requestCalculation(
-    @Query(EXPRESSION_QUERY_PARAMETER) expression: String): CalculationResult
+    @Query(EXPRESSION_QUERY_PARAMETER) expression: String): CalculatorResponse
 }
 
 object CalculatorApi {

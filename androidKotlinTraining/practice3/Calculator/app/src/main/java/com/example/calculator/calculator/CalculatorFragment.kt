@@ -23,9 +23,8 @@ class CalculatorFragment : Fragment() {
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    val safeActivity = activity ?: throw NullPointerException()
 
-    val historyManager = HistoryManager(safeActivity.getPreferences(Context.MODE_PRIVATE))
+    val historyManager = HistoryManager(requireActivity().getPreferences(Context.MODE_PRIVATE))
 
     val viewModel = ViewModelProvider(this, CalculatorViewModelFactory(historyManager))
                       .get(CalculatorViewModel::class.java)
@@ -47,7 +46,7 @@ class CalculatorFragment : Fragment() {
     )
 
     binding.buttonGrid.addItemDecoration(
-      GridMarginItemDecoration(GRID_COLUMNS, safeActivity.applicationContext))
+      GridMarginItemDecoration(GRID_COLUMNS, requireActivity().applicationContext))
 
     return binding.root
   }
