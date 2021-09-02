@@ -2,7 +2,7 @@ package com.example.calculator.history
 
 import android.content.SharedPreferences
 import android.util.Log
-import com.google.gson.Gson
+import com.squareup.moshi.*
 import kotlin.collections.ArrayDeque
 
 class HistoryManager(private val sharedPreferences: SharedPreferences) {
@@ -10,7 +10,23 @@ class HistoryManager(private val sharedPreferences: SharedPreferences) {
     private const val QUEUE_SIZE = 30
     private const val ITEMS_KEY = "items"
   }
-  var items = ArrayDeque<String>()
+
+  class ArrayDequeAdapter {
+    @FromJson
+    fun fromJson(arrayItems: Array<*>): ArrayDeque<String> {
+      val items = ArrayDeque<String>(QUEUE_SIZE)
+      arrayItems.forEach { items.addLast(it as String) }
+      return items
+    }
+
+    @ToJson
+    fun toJson(items: ArrayDeque<String>) = items.toArray()
+  }
+
+  private var jsonAdapter: JsonAdapter<ArrayDeque<String>> =
+    Moshi.Builder().add(ArrayDequeAdapter()).build()
+      .adapter(Types.newParameterizedType(ArrayDeque::class.java, String::class.java))
+  var items = ArrayDeque<String>(QUEUE_SIZE)
 
   init {
     loadItems()
@@ -24,13 +40,13 @@ class HistoryManager(private val sharedPreferences: SharedPreferences) {
   private fun saveItems() {
     sharedPreferences
       .edit()
-      .putString(ITEMS_KEY, Gson().toJson(items))
+      .putString(ITEMS_KEY, jsonAdapter.toJson(items))
       .apply()
   }
 
   private fun loadItems() {
     val safeJson = sharedPreferences.getString(ITEMS_KEY, null) ?: return
-    items = Gson().fromJson(safeJson, ArrayDeque::class.java) as ArrayDeque<String>
+    items = jsonAdapter.fromJson(safeJson)!!
   }
 
   fun addItem(item: String) {
@@ -40,3 +56,4 @@ class HistoryManager(private val sharedPreferences: SharedPreferences) {
     debugOutput()
   }
 }
+
