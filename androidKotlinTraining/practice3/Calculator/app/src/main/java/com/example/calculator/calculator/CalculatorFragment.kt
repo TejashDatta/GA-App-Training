@@ -23,7 +23,7 @@ class CalculatorFragment : Fragment() {
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    val safeActivity = activity ?: throw NullPointerException()
+    val safeActivity = requireActivity()
 
     val historyManager = HistoryManager(safeActivity.getPreferences(Context.MODE_PRIVATE))
 
