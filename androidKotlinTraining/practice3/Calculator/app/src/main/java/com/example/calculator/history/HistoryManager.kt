@@ -13,9 +13,9 @@ class HistoryManager(private val sharedPreferences: SharedPreferences) {
 
   class ArrayDequeAdapter {
     @FromJson
-    fun fromJson(arrayItems: Array<*>): ArrayDeque<String> {
+    fun fromJson(arrayItems: Array<String>): ArrayDeque<String> {
       val items = ArrayDeque<String>(QUEUE_SIZE)
-      arrayItems.forEach { items.addLast(it as String) }
+      items.addAll(arrayItems)
       return items
     }
 
