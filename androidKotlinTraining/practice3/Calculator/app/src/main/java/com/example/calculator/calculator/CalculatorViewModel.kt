@@ -31,7 +31,7 @@ class CalculatorViewModel(private val historyManager: HistoryManager) : ViewMode
   }
 
   private fun setOutputToExpression() {
-    output.value = "${operand1} ${operator ?: ""} ${operand2} ${formattedResult()}"
+    output.value = "$operand1 ${operator ?: ""} $operand2 ${formattedResult()}".trim()
   }
 
   private fun formattedResult(): String{
@@ -130,5 +130,10 @@ class CalculatorViewModel(private val historyManager: HistoryManager) : ViewMode
         calculatorState.value = CalculatorState.ERROR
       }
     }
+  }
+
+  fun setOutputFromHistory(history: String) {
+    output.value = history
+    calculatorState.value = CalculatorState.COMPLETED
   }
 }
