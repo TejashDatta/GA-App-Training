@@ -13,11 +13,7 @@ class HistoryManager(private val sharedPreferences: SharedPreferences) {
 
   class ArrayDequeAdapter {
     @FromJson
-    fun fromJson(arrayItems: Array<String>): ArrayDeque<String> {
-      val items = ArrayDeque<String>(QUEUE_SIZE)
-      items.addAll(arrayItems)
-      return items
-    }
+    fun fromJson(items: Array<String>) = ArrayDeque(items.toList())
 
     @ToJson
     fun toJson(items: ArrayDeque<String>) = items.toArray()
@@ -26,7 +22,10 @@ class HistoryManager(private val sharedPreferences: SharedPreferences) {
   private var jsonAdapter: JsonAdapter<ArrayDeque<String>> =
     Moshi.Builder().add(ArrayDequeAdapter()).build()
       .adapter(Types.newParameterizedType(ArrayDeque::class.java, String::class.java))
-  var items = ArrayDeque<String>(QUEUE_SIZE)
+  
+  private var _items = ArrayDeque<String>(QUEUE_SIZE)
+  val items: List<String>
+    get() = _items.toList()
 
   init {
     loadItems()
@@ -40,18 +39,18 @@ class HistoryManager(private val sharedPreferences: SharedPreferences) {
   private fun saveItems() {
     sharedPreferences
       .edit()
-      .putString(ITEMS_KEY, jsonAdapter.toJson(items))
+      .putString(ITEMS_KEY, jsonAdapter.toJson(_items))
       .apply()
   }
 
   private fun loadItems() {
     val safeJson = sharedPreferences.getString(ITEMS_KEY, null) ?: return
-    items = jsonAdapter.fromJson(safeJson)!!
+    _items = jsonAdapter.fromJson(safeJson)!!
   }
 
   fun addItem(item: String) {
-    if (items.size >= QUEUE_SIZE) items.removeFirst()
-    items.addLast(item)
+    if (_items.size >= QUEUE_SIZE) _items.removeFirst()
+    _items.addLast(item)
     saveItems()
     debugOutput()
   }
