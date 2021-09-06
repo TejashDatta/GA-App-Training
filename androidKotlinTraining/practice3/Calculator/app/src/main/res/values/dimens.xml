@@ -6,4 +6,5 @@
   <dimen name="gridRowMargin">3dp</dimen>
   <dimen name="mediumTextSize">24sp</dimen>
   <dimen name="buttonPadding">16dp</dimen>
+  <dimen name="historyTextPadding">16dp</dimen>
 </resources>

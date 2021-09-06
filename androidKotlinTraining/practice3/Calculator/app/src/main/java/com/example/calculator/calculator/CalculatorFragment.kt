@@ -1,5 +1,6 @@
 package com.example.calculator.calculator
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.calculator.CalculatorViewModel
 import com.example.calculator.R
 import com.example.calculator.databinding.FragmentCalculatorBinding
+import com.example.calculator.history.HistoryManager
 
 class CalculatorFragment : Fragment() {
   companion object {
@@ -21,7 +23,10 @@ class CalculatorFragment : Fragment() {
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    val viewModel = ViewModelProvider(this, CalculatorViewModelFactory())
+
+    val historyManager = HistoryManager(requireActivity().getPreferences(Context.MODE_PRIVATE))
+
+    val viewModel = ViewModelProvider(this, CalculatorViewModelFactory(historyManager))
                       .get(CalculatorViewModel::class.java)
 
     binding = FragmentCalculatorBinding.inflate(inflater)
@@ -40,10 +45,8 @@ class CalculatorFragment : Fragment() {
       resultClickListener = { viewModel.requestResult() }
     )
 
-    activity?.let {
-      binding.buttonGrid.addItemDecoration(
-        GridMarginItemDecoration(GRID_COLUMNS, it.applicationContext))
-    }
+    binding.buttonGrid.addItemDecoration(
+      GridMarginItemDecoration(GRID_COLUMNS, requireActivity().applicationContext))
 
     return binding.root
   }
