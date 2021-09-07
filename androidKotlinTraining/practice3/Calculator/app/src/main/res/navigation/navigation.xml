@@ -11,10 +11,21 @@
     <action
       android:id="@+id/action_calculatorFragment_to_historyFragment"
       app:destination="@id/historyFragment" />
+    <argument
+      android:name="history"
+      app:argType="string"
+      app:nullable="true"
+      android:defaultValue="@null" />
   </fragment>
   
   <fragment
     android:id="@+id/historyFragment"
     android:name="com.example.calculator.history.HistoryFragment"
-    android:label="@string/history" />
+    android:label="@string/history" >
+    <action
+      android:id="@+id/action_historyFragment_to_calculatorFragment"
+      app:destination="@id/calculatorFragment"
+      app:popUpTo="@id/calculatorFragment"
+      app:popUpToInclusive="true" />
+  </fragment>
 </navigation>
