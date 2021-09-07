@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.calculator.databinding.FragmentHistoryBinding
 
@@ -21,10 +22,15 @@ class HistoryFragment : Fragment() {
     binding.lifecycleOwner = viewLifecycleOwner
 
     with(binding.historyList) {
-      adapter = HistoryListAdapter(historyManager.items)
+      adapter = HistoryListAdapter(historyManager.items) { history -> onHistorySelected(history) }
       addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
 
     return binding.root
+  }
+
+  private fun onHistorySelected(history: String) {
+    findNavController().navigate(
+      HistoryFragmentDirections.actionHistoryFragmentToCalculatorFragment(history))
   }
 }

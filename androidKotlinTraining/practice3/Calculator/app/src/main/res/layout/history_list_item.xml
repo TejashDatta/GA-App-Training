@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-  xmlns:android="http://schemas.android.com/apk/res/android">
-
-  <data>
-    <variable
-      name="expression"
-      type="String" />
-  </data>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
   <TextView
     android:id="@+id/historyText"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textSize="@dimen/mediumTextSize"
-    android:padding="@dimen/historyTextPadding"
-    android:text="@{expression}" />
+    android:padding="@dimen/historyTextPadding" />
 </layout>
