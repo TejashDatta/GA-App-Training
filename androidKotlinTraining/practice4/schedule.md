@@ -6,14 +6,14 @@
 
 タスク： 
 fragment の layout を展開します。
-ボタンと text view, recycler view, recycler view の adapter をコピーペして実装する。
+button, text view, recycler view, recycler view の adapter をコピーペして実装する。
 fragment で adapter と recycler view を連携する。
 見積もり： 2時間
 
-タスク： 基本的な presenter を作って、初期化する
-見積もり： 2時間
+タスク： 基本的な presenter を作って、activity と fragment と連携して初期化する
+見積もり： 3時間
 
-タスク： presenter と view 間の contract を作る
+タスク： presenter と view の間の contract の考えて作る
 見積もり： 2時間
 
 タスク： 
@@ -24,6 +24,6 @@ contract によってビューのメソッドを実装する
 タスク： 
 contract によってpresenterのメソッドを実装する
   大体のメソッドは前の viewmodel からコピーペして実装できる
-見積もり： 1時間
+見積もり： 2時間
 
 終了日：9月14日
