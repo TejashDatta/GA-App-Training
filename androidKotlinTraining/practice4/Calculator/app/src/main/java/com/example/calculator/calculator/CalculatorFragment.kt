@@ -1,7 +1,6 @@
 package com.example.calculator.calculator
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,13 +26,13 @@ class CalculatorFragment : Fragment(), CalculatorContract.View {
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     binding = CalculatorFragBinding.inflate(inflater)
 
-    binding.clearButton.setOnClickListener { testClickHandler() }
+    binding.clearButton.setOnClickListener { presenter.reset() }
 
     binding.buttonGrid.adapter = ButtonGridAdapter(
-      operandClickListener = { operand ->  testClickHandler(operand) },
-      operatorClickListener = { operator ->  testClickHandler(operator) },
-      decimalPointClickListener = { testClickHandler() },
-      resultClickListener = { testClickHandler() }
+      operandClickListener = { operand ->  presenter.operandInput(operand) },
+      operatorClickListener = { operator ->  presenter.operatorInput(operator) },
+      decimalPointClickListener = { presenter.decimalPointInput() },
+      resultClickListener = { presenter.requestResult() }
     )
 
     binding.buttonGrid.addItemDecoration(
@@ -42,7 +41,7 @@ class CalculatorFragment : Fragment(), CalculatorContract.View {
     return binding.root
   }
 
-  private fun testClickHandler(input: Char? = null) {
-    Log.d("CalculatorFragment", input?.toString() ?: "method has no input")
+  override fun setOutput(output: String) {
+    binding.resultTextView.text = output
   }
 }

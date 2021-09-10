@@ -18,7 +18,6 @@
       android:layout_marginEnd="@dimen/largeMargin"
       android:textAlignment="textEnd"
       android:textSize="@dimen/mediumTextSize"
-      android:text="example output"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
