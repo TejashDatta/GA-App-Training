@@ -8,14 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.calculator.databinding.CalculatorFragBinding
 
-class CalculatorFragment : Fragment() {
+class CalculatorFragment : Fragment(), CalculatorContract.View {
   companion object {
     private const val GRID_COLUMNS = 4
 
     fun newInstance() = CalculatorFragment()
   }
 
+  override lateinit var presenter: CalculatorContract.Presenter
   private lateinit var binding: CalculatorFragBinding
+
+  override fun onResume() {
+    super.onResume()
+    presenter.start()
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

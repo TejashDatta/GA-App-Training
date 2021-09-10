@@ -8,6 +8,8 @@ import com.example.calculator.databinding.CalculatorActBinding
 import com.example.calculator.util.replaceFragmentInActivity
 
 class CalculatorActivity : AppCompatActivity() {
+  private lateinit var calculatorPresenter: CalculatorPresenter
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     DataBindingUtil.setContentView<CalculatorActBinding>(this, R.layout.calculator_act)
@@ -17,5 +19,7 @@ class CalculatorActivity : AppCompatActivity() {
         ?: CalculatorFragment.newInstance().also {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
+
+    calculatorPresenter = CalculatorPresenter(calculatorFragment)
   }
 }
