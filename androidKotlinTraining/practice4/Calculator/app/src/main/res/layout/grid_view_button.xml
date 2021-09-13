@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<Button
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools">
-
-  <Button
-    android:id="@+id/button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/buttonPadding"
-    android:paddingBottom="@dimen/buttonPadding"
-    android:textSize="@dimen/mediumTextSize"
-    tools:text="5" />
-</layout>
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/button"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingTop="@dimen/buttonPadding"
+  android:paddingBottom="@dimen/buttonPadding"
+  android:textSize="@dimen/mediumTextSize"
+  tools:text="5" />
