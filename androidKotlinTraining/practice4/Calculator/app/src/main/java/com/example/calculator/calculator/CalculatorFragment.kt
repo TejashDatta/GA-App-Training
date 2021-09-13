@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.example.calculator.databinding.CalculatorFragBinding
+import androidx.recyclerview.widget.RecyclerView
+import com.example.calculator.R
 
 class CalculatorFragment : Fragment(), CalculatorContract.View {
   companion object {
@@ -15,7 +17,8 @@ class CalculatorFragment : Fragment(), CalculatorContract.View {
   }
 
   override lateinit var presenter: CalculatorContract.Presenter
-  private lateinit var binding: CalculatorFragBinding
+  private lateinit var clearButton: Button
+  private lateinit var buttonGrid: RecyclerView
 
   override fun onResume() {
     super.onResume()
@@ -24,21 +27,26 @@ class CalculatorFragment : Fragment(), CalculatorContract.View {
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    binding = CalculatorFragBinding.inflate(inflater)
+    val root = inflater.inflate(R.layout.calculator_frag, container, false)
 
-    binding.clearButton.setOnClickListener { presenter.reset() }
+    with(root){
+      clearButton = findViewById(R.id.clearButton)
+      buttonGrid = findViewById(R.id.buttonGrid)
+    }
 
-    binding.buttonGrid.adapter = ButtonGridAdapter(
+    clearButton.setOnClickListener { presenter.reset() }
+
+    buttonGrid.adapter = ButtonGridAdapter(
       operandClickListener = { operand ->  presenter.operandInput(operand) },
       operatorClickListener = { operator ->  presenter.operatorInput(operator) },
       decimalPointClickListener = { presenter.decimalPointInput() },
       resultClickListener = { presenter.requestResult() }
     )
 
-    binding.buttonGrid.addItemDecoration(
+    buttonGrid.addItemDecoration(
       GridMarginItemDecoration(GRID_COLUMNS, requireActivity().applicationContext))
 
-    return binding.root
+    return root
   }
 
   override fun setOutput(output: String) {

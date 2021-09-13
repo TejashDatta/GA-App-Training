@@ -2,8 +2,9 @@ package com.example.calculator.calculator
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calculator.databinding.GridViewButtonBinding
+import com.example.calculator.R
 
 class ButtonGridAdapter(
   private val operandClickListener: (Char) -> Unit,
@@ -12,10 +13,13 @@ class ButtonGridAdapter(
   private val resultClickListener: () -> Unit
 ): RecyclerView.Adapter<ButtonGridAdapter.ViewHolder>() {
 
-  class ViewHolder(private val binding: GridViewButtonBinding): RecyclerView.ViewHolder(binding.root) {
-    fun bind(buttonLabel: Char) {
-      binding.button.text = buttonLabel.toString()
-      binding.executePendingBindings()
+  class ViewHolder private constructor(val buttonView: Button): RecyclerView.ViewHolder(buttonView) {
+    companion object {
+      fun from(parent: ViewGroup): ViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val buttonView = layoutInflater.inflate(R.layout.grid_view_button, parent, false) as Button
+        return ViewHolder(buttonView)
+      }
     }
   }
 
@@ -29,13 +33,13 @@ class ButtonGridAdapter(
   override fun getItemCount() = buttonLabels.size
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    return ViewHolder(GridViewButtonBinding.inflate(LayoutInflater.from(parent.context)))
+    return ViewHolder.from(parent)
   }
 
   override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
     val buttonLabel = buttonLabels[position]
-    viewHolder.bind(buttonLabel)
-    viewHolder.itemView.setOnClickListener { onClickButton(buttonLabel) }
+    viewHolder.buttonView.text = buttonLabel.toString()
+    viewHolder.buttonView.setOnClickListener { onClickButton(buttonLabel) }
   }
 
   private fun onClickButton(buttonLabel: Char) {
