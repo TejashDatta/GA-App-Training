@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.example.calculator.databinding.CalculatorFragBinding
+import androidx.recyclerview.widget.RecyclerView
+import com.example.calculator.R
 
 class CalculatorFragment : Fragment() {
   companion object {
@@ -15,25 +17,31 @@ class CalculatorFragment : Fragment() {
     fun newInstance() = CalculatorFragment()
   }
 
-  private lateinit var binding: CalculatorFragBinding
+  private lateinit var clearButton: Button
+  private lateinit var buttonGrid: RecyclerView
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    binding = CalculatorFragBinding.inflate(inflater)
+    val root = inflater.inflate(R.layout.calculator_frag, container, false)
 
-    binding.clearButton.setOnClickListener { testClickHandler() }
+    with(root){
+      clearButton = findViewById(R.id.clearButton)
+      buttonGrid = findViewById(R.id.buttonGrid)
+    }
 
-    binding.buttonGrid.adapter = ButtonGridAdapter(
+    clearButton.setOnClickListener { testClickHandler() }
+
+    buttonGrid.adapter = ButtonGridAdapter(
       operandClickListener = { operand ->  testClickHandler(operand) },
       operatorClickListener = { operator ->  testClickHandler(operator) },
       decimalPointClickListener = { testClickHandler() },
       resultClickListener = { testClickHandler() }
     )
 
-    binding.buttonGrid.addItemDecoration(
+    buttonGrid.addItemDecoration(
       GridMarginItemDecoration(GRID_COLUMNS, requireActivity().applicationContext))
 
-    return binding.root
+    return root
   }
 
   private fun testClickHandler(input: Char? = null) {
