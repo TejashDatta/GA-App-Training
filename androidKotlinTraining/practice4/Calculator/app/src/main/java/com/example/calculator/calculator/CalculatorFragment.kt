@@ -1,11 +1,11 @@
 package com.example.calculator.calculator
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calculator.R
@@ -19,6 +19,7 @@ class CalculatorFragment : Fragment(), CalculatorContract.View {
 
   override lateinit var presenter: CalculatorContract.Presenter
   private lateinit var clearButton: Button
+  private lateinit var resultTextView: TextView
   private lateinit var buttonGrid: RecyclerView
 
   override fun onResume() {
@@ -32,16 +33,17 @@ class CalculatorFragment : Fragment(), CalculatorContract.View {
 
     with(root){
       clearButton = findViewById(R.id.clearButton)
+      resultTextView = findViewById(R.id.resultTextView)
       buttonGrid = findViewById(R.id.buttonGrid)
     }
 
-    clearButton.setOnClickListener { testClickHandler() }
+    clearButton.setOnClickListener { presenter.reset() }
 
     buttonGrid.adapter = ButtonGridAdapter(
-      operandClickListener = { operand ->  testClickHandler(operand) },
-      operatorClickListener = { operator ->  testClickHandler(operator) },
-      decimalPointClickListener = { testClickHandler() },
-      resultClickListener = { testClickHandler() }
+      operandClickListener = { operand ->  presenter.operandInput(operand) },
+      operatorClickListener = { operator ->  presenter.operatorInput(operator) },
+      decimalPointClickListener = { presenter.decimalPointInput() },
+      resultClickListener = { presenter.requestResult() }
     )
 
     buttonGrid.addItemDecoration(
@@ -50,7 +52,7 @@ class CalculatorFragment : Fragment(), CalculatorContract.View {
     return root
   }
 
-  private fun testClickHandler(input: Char? = null) {
-    Log.d("CalculatorFragment", input?.toString() ?: "method has no input")
+  override fun setOutput(output: String) {
+    resultTextView.text = output
   }
 }
