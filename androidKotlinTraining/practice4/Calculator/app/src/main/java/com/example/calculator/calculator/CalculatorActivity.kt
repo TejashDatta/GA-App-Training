@@ -6,6 +6,8 @@ import com.example.calculator.R
 import com.example.calculator.util.replaceFragmentInActivity
 
 class CalculatorActivity : AppCompatActivity() {
+  private lateinit var calculatorPresenter: CalculatorPresenter
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.calculator_act)
@@ -15,5 +17,7 @@ class CalculatorActivity : AppCompatActivity() {
         ?: CalculatorFragment.newInstance().also {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
+
+    calculatorPresenter = CalculatorPresenter(calculatorFragment)
   }
 }

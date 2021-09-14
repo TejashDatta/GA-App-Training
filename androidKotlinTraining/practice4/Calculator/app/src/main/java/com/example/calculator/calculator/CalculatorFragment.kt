@@ -10,15 +10,21 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calculator.R
 
-class CalculatorFragment : Fragment() {
+class CalculatorFragment : Fragment(), CalculatorContract.View {
   companion object {
     private const val GRID_COLUMNS = 4
 
     fun newInstance() = CalculatorFragment()
   }
 
+  override lateinit var presenter: CalculatorContract.Presenter
   private lateinit var clearButton: Button
   private lateinit var buttonGrid: RecyclerView
+
+  override fun onResume() {
+    super.onResume()
+    presenter.start()
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
