@@ -10,15 +10,14 @@
     android:supportsRtl="true"
     android:theme="@style/Theme.Calculator">
     <activity android:name=".calculator.CalculatorActivity">
-    </activity>
-    <activity
-      android:name=".history.HistoryActivity"
-      android:label="@string/history">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <activity
+      android:name=".history.HistoryActivity"
+      android:label="@string/history" />
   </application>
 
 </manifest>
