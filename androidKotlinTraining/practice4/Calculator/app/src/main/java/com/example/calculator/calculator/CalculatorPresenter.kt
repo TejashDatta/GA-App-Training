@@ -23,7 +23,7 @@ class CalculatorPresenter(
 
   private fun setOutput() {
     calculatorView.setOutput(
-      "$operand1 ${operator ?: ""} $operand2 ${formattedResult()}".trim()
+      "$operand1 ${operator ?: ""} $operand2 = ${formattedResult()}".trim()
     )
   }
 
@@ -34,7 +34,7 @@ class CalculatorPresenter(
     val abbreviatedResult = formattedResult.substring(
                               0, formattedResult.length.coerceAtMost(MAX_RESULT_LENGTH))
     val abbreviationIndicator = if (formattedResult.length > MAX_RESULT_LENGTH) "..." else ""
-    return "= $abbreviatedResult$abbreviationIndicator"
+    return "$abbreviatedResult$abbreviationIndicator"
   }
 
   private fun beginNewOperandInput() {
