@@ -10,7 +10,9 @@ class CalculatorActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.calculator_act)
+    setContentView(R.layout.app_act)
+
+    setSupportActionBar(findViewById(R.id.toolbar))
 
     val calculatorFragment =
       supportFragmentManager.findFragmentById(R.id.contentFrame) as CalculatorFragment?
