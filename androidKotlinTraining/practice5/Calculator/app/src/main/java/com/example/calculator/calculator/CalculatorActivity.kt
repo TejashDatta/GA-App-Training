@@ -1,8 +1,10 @@
 package com.example.calculator.calculator
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.calculator.R
+import com.example.calculator.history.HistoryManager
 import com.example.calculator.util.replaceFragmentInActivity
 
 class CalculatorActivity : AppCompatActivity() {
@@ -20,6 +22,8 @@ class CalculatorActivity : AppCompatActivity() {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
 
-    calculatorPresenter = CalculatorPresenter(calculatorFragment)
+    val historyManager = HistoryManager(getPreferences(Context.MODE_PRIVATE))
+
+    calculatorPresenter = CalculatorPresenter(calculatorFragment, historyManager)
   }
 }

@@ -1,7 +1,10 @@
 package com.example.calculator.calculator
 
+import com.example.calculator.history.HistoryManager
+
 class CalculatorPresenter(
-  private val calculatorView: CalculatorContract.View): CalculatorContract.Presenter {
+  private val calculatorView: CalculatorContract.View, private var historyManager: HistoryManager
+): CalculatorContract.Presenter {
   companion object {
     const val MAX_RESULT_LENGTH = 12
   }
@@ -22,9 +25,11 @@ class CalculatorPresenter(
   }
 
   private fun setOutput() {
-    calculatorView.setOutput(
-      "$operand1 ${operator ?: ""} $operand2 ${formattedResult()}".trim()
-    )
+    calculatorView.setOutput(outputExpression())
+  }
+
+  private fun outputExpression(): String {
+    return "$operand1 ${operator ?: ""} $operand2 ${formattedResult()}".trim()
   }
 
   private fun formattedResult(): String{
@@ -110,5 +115,6 @@ class CalculatorPresenter(
     }
 
     setOutput()
+    historyManager.addItem(outputExpression())
   }
 }
