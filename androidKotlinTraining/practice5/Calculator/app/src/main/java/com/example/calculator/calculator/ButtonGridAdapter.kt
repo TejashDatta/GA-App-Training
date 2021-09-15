@@ -38,8 +38,10 @@ class ButtonGridAdapter(
 
   override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
     val buttonLabel = buttonLabels[position]
-    viewHolder.buttonView.text = buttonLabel.toString()
-    viewHolder.buttonView.setOnClickListener { onClickButton(buttonLabel) }
+    viewHolder.buttonView.apply {
+      text = buttonLabel.toString()
+      setOnClickListener { onClickButton(buttonLabel) }
+    }
   }
 
   private fun onClickButton(buttonLabel: Char) {
