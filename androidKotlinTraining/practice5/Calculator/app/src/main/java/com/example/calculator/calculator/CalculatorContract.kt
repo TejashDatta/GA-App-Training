@@ -8,6 +8,8 @@ class CalculatorContract {
   }
 
   interface Presenter {
+    var history: String?
+
     fun start()
 
     fun reset()

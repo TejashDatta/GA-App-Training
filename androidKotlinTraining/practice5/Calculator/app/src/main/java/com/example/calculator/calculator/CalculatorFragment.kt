@@ -1,5 +1,7 @@
 package com.example.calculator.calculator
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,13 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calculator.R
 import com.example.calculator.history.HistoryActivity
 
 class CalculatorFragment : Fragment(), CalculatorContract.View {
+
+  private val getHistory = registerForActivityResult(PickHistory()) { history: String? ->
+    presenter.history = history ?: return@registerForActivityResult
+  }
+
   companion object {
+    const val ARGUMENT_HISTORY_ID = "HISTORY_ID"
+
     private const val GRID_COLUMNS = 4
 
     fun newInstance() = CalculatorFragment()
@@ -41,7 +51,7 @@ class CalculatorFragment : Fragment(), CalculatorContract.View {
       buttonGrid = findViewById(R.id.buttonGrid)
     }
 
-    historyButton.setOnClickListener { showHistory() }
+    historyButton.setOnClickListener { getHistory.launch(Unit) }
 
     clearButton.setOnClickListener { presenter.reset() }
 
@@ -58,11 +68,18 @@ class CalculatorFragment : Fragment(), CalculatorContract.View {
     return root
   }
 
-  private fun showHistory() {
-    startActivity(Intent(context, HistoryActivity::class.java))
-  }
-
   override fun setOutput(output: String) {
     resultTextView.text = output
+  }
+}
+
+class PickHistory : ActivityResultContract<Unit, String?>() {
+  override fun createIntent(context: Context, _input: Unit) =
+    Intent(context, HistoryActivity::class.java)
+
+  override fun parseResult(resultCode: Int, result: Intent?): String? {
+    if (resultCode != Activity.RESULT_OK) return null
+
+    return result!!.getStringExtra(CalculatorFragment.ARGUMENT_HISTORY_ID)
   }
 }
