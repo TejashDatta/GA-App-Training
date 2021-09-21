@@ -35,31 +35,67 @@ class CalculatorPresenterTest {
     verify(calculatorView).setOutput("")
   }
 
-  @Test fun operandInput_addsDigitToOutput() {
-    calculatorPresenter.operandInput('2')
-    verify(calculatorView).setOutput("2")
+  private fun operandInputSingleDigitTest(operand: Char) {
+    calculatorPresenter.operandInput(operand)
+    verify(calculatorView).setOutput(operand.toString())
   }
 
-  @Test fun operatorInput_addsOperatorToOutput() {
-    calculatorPresenter.operandInput('2')
+  @Test fun operandInput1() = operandInputSingleDigitTest('1')
+  @Test fun operandInput2() = operandInputSingleDigitTest('2')
+  @Test fun operandInput3() = operandInputSingleDigitTest('3')
+  @Test fun operandInput4() = operandInputSingleDigitTest('4')
+  @Test fun operandInput5() = operandInputSingleDigitTest('5')
+  @Test fun operandInput6() = operandInputSingleDigitTest('6')
+  @Test fun operandInput7() = operandInputSingleDigitTest('7')
+  @Test fun operandInput8() = operandInputSingleDigitTest('8')
+  @Test fun operandInput9() = operandInputSingleDigitTest('9')
 
-    calculatorPresenter.operatorInput('+')
-    verify(calculatorView).setOutput("2 +")
+  @Test fun operandInputMultipleDigits() {
+    calculatorPresenter.operandInput('1')
+    calculatorPresenter.operandInput('2')
+    verify(calculatorView).setOutput("12")
   }
 
-  @Test fun decimalPointInput_addsPointToOutput() {
+  private fun operatorInputTest(operator: Char) {
+    calculatorPresenter.operandInput('2')
+
+    calculatorPresenter.operatorInput(operator)
+    verify(calculatorView).setOutput("2 $operator")
+  }
+
+  @Test fun operatorInputPlus() = operatorInputTest('+')
+  @Test fun operatorInputMinus() = operatorInputTest('-')
+  @Test fun operatorInputAsterisk() = operatorInputTest('*')
+  @Test fun operatorInputSlash() = operatorInputTest('/')
+
+  @Test fun decimalPointInput() {
     calculatorPresenter.operandInput('2')
 
     calculatorPresenter.decimalPointInput()
     verify(calculatorView).setOutput("2.")
   }
 
-  @Test fun requestResult_calculatesAndAddsResultToOutput() {
+  @Test fun decimalPointDoubleInput() {
     calculatorPresenter.operandInput('2')
-    calculatorPresenter.operatorInput('+')
-    calculatorPresenter.operandInput('4')
+
+    calculatorPresenter.decimalPointInput()
+    calculatorPresenter.decimalPointInput()
+    verify(calculatorView).setOutput("2.")
+  }
+
+  private fun requestResultTest(
+    operand1: Char, operator: Char, operand2: Char, expectedResult: String) {
+
+    calculatorPresenter.operandInput(operand1)
+    calculatorPresenter.operatorInput(operator)
+    calculatorPresenter.operandInput(operand2)
 
     calculatorPresenter.requestResult()
-    verify(calculatorView).setOutput("2 + 4 = 6")
+    verify(calculatorView).setOutput("$operand1 $operator $operand2 = $expectedResult")
   }
+
+  @Test fun requestResultAddition() = requestResultTest('2', '+', '4', "6")
+  @Test fun requestResultSubtraction() = requestResultTest('2', '-', '4', "-2")
+  @Test fun requestResultMultiplication() = requestResultTest('2', '*', '4', "8")
+  @Test fun requestResultDivision() = requestResultTest('2', '/', '4', "0.5")
 }
