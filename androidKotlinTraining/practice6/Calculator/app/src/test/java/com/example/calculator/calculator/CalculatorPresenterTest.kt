@@ -17,11 +17,11 @@ class CalculatorPresenterTest {
 
   private lateinit var calculatorPresenter: CalculatorPresenter
 
-  @Before fun setupTasksPresenter() {
+  @Before fun setupCalculatorPresenter() {
     calculatorPresenter = CalculatorPresenter(calculatorView, historyManager)
   }
 
-  @Test fun createPresenter_setsThePresenterToView() {
+  @Test fun createPresenter_setsPresenterToView() {
     verify(calculatorView).presenter = calculatorPresenter
   }
 
