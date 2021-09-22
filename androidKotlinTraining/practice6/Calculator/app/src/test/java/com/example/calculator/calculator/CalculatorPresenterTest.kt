@@ -6,6 +6,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -68,6 +69,21 @@ class CalculatorPresenterTest {
   @Test fun operatorInputAsterisk() = operatorInputTest('*')
   @Test fun operatorInputSlash() = operatorInputTest('/')
 
+  @Test fun operatorInput_multipleInputsIgnored() {
+    calculatorPresenter.operandInput('2')
+
+    calculatorPresenter.operatorInput('+')
+    calculatorPresenter.operatorInput('-')
+
+    verify(calculatorView).setOutput("2 +")
+    verify(calculatorView, never()).setOutput("2 -")
+  }
+
+  @Test fun operatorInput_ignoredWhenWithoutOperand() {
+    calculatorPresenter.operatorInput('+')
+    verify(calculatorView, never()).setOutput(anyString())
+  }
+
   @Test fun decimalPointInput() {
     calculatorPresenter.operandInput('2')
 
@@ -75,7 +91,7 @@ class CalculatorPresenterTest {
     verify(calculatorView).setOutput("2.")
   }
 
-  @Test fun decimalPointDoubleInput() {
+  @Test fun decimalPointInput_multipleInputsIgnored() {
     calculatorPresenter.operandInput('2')
 
     calculatorPresenter.decimalPointInput()
@@ -108,5 +124,10 @@ class CalculatorPresenterTest {
   @Test fun requestResult_addsItemToHistoryManager() {
     runRequestResult('2', '+', '4')
     verify(historyManager).addItem("2 + 4 = 6")
+  }
+
+  @Test fun requestResult_ignoredWhenInputIncomplete() {
+    calculatorPresenter.requestResult()
+    verify(calculatorView, never()).setOutput(anyString())
   }
 }
