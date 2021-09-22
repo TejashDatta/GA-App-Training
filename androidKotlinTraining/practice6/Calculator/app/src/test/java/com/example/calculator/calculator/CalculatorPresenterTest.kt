@@ -83,14 +83,20 @@ class CalculatorPresenterTest {
     verify(calculatorView).setOutput("2.")
   }
 
-  private fun requestResultTest(
-    operand1: Char, operator: Char, operand2: Char, expectedResult: String) {
+  private fun runRequestResult(
+    operand1: Char, operator: Char, operand2: Char) {
 
     calculatorPresenter.operandInput(operand1)
     calculatorPresenter.operatorInput(operator)
     calculatorPresenter.operandInput(operand2)
 
     calculatorPresenter.requestResult()
+  }
+
+  private fun requestResultTest(
+    operand1: Char, operator: Char, operand2: Char, expectedResult: String) {
+
+    runRequestResult(operand1, operator, operand2)
     verify(calculatorView).setOutput("$operand1 $operator $operand2 = $expectedResult")
   }
 
@@ -98,4 +104,9 @@ class CalculatorPresenterTest {
   @Test fun requestResultSubtraction() = requestResultTest('2', '-', '4', "-2")
   @Test fun requestResultMultiplication() = requestResultTest('2', '*', '4', "8")
   @Test fun requestResultDivision() = requestResultTest('2', '/', '4', "0.5")
+
+  @Test fun requestResult_addsItemToHistoryManager() {
+    runRequestResult('2', '+', '4')
+    verify(historyManager).addItem("2 + 4 = 6")
+  }
 }
