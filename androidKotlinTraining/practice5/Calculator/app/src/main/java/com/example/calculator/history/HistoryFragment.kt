@@ -16,16 +16,16 @@ class HistoryFragment : Fragment(), HistoryContract.View {
   }
 
   override lateinit var presenter: HistoryContract.Presenter
-  private lateinit var historyList: RecyclerView
+  private lateinit var historyRecyclerView: RecyclerView
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val root = inflater.inflate(R.layout.history_frag, container, false)
 
-    historyList = root.findViewById(R.id.historyList)
+    historyRecyclerView = root.findViewById(R.id.historyRecyclerView)
 
-    with(historyList) {
-      adapter = HistoryListAdapter(presenter.historyItems) { history -> onHistorySelected(history) }
+    with(historyRecyclerView) {
+      adapter = HistoryRecyclerViewAdapter(presenter.historyItems) { history -> onHistorySelected(history) }
       addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
 
