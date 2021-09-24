@@ -57,6 +57,11 @@ class CalculatorPresenterTest {
     verify(calculatorView).setOutput("12")
   }
 
+  @Test fun operandInput_ignoredWhenInvalidChar() {
+    calculatorPresenter.operandInput('a')
+    verify(calculatorView, never()).setOutput(anyString())
+  }
+
   private fun operatorInputTest(operator: Char) {
     calculatorPresenter.operandInput('2')
 
@@ -77,6 +82,11 @@ class CalculatorPresenterTest {
 
     verify(calculatorView).setOutput("2 +")
     verify(calculatorView, never()).setOutput("2 -")
+  }
+
+  @Test fun operatorInput_ignoredWhenInvalidChar() {
+    calculatorPresenter.operatorInput('a')
+    verify(calculatorView, never()).setOutput(anyString())
   }
 
   @Test fun operatorInput_ignoredWhenWithoutOperand() {
