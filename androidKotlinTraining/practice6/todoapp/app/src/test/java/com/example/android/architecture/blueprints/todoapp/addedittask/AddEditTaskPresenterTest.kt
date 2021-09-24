@@ -47,6 +47,7 @@ class AddEditTaskPresenterTest {
      * perform further actions or assertions on them.
      */
     @Captor private lateinit var getTaskCallbackCaptor: ArgumentCaptor<TasksDataSource.GetTaskCallback>
+    @Captor private lateinit var onTaskLoadedCaptor: ArgumentCaptor<(Task) -> Unit>
 
     private lateinit var addEditTaskPresenter: AddEditTaskPresenter
 
@@ -114,11 +115,11 @@ class AddEditTaskPresenterTest {
         }
 
         // Then the task repository is queried and the view updated
-        verify(tasksRepository).getTask(eq(testTask.id), capture(getTaskCallbackCaptor))
+        verify(tasksRepository).getTaskLambda(eq(testTask.id), capture(onTaskLoadedCaptor), any())
         assertThat(addEditTaskPresenter.isDataMissing, `is`(true))
 
         // Simulate callback
-        getTaskCallbackCaptor.value.onTaskLoaded(testTask)
+        onTaskLoadedCaptor.value.invoke(testTask)
 
         verify(addEditTaskView).setTitle(testTask.title)
         verify(addEditTaskView).setDescription(testTask.description)
