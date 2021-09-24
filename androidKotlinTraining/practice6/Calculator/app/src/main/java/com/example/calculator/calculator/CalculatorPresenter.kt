@@ -8,6 +8,10 @@ class CalculatorPresenter(
 ): CalculatorContract.Presenter {
   companion object {
     const val MAX_RESULT_LENGTH = 12
+
+    val OPERAND_DIGIT_RANGE = '0'..'9'
+
+    val OPERATOR_SYMBOLS = charArrayOf('+', '-', '*', '/')
   }
 
   override var history: String? = null
@@ -71,6 +75,7 @@ class CalculatorPresenter(
 
   override fun operandInput(digit: Char) {
     resetIfCompleted()
+    if (digit !in OPERAND_DIGIT_RANGE) return
 
     if (operator == null) operand1 += digit else operand2 += digit
 
@@ -79,6 +84,7 @@ class CalculatorPresenter(
 
   override fun operatorInput(operatorSymbol: Char) {
     resetIfCompleted()
+    if (operatorSymbol !in OPERATOR_SYMBOLS) return
 
     operand1 = operand1.completeDecimalPoint()
 
