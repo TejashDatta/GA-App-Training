@@ -40,7 +40,7 @@ class HistoryFragment : Fragment(), HistoryContract.View {
       HistoryRecyclerViewAdapter(historyItems) { history -> presenter.onHistorySelected(history) }
   }
 
-  override fun navigateBackToCalculator(history: String) {
+  override fun navigateToCalculatorWithHistory(history: String) {
     Log.d("HistoryFragment", history)
   }
 }

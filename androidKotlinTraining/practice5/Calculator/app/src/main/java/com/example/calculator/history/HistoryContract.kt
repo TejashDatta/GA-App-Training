@@ -9,12 +9,10 @@ class HistoryContract {
 
     fun setRecyclerViewAdapter(historyItems: List<String>)
 
-    fun navigateBackToCalculator(history: String)
+    fun navigateToCalculatorWithHistory(history: String)
   }
 
   interface Presenter: BasePresenter {
-    val historyItems: List<String>
-
     override fun start()
 
     fun onHistorySelected(history: String)

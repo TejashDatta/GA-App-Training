@@ -2,20 +2,17 @@ package com.example.calculator.history
 
 class HistoryPresenter(
   private val historyView: HistoryContract.View,
-  private var historyManager: HistoryManager
+  private val historyManager: HistoryManager
 ): HistoryContract.Presenter {
   init {
     historyView.presenter = this
   }
 
-  override val historyItems: List<String>
-    get() = historyManager.items
-
   override fun start() {
-    historyView.setRecyclerViewAdapter(historyItems)
+    historyView.setRecyclerViewAdapter(historyManager.items)
   }
 
   override fun onHistorySelected(history: String) {
-    historyView.navigateBackToCalculator(history)
+    historyView.navigateToCalculatorWithHistory(history)
   }
 }
