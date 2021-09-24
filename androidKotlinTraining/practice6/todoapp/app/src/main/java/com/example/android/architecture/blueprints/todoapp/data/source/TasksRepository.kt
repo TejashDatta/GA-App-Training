@@ -168,6 +168,43 @@ class TasksRepository(
         })
     }
 
+    override fun getTaskLambda(taskId: String, onTaskLoaded: (Task) -> Unit, onDataNotAvailable: () -> Unit ) {
+        val taskInCache = getTaskWithId(taskId)
+
+        // Respond immediately with cache if available
+        if (taskInCache != null) {
+            onTaskLoaded(taskInCache)
+            return
+        }
+
+        // Load from server/persisted if needed.
+
+        // Is the task in the local data source? If not, query the network.
+        tasksLocalDataSource.getTask(taskId, object : TasksDataSource.GetTaskCallback {
+            override fun onTaskLoaded(task: Task) {
+                // Do in memory cache update to keep the app UI up to date
+                cacheAndPerform(task) {
+                    onTaskLoaded(it)
+                }
+            }
+
+            override fun onDataNotAvailable() {
+                tasksRemoteDataSource.getTask(taskId, object : TasksDataSource.GetTaskCallback {
+                    override fun onTaskLoaded(task: Task) {
+                        // Do in memory cache update to keep the app UI up to date
+                        cacheAndPerform(task) {
+                            onTaskLoaded(it)
+                        }
+                    }
+
+                    override fun onDataNotAvailable() {
+                        onDataNotAvailable()
+                    }
+                })
+            }
+        })
+    }
+
     override fun refreshTasks() {
         cacheIsDirty = true
     }

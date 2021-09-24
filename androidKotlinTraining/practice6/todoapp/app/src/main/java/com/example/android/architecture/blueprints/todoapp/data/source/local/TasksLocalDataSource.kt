@@ -121,4 +121,8 @@ class TasksLocalDataSource private constructor(
             INSTANCE = null
         }
     }
+
+    override fun getTaskLambda(taskId: String, onTaskLoaded: (Task) -> Unit, onDataNotAvailable: () -> Unit){
+        TODO("placeholder")
+    }
 }

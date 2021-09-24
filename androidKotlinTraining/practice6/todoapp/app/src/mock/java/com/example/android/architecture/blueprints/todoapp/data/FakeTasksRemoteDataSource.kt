@@ -105,4 +105,8 @@ class FakeTasksRemoteDataSource private constructor() : TasksDataSource {
             return INSTANCE
         }
     }
+
+    override fun getTaskLambda(taskId: String, onTaskLoaded: (Task) -> Unit, onDataNotAvailable: () -> Unit){
+        TODO("placeholder")
+    }
 }
