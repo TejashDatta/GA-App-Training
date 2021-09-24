@@ -1,16 +1,19 @@
 package com.example.calculator.calculator
 
+import com.example.calculator.BasePresenter
+import com.example.calculator.BaseView
+
 class CalculatorContract {
-  interface View {
-    var presenter: Presenter
+  interface View: BaseView<Presenter> {
+    override var presenter: Presenter
 
     fun setOutput(output: String)
   }
 
-  interface Presenter {
+  interface Presenter: BasePresenter {
     var history: String?
 
-    fun start()
+    override fun start()
 
     fun reset()
 

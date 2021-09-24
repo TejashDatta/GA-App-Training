@@ -6,16 +6,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calculator.R
 
-class HistoryListAdapter(
+class HistoryRecyclerViewAdapter(
   private val items: List<String>,
   private val onHistorySelected: (String) -> Unit
-): RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
+): RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder>() {
 
   class ViewHolder private constructor(val historyText: TextView): RecyclerView.ViewHolder(historyText) {
     companion object {
       fun from(parent: ViewGroup): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val historyText = layoutInflater.inflate(R.layout.history_list_item, parent, false) as TextView
+        val historyText = layoutInflater.inflate(R.layout.history_recycler_view_item, parent, false) as TextView
         return ViewHolder(historyText)
       }
     }
