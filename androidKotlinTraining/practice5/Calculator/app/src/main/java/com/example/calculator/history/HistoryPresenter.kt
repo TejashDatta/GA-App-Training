@@ -10,4 +10,12 @@ class HistoryPresenter(
 
   override val historyItems: List<String>
     get() = historyManager.items
+
+  override fun start() {
+    historyView.setRecyclerViewAdapter(historyItems)
+  }
+
+  override fun onHistorySelected(history: String) {
+    historyView.navigateBackToCalculator(history)
+  }
 }
