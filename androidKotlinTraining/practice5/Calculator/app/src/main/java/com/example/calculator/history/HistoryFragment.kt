@@ -18,23 +18,31 @@ class HistoryFragment : Fragment(), HistoryContract.View {
   }
 
   override lateinit var presenter: HistoryContract.Presenter
-  private lateinit var historyList: RecyclerView
+  private lateinit var historyRecyclerView: RecyclerView
+
+  override fun onResume() {
+    super.onResume()
+    presenter.start()
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val root = inflater.inflate(R.layout.history_frag, container, false)
 
-    historyList = root.findViewById(R.id.historyList)
+    historyRecyclerView = root.findViewById(R.id.historyRecyclerView)
 
-    with(historyList) {
-      adapter = HistoryListAdapter(presenter.historyItems) { history -> onHistorySelected(history) }
-      addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-    }
+    historyRecyclerView
+      .addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
     return root
   }
 
-  private fun onHistorySelected(history: String) {
+  override fun setRecyclerViewAdapter(historyItems: List<String>) {
+    historyRecyclerView.adapter =
+      HistoryRecyclerViewAdapter(historyItems) { history -> presenter.onHistorySelected(history) }
+  }
+
+  override fun navigateToCalculatorWithHistory(history: String) {
     requireActivity().apply {
       setResult(
         Activity.RESULT_OK,
