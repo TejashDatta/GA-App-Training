@@ -11,6 +11,9 @@
 タスク：ビューで state object を saved instance state bundle から取得および格納するようにします。
 見積もり：  1時間
 
+タスク：電卓画面の layout で grid の recycler view が scroll しなく、ビュー全体が scroll するようにする。
+見積もり：  1時間
+
 タスク： recycler view で scroll position を取得および設定について調べる
 見積もり：  3時間
 
