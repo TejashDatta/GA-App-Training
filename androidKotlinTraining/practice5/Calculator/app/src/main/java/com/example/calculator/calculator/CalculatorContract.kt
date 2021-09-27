@@ -5,14 +5,10 @@ import com.example.calculator.BaseView
 
 class CalculatorContract {
   interface View: BaseView<Presenter> {
-    override var presenter: Presenter
-
     fun setOutput(output: String)
   }
 
   interface Presenter: BasePresenter {
-    override fun start()
-
     fun reset()
 
     fun operandInput(digit: Char)
