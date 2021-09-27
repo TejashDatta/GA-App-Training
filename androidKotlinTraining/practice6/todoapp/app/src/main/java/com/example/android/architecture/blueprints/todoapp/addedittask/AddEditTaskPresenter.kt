@@ -59,7 +59,7 @@ class AddEditTaskPresenter(
         if (taskId == null) {
             throw RuntimeException("populateTask() was called but task is new.")
         }
-        tasksRepository.getTask(taskId, this)
+        tasksRepository.getTaskLambda(taskId, { task: Task -> onTaskLoaded(task) }, { onDataNotAvailable() })
     }
 
     override fun onTaskLoaded(task: Task) {

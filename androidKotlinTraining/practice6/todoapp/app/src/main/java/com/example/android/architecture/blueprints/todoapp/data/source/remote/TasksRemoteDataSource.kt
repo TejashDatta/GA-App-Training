@@ -114,4 +114,8 @@ object TasksRemoteDataSource : TasksDataSource {
     override fun deleteTask(taskId: String) {
         TASKS_SERVICE_DATA.remove(taskId)
     }
+
+    override fun getTaskLambda(taskId: String, onTaskLoaded: (Task) -> Unit, onDataNotAvailable: () -> Unit){
+        TODO("placeholder")
+    }
 }

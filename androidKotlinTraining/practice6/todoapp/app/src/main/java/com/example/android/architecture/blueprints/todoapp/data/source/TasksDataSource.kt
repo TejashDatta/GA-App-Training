@@ -47,6 +47,8 @@ interface TasksDataSource {
 
     fun getTask(taskId: String, callback: GetTaskCallback)
 
+    fun getTaskLambda(taskId: String, onTaskLoaded: (Task) -> Unit, onDataNotAvailable: () -> Unit)
+
     fun saveTask(task: Task)
 
     fun completeTask(task: Task)
