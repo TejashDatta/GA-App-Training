@@ -14,6 +14,8 @@ import com.example.calculator.calculator.CalculatorFragment
 
 class HistoryFragment : Fragment(), HistoryContract.View {
   companion object {
+    const val RECYCLER_VIEW_STATE_KEY = "RECYCLER_VIEW_STATE"
+
     fun newInstance() = HistoryFragment()
   }
 
@@ -31,8 +33,10 @@ class HistoryFragment : Fragment(), HistoryContract.View {
 
     historyRecyclerView = root.findViewById(R.id.historyRecyclerView)
 
-    historyRecyclerView
-      .addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+    historyRecyclerView.apply {
+      addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+      layoutManager?.onRestoreInstanceState(savedInstanceState?.getParcelable(RECYCLER_VIEW_STATE_KEY))
+    }
 
     return root
   }
@@ -50,5 +54,14 @@ class HistoryFragment : Fragment(), HistoryContract.View {
       )
       finish()
     }
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    outState.putParcelable(
+      RECYCLER_VIEW_STATE_KEY,
+      historyRecyclerView.layoutManager?.onSaveInstanceState()
+    )
+
+    super.onSaveInstanceState(outState)
   }
 }
