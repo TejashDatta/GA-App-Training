@@ -1,15 +1,14 @@
 package com.example.calculator.calculator
 
-class CalculatorContract {
-  interface View {
-    var presenter: Presenter
+import com.example.calculator.BasePresenter
+import com.example.calculator.BaseView
 
+class CalculatorContract {
+  interface View: BaseView<Presenter> {
     fun setOutput(output: String)
   }
 
-  interface Presenter {
-    fun start()
-
+  interface Presenter: BasePresenter {
     fun reset()
 
     fun operandInput(digit: Char)

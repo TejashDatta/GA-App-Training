@@ -3,7 +3,7 @@ package com.example.calculator.calculator
 import com.example.calculator.history.HistoryManager
 
 class CalculatorPresenter(
-  private val calculatorView: CalculatorContract.View, 
+  private val calculatorView: CalculatorContract.View,
   private var historyManager: HistoryManager
 ): CalculatorContract.Presenter {
   companion object {

@@ -16,13 +16,14 @@ class CalculatorActivity : AppCompatActivity() {
 
     setSupportActionBar(findViewById(R.id.toolbar))
 
+    val historyManager = HistoryManager(
+      getSharedPreferences(getString(R.string.history_preference_file_key), Context.MODE_PRIVATE))
+
     val calculatorFragment =
       supportFragmentManager.findFragmentById(R.id.contentFrame) as CalculatorFragment?
         ?: CalculatorFragment.newInstance().also {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
-
-    val historyManager = HistoryManager(getPreferences(Context.MODE_PRIVATE))
 
     calculatorPresenter = CalculatorPresenter(calculatorFragment, historyManager)
   }
