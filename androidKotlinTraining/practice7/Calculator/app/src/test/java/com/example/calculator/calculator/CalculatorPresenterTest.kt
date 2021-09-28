@@ -6,12 +6,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito.never
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class CalculatorPresenterTest {
+  @Mock private lateinit var calculatorState: CalculatorState
+
   @Mock private lateinit var calculatorView: CalculatorContract.View
 
   @Mock private lateinit var historyManager: HistoryManager
@@ -19,16 +20,33 @@ class CalculatorPresenterTest {
   private lateinit var calculatorPresenter: CalculatorPresenter
 
   @Before fun setupCalculatorPresenter() {
-    calculatorPresenter = CalculatorPresenter(calculatorView, historyManager)
+    calculatorPresenter = CalculatorPresenter(null, calculatorView, historyManager)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
     verify(calculatorView).presenter = calculatorPresenter
   }
 
+  @Test fun init_restoresFromSavedState() {
+    val exampleOperand1 = "11"
+
+    calculatorState.apply {
+      `when`(history).thenReturn(null)
+      `when`(decimalPointIsSet).thenReturn(false)
+      `when`(operand1).thenReturn(exampleOperand1)
+      `when`(operand2).thenReturn("")
+      `when`(operator).thenReturn(null)
+      `when`(result).thenReturn(null)
+    }
+    calculatorPresenter = CalculatorPresenter(calculatorState, calculatorView, historyManager)
+    calculatorPresenter.start()
+
+    verify(calculatorView).setOutput(exampleOperand1)
+  }
+
   @Test fun start_setsOutput() {
     calculatorPresenter.start()
-    verify(calculatorView).setOutput(anyString())
+    verify(calculatorView).setOutput("")
   }
 
   @Test fun reset_clearsOutput() {
