@@ -3,6 +3,7 @@ package com.example.calculator.calculator
 import com.example.calculator.history.HistoryManager
 
 class CalculatorPresenter(
+  calculatorState: CalculatorState?,
   private val calculatorView: CalculatorContract.View,
   private var historyManager: HistoryManager
 ): CalculatorContract.Presenter {
@@ -21,11 +22,23 @@ class CalculatorPresenter(
 
   init {
     calculatorView.presenter = this
+    calculatorState?.let { restoreState(it) }
   }
 
   override fun start() {
     setOutput()
   }
+
+  private fun restoreState(calculatorState: CalculatorState) {
+    history = calculatorState.history
+    decimalPointIsSet = calculatorState.decimalPointIsSet
+    operand1 = calculatorState.operand1
+    operand2 = calculatorState.operand2
+    operator = calculatorState.operator
+    result = calculatorState.result
+  }
+
+  fun getState() = CalculatorState(history, decimalPointIsSet, operand1, operand2, operator, result)
 
   private fun setOutput() {
     calculatorView.setOutput(history ?: outputExpression())

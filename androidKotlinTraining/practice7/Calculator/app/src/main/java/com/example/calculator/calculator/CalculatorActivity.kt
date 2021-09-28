@@ -8,6 +8,10 @@ import com.example.calculator.history.HistoryManager
 import com.example.calculator.util.replaceFragmentInActivity
 
 class CalculatorActivity : AppCompatActivity() {
+  companion object {
+    const val CALCULATOR_STATE_KEY = "CALCULATOR_STATE"
+  }
+
   private lateinit var calculatorPresenter: CalculatorPresenter
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +29,14 @@ class CalculatorActivity : AppCompatActivity() {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
 
-    calculatorPresenter = CalculatorPresenter(calculatorFragment, historyManager)
+    val calculatorState: CalculatorState? = savedInstanceState?.getParcelable(CALCULATOR_STATE_KEY)
+
+    calculatorPresenter = CalculatorPresenter(calculatorState, calculatorFragment, historyManager)
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    outState.putParcelable(CALCULATOR_STATE_KEY, calculatorPresenter.getState())
+
+    super.onSaveInstanceState(outState)
   }
 }
