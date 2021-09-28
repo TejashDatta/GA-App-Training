@@ -23,8 +23,16 @@ class HistoryPresenterTest {
     verify(historyView).presenter = historyPresenter
   }
 
-  @Test fun historyItems_returnsItemsFromHistoryManager() {
-    historyPresenter.historyItems
-    verify(historyManager).items
+  @Test fun start_setsRecyclerViewInViewWithHistoryItems() {
+    historyPresenter.start()
+
+    verify(historyView).setRecyclerViewAdapter(historyManager.items)
+  }
+
+  @Test fun onHistorySelected_navigatesToCalculatorWithHistoryInView() {
+    val history = "2 + 2 = 4"
+    historyPresenter.onHistorySelected(history)
+
+    verify(historyView).navigateToCalculatorWithHistory(history)
   }
 }
