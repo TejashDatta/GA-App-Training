@@ -10,6 +10,8 @@ class CalculatorPresenter(
     const val MAX_RESULT_LENGTH = 12
   }
 
+  override var history: String? = null
+
   private var decimalPointIsSet = false
 
   private var operand1: String = ""
@@ -26,11 +28,12 @@ class CalculatorPresenter(
   }
 
   private fun setOutput() {
-    calculatorView.setOutput(outputExpression())
+    calculatorView.setOutput(history ?: outputExpression())
   }
 
   private fun outputExpression(): String {
-    return "$operand1 ${operator ?: ""} $operand2 ${formattedResult()}".trim()
+    val equalSign = if (result != null) "=" else ""
+    return "$operand1 ${operator ?: ""} $operand2 $equalSign ${formattedResult()}".trim()
   }
 
   private fun formattedResult(): String{
@@ -40,15 +43,15 @@ class CalculatorPresenter(
     val abbreviatedResult = formattedResult.substring(
                               0, formattedResult.length.coerceAtMost(MAX_RESULT_LENGTH))
     val abbreviationIndicator = if (formattedResult.length > MAX_RESULT_LENGTH) "..." else ""
-    return "= $abbreviatedResult$abbreviationIndicator"
+    return "$abbreviatedResult$abbreviationIndicator"
   }
 
   private fun beginNewOperandInput() {
     decimalPointIsSet = false
   }
 
-  private fun resetIfCalculationCompleted() {
-    if (result != null) reset()
+  private fun resetIfCompleted() {
+    if (history != null || result != null) reset()
   }
 
   private fun String.completeDecimalPoint(): String {
@@ -56,6 +59,7 @@ class CalculatorPresenter(
   }
 
   override fun reset() {
+    history = null
     operand1 = ""
     operand2 = ""
     operator = null
@@ -66,7 +70,7 @@ class CalculatorPresenter(
   }
 
   override fun operandInput(digit: Char) {
-    resetIfCalculationCompleted()
+    resetIfCompleted()
 
     if (operator == null) operand1 += digit else operand2 += digit
 
@@ -74,7 +78,7 @@ class CalculatorPresenter(
   }
 
   override fun operatorInput(operatorSymbol: Char) {
-    resetIfCalculationCompleted()
+    resetIfCompleted()
 
     operand1 = operand1.completeDecimalPoint()
 
@@ -86,7 +90,7 @@ class CalculatorPresenter(
   }
 
   override fun decimalPointInput() {
-    resetIfCalculationCompleted()
+    resetIfCompleted()
 
     if (decimalPointIsSet) return
     var operand = if (operator == null) operand1 else operand2
@@ -99,7 +103,7 @@ class CalculatorPresenter(
   }
 
   override fun requestResult() {
-    resetIfCalculationCompleted()
+    resetIfCompleted()
 
     operand2 = operand2.completeDecimalPoint()
 

@@ -9,6 +9,8 @@ class CalculatorContract {
   }
 
   interface Presenter: BasePresenter {
+    var history: String?
+
     fun reset()
 
     fun operandInput(digit: Char)
