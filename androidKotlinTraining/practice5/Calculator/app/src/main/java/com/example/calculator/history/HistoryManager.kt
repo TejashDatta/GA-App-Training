@@ -55,4 +55,3 @@ class HistoryManager(private val sharedPreferences: SharedPreferences) {
     debugOutput()
   }
 }
-
