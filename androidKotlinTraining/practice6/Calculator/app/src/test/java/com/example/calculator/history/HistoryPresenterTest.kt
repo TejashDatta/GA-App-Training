@@ -4,7 +4,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.anyList
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -27,8 +26,7 @@ class HistoryPresenterTest {
   @Test fun start_setsRecyclerViewInViewWithHistoryItems() {
     historyPresenter.start()
 
-    verify(historyManager).items
-    verify(historyView).setRecyclerViewAdapter(anyList())
+    verify(historyView).setRecyclerViewAdapter(historyManager.items)
   }
 
   @Test fun onHistorySelected_navigatesToCalculatorWithHistoryInView() {
