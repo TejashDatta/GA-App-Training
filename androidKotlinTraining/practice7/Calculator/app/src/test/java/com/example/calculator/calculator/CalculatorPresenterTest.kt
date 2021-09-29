@@ -6,13 +6,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class CalculatorPresenterTest {
-  @Mock private lateinit var calculatorState: CalculatorState
-
   @Mock private lateinit var calculatorView: CalculatorContract.View
 
   @Mock private lateinit var historyManager: HistoryManager
@@ -29,19 +28,32 @@ class CalculatorPresenterTest {
 
   @Test fun init_restoresFromSavedState() {
     val exampleOperand1 = "11"
-
-    calculatorState.apply {
-      `when`(history).thenReturn(null)
-      `when`(decimalPointIsSet).thenReturn(false)
-      `when`(operand1).thenReturn(exampleOperand1)
-      `when`(operand2).thenReturn("")
-      `when`(operator).thenReturn(null)
-      `when`(result).thenReturn(null)
-    }
+    val calculatorState = CalculatorState(
+      history = null,
+      decimalPointIsSet = false,
+      operand1 = exampleOperand1,
+      operand2 = "",
+      operator = null,
+      result = null
+    )
     calculatorPresenter = CalculatorPresenter(calculatorState, calculatorView, historyManager)
     calculatorPresenter.start()
 
     verify(calculatorView).setOutput(exampleOperand1)
+  }
+
+  @Test fun getState_returnsCalculatorState() {
+    val operand1Digit = '1'
+    calculatorPresenter.operandInput(operand1Digit)
+    
+    calculatorPresenter.getState().run {
+      assert(history == null)
+      assert(decimalPointIsSet == false)
+      assert(operand1 == operand1Digit.toString())
+      assert(operand2 == "")
+      assert(operator == null)
+      assert(result == null)
+    }
   }
 
   @Test fun start_setsOutput() {
