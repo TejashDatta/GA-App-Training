@@ -1,5 +1,6 @@
 package com.example.calculator.history
 
+import com.example.calculator.data.source.HistoryRepository
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -11,12 +12,12 @@ import org.mockito.junit.MockitoJUnitRunner
 class HistoryPresenterTest {
   @Mock private lateinit var historyView: HistoryContract.View
 
-  @Mock private lateinit var historyManager: HistoryManager
+  @Mock private lateinit var historyRepository: HistoryRepository
 
   private lateinit var historyPresenter: HistoryPresenter
 
   @Before fun setupHistoryPresenter() {
-    historyPresenter = HistoryPresenter(historyView, historyManager)
+    historyPresenter = HistoryPresenter(historyView, historyRepository)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -26,7 +27,7 @@ class HistoryPresenterTest {
   @Test fun start_setsRecyclerViewInViewWithHistoryItems() {
     historyPresenter.start()
 
-    verify(historyView).setRecyclerViewAdapter(historyManager.items)
+    verify(historyView).setRecyclerViewAdapter(historyRepository.getItems())
   }
 
   @Test fun onHistorySelected_navigatesToCalculatorWithHistoryInView() {
