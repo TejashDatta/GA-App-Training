@@ -1,11 +1,11 @@
-package com.example.calculator.history
+package com.example.calculator.data.source
 
 import android.content.SharedPreferences
 import android.util.Log
 import com.squareup.moshi.*
 import kotlin.collections.ArrayDeque
 
-class HistoryManager(private val sharedPreferences: SharedPreferences) {
+class HistoryStorage(private val sharedPreferences: SharedPreferences) {
   companion object {
     private const val QUEUE_SIZE = 30
     private const val ITEMS_KEY = "items"
@@ -33,7 +33,7 @@ class HistoryManager(private val sharedPreferences: SharedPreferences) {
   }
 
   private fun debugOutput() {
-    Log.d("HistoryManager", items.toString())
+    Log.d("HistoryStorage", items.toString())
   }
 
   private fun saveItems() {

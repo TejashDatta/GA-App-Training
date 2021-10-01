@@ -1,11 +1,11 @@
 package com.example.calculator.calculator
 
-import com.example.calculator.history.HistoryManager
+import com.example.calculator.data.source.HistoryRepository
 
 class CalculatorPresenter(
   calculatorState: CalculatorState?,
   private val calculatorView: CalculatorContract.View,
-  private var historyManager: HistoryManager
+  private val historyRepository: HistoryRepository
 ): CalculatorContract.Presenter {
   companion object {
     const val MAX_RESULT_LENGTH = 12
@@ -133,6 +133,6 @@ class CalculatorPresenter(
     }
 
     setOutput()
-    historyManager.addItem(outputExpression())
+    historyRepository.addItem(outputExpression())
   }
 }
