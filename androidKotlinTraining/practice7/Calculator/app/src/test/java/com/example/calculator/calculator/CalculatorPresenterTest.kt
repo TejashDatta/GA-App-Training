@@ -19,16 +19,46 @@ class CalculatorPresenterTest {
   private lateinit var calculatorPresenter: CalculatorPresenter
 
   @Before fun setupCalculatorPresenter() {
-    calculatorPresenter = CalculatorPresenter(calculatorView, historyManager)
+    calculatorPresenter = CalculatorPresenter(null, calculatorView, historyManager)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
     verify(calculatorView).presenter = calculatorPresenter
   }
 
+  @Test fun init_restoresFromSavedState() {
+    val exampleOperand1 = "11"
+    val calculatorState = CalculatorState(
+      history = null,
+      decimalPointIsSet = false,
+      operand1 = exampleOperand1,
+      operand2 = "",
+      operator = null,
+      result = null
+    )
+    calculatorPresenter = CalculatorPresenter(calculatorState, calculatorView, historyManager)
+    calculatorPresenter.start()
+
+    verify(calculatorView).setOutput(exampleOperand1)
+  }
+
+  @Test fun getState_returnsCalculatorState() {
+    val operand1Digit = '1'
+    calculatorPresenter.operandInput(operand1Digit)
+    
+    calculatorPresenter.getState().run {
+      assert(history == null)
+      assert(decimalPointIsSet == false)
+      assert(operand1 == operand1Digit.toString())
+      assert(operand2 == "")
+      assert(operator == null)
+      assert(result == null)
+    }
+  }
+
   @Test fun start_setsOutput() {
     calculatorPresenter.start()
-    verify(calculatorView).setOutput(anyString())
+    verify(calculatorView).setOutput("")
   }
 
   @Test fun reset_clearsOutput() {
