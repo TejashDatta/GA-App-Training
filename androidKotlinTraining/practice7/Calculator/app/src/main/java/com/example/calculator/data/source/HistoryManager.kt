@@ -5,7 +5,7 @@ import android.util.Log
 import com.squareup.moshi.*
 import kotlin.collections.ArrayDeque
 
-class HistoryStorage(private val sharedPreferences: SharedPreferences) {
+class HistoryManager(private val sharedPreferences: SharedPreferences) {
   companion object {
     private const val QUEUE_SIZE = 30
     private const val ITEMS_KEY = "items"
@@ -33,7 +33,7 @@ class HistoryStorage(private val sharedPreferences: SharedPreferences) {
   }
 
   private fun debugOutput() {
-    Log.d("HistoryStorage", items.toString())
+    Log.d("HistoryManager", items.toString())
   }
 
   private fun saveItems() {

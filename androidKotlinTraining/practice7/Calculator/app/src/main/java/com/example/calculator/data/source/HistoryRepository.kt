@@ -1,19 +1,19 @@
 package com.example.calculator.data.source
 
-class HistoryRepository(private val historyStorage: HistoryStorage) {
+class HistoryRepository(private val historyManager: HistoryManager) {
   private var cachedItems: List<String>? = null
   private var cacheIsDirty = false
 
   fun getItems(): List<String> {
     if (cachedItems == null || cacheIsDirty) {
-      cachedItems = historyStorage.items
+      cachedItems = historyManager.items
       cacheIsDirty = false
     }
     return cachedItems!!
   }
 
   fun addItem(item: String) {
-    historyStorage.addItem(item)
+    historyManager.addItem(item)
     cacheIsDirty = true
   }
 }
