@@ -4,8 +4,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -14,25 +13,30 @@ class HistoryRepositoryTest {
 
   private lateinit var historyRepository: HistoryRepository
 
-  @Before fun setupHistoryRepository() {
+  private val exampleExpression = "2 + 2 = 4"
+
+  @Before fun setupMockAndHistoryRepository() {
+    `when`(historyManager.items).thenReturn(listOf(exampleExpression))
+
     historyRepository = HistoryRepository(historyManager)
   }
 
   @Test fun getItems_getsItemsFromHistoryManager() {
-    historyRepository.getItems()
+    val items = historyRepository.getItems()
 
     verify(historyManager).items
+    assert(items == listOf(exampleExpression))
   }
 
   @Test fun getItems_returnsFromCache() {
-    historyRepository.getItems()
-    historyRepository.getItems()
+    var items = historyRepository.getItems()
+    items = historyRepository.getItems()
 
     verify(historyManager, times(1)).items
+    assert(items == listOf(exampleExpression))
   }
 
   @Test fun addItem_addsItemInHistoryManager() {
-    val exampleExpression = "2 + 2 = 4"
     historyRepository.addItem(exampleExpression)
 
     verify(historyManager).addItem(exampleExpression)
