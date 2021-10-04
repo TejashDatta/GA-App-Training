@@ -1,5 +1,6 @@
 package com.example.calculator.data.source
 
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,7 +26,7 @@ class HistoryRepositoryTest {
     val items = historyRepository.getItems()
 
     verify(historyManager).items
-    assert(items == listOf(exampleExpression))
+    assertEquals(items, listOf(exampleExpression))
   }
 
   @Test fun getItems_returnsFromCache() {
@@ -33,7 +34,7 @@ class HistoryRepositoryTest {
     items = historyRepository.getItems()
 
     verify(historyManager, times(1)).items
-    assert(items == listOf(exampleExpression))
+    assertEquals(items, listOf(exampleExpression))
   }
 
   @Test fun addItem_addsItemInHistoryManager() {
