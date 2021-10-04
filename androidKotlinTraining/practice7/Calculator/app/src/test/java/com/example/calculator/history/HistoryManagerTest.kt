@@ -1,6 +1,7 @@
 package com.example.calculator.history
 
 import android.content.SharedPreferences
+import com.example.calculator.data.source.HistoryManager
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

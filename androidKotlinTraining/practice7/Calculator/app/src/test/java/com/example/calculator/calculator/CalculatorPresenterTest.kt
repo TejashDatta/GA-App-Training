@@ -1,6 +1,6 @@
 package com.example.calculator.calculator
 
-import com.example.calculator.history.HistoryManager
+import com.example.calculator.data.source.HistoryRepository
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,12 +14,12 @@ import org.mockito.junit.MockitoJUnitRunner
 class CalculatorPresenterTest {
   @Mock private lateinit var calculatorView: CalculatorContract.View
 
-  @Mock private lateinit var historyManager: HistoryManager
+  @Mock private lateinit var historyRepository: HistoryRepository
 
   private lateinit var calculatorPresenter: CalculatorPresenter
 
   @Before fun setupCalculatorPresenter() {
-    calculatorPresenter = CalculatorPresenter(null, calculatorView, historyManager)
+    calculatorPresenter = CalculatorPresenter(null, calculatorView, historyRepository)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -36,7 +36,7 @@ class CalculatorPresenterTest {
       operator = null,
       result = null
     )
-    calculatorPresenter = CalculatorPresenter(calculatorState, calculatorView, historyManager)
+    calculatorPresenter = CalculatorPresenter(calculatorState, calculatorView, historyRepository)
     calculatorPresenter.start()
 
     verify(calculatorView).setOutput(exampleOperand1)
@@ -153,7 +153,7 @@ class CalculatorPresenterTest {
 
   @Test fun requestResult_addsItemToHistoryManager() {
     runRequestResult('2', '+', '4')
-    verify(historyManager).addItem("2 + 4 = 6")
+    verify(historyRepository).addItem("2 + 4 = 6")
   }
 
   @Test fun requestResult_ignoredWhenInputIncomplete() {
