@@ -1,8 +1,8 @@
 package com.example.calculator.history
 
-import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.calculator.MockInjection
 import com.example.calculator.R
 import com.example.calculator.util.replaceFragmentInActivity
 
@@ -19,16 +19,15 @@ class HistoryActivity : AppCompatActivity() {
       setDisplayHomeAsUpEnabled(true)
     }
 
-    val historyManager = HistoryManager(
-      getSharedPreferences(getString(R.string.history_preference_file_key), Context.MODE_PRIVATE))
-
     val historyFragment =
       supportFragmentManager.findFragmentById(R.id.contentFrame) as HistoryFragment?
         ?: HistoryFragment.newInstance().also {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
 
-    historyPresenter = HistoryPresenter(historyFragment, historyManager)
+    val historyRepository = MockInjection.provideHistoryRepository(applicationContext)
+
+    historyPresenter = HistoryPresenter(historyFragment, historyRepository)
   }
 
   override fun onSupportNavigateUp(): Boolean {

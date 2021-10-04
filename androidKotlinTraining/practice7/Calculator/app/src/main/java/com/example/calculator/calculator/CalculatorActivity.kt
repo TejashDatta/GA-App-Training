@@ -1,10 +1,9 @@
 package com.example.calculator.calculator
 
-import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.calculator.MockInjection
 import com.example.calculator.R
-import com.example.calculator.history.HistoryManager
 import com.example.calculator.util.replaceFragmentInActivity
 
 class CalculatorActivity : AppCompatActivity() {
@@ -20,9 +19,6 @@ class CalculatorActivity : AppCompatActivity() {
 
     setSupportActionBar(findViewById(R.id.toolbar))
 
-    val historyManager = HistoryManager(
-      getSharedPreferences(getString(R.string.history_preference_file_key), Context.MODE_PRIVATE))
-
     val calculatorFragment =
       supportFragmentManager.findFragmentById(R.id.contentFrame) as CalculatorFragment?
         ?: CalculatorFragment.newInstance().also {
@@ -31,7 +27,9 @@ class CalculatorActivity : AppCompatActivity() {
 
     val calculatorState: CalculatorState? = savedInstanceState?.getParcelable(CALCULATOR_STATE_KEY)
 
-    calculatorPresenter = CalculatorPresenter(calculatorState, calculatorFragment, historyManager)
+    val historyRepository = MockInjection.provideHistoryRepository(applicationContext)
+
+    calculatorPresenter = CalculatorPresenter(calculatorState, calculatorFragment, historyRepository)
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
