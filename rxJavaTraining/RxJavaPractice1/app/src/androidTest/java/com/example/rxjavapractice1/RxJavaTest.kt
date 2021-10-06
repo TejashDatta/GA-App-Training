@@ -136,4 +136,70 @@ class RxJavaTest {
     assertEquals(list[1], "2:main")
     assertEquals(list[2], "3:main")
   }
+
+  @Test fun test6() {
+    val latch = CountDownLatch(1)
+    val list = mutableListOf<String>()
+
+    Observable.just(1)
+      .subscribeOn(AndroidSchedulers.mainThread())
+      .map { i ->
+        list.add("1:" + Thread.currentThread().name)
+        i
+      }
+      .subscribeOn(Schedulers.newThread())
+      .map { i ->
+        list.add("2:" + Thread.currentThread().name)
+        i
+      }
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribe(
+        { _i -> list.add("3:" + Thread.currentThread().name) },
+        { _e -> list.add("5:" + Thread.currentThread().name) },
+        {
+          list.add("4:" + Thread.currentThread().name)
+          latch.countDown()
+        }
+      )
+
+    latch.await()
+
+    assertEquals(list.size, 4)
+    assertEquals(list[0], "1:main")
+    assertEquals(list[1], "2:main")
+    assertEquals(list[2], "3:main")
+    assertEquals(list[3], "4:main")
+  }
+
+  @Test fun test7() {
+    val latch = CountDownLatch(1)
+    val list = mutableListOf<String>()
+
+    Observable.just(1)
+      .map { i ->
+        list.add("1:" + Thread.currentThread().name)
+        i
+      }
+      .subscribeOn(Schedulers.newThread())
+      .map { i ->
+        list.add("2:" + Thread.currentThread().name)
+        i
+      }
+      .subscribe(
+        { _i -> list.add("3:" + Thread.currentThread().name) },
+        { _e -> list.add("5:" + Thread.currentThread().name) },
+        {
+          list.add("4:" + Thread.currentThread().name)
+          latch.countDown()
+        }
+      )
+
+    latch.await()
+
+    assertEquals(list.size, 4)
+    assert(matches("1:RxNewThreadScheduler-\\d", list[0]))
+    assert(matches("2:RxNewThreadScheduler-\\d", list[1]))
+    assert(matches("3:RxNewThreadScheduler-\\d", list[2]))
+    assert(matches("4:RxNewThreadScheduler-\\d", list[3]))
+  }
 }
