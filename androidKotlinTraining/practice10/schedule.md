@@ -31,9 +31,12 @@ repository のテストを書く
 以下を作ります：
   基本的な presenter と contract
   ニュース項目のリストの画面
-  ニュース項目の recycler view、その adapter と item の view
-ニュースの項目を画像なしで表示する
+  ニュース項目の recycler view、その adapter と基本的なitem の view
 見積もり：6時間
+
+タスク：
+ニュース項目の recycler view で item の view を作ります（画像以外）
+見積もり：3時間
 
 タスク：
 glide によってニュース項目の画像を表示する
@@ -51,4 +54,4 @@ loading, error, 0 results を通知するビューを作って使う
 ニュース項目の click handler を作って、タップしたら chrome tab でニュースを開くようにする
 見積もり：5時間
 
-終了日： 10月20日
+終了日： 10月21日
