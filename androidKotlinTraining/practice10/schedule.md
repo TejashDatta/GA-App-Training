@@ -21,7 +21,7 @@ retrofit service のテストを書く
 
 タスク：
 rx java を repository で導入してリクエストを async 的に行うようにする
-見積もり：3時間
+見積もり：4時間
 
 タスク：
 repository のテストを書く
