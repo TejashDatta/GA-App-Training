@@ -1,13 +1,17 @@
 タスク：
   simple xml の使用例を勉強する
-見積もり：1時間
-
-タスク：
-以下を作ります：
-  retrofit service
-  simple xml を用いてニュース項目を格納するオブジェクト
-アプリの main activity で上の動作確認する
-見積もり：4時間
+  見積もり：1時間
+  
+  retrofit を suspend を使わずに http client を使う実装方法を勉強する
+  見積もり：1時間
+  
+  以下を作ります：
+    retrofit service
+    simple xml を用いてニュース項目を格納するオブジェクト
+  アプリの main activity で上の動作確認する
+  見積もり：4時間
+  
+合計見積もり：6時間
 
 タスク：
 retrofit service のテストを書く
