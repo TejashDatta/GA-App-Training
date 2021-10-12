@@ -58,4 +58,4 @@ loading, error, 0 results を通知するビューを作って使う
 ニュース項目の click handler を作って、タップしたら chrome tab でニュースを開くようにする
 見積もり：5時間
 
-終了日： 10月21日
+終了日： 10月22日
