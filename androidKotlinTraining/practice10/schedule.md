@@ -1,10 +1,10 @@
 タスク：
-  simple xml の使用例を勉強する
+  tikxml の使用例を勉強する
   見積もり：1時間
   
   以下を作ります：
     retrofit service (coroutine を用いて）
-    simple xml を用いてニュース項目を格納するオブジェクト
+    tikxml を用いてニュース項目を格納するオブジェクト
   アプリの main activity で上の動作確認する
   見積もり：5時間
 合計見積もり：6時間
