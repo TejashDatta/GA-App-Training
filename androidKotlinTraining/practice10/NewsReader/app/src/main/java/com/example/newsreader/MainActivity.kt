@@ -5,31 +5,34 @@ import android.os.Bundle
 import android.util.Log
 import com.example.newsreader.network.NewsApi
 import com.jakewharton.threetenabp.AndroidThreeTen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
-abstract class ScopedAppActivity: AppCompatActivity(), CoroutineScope by MainScope() {
+class MainActivity : AppCompatActivity() {
+  var compositeDisposable = CompositeDisposable()
 
-  override fun onDestroy() {
-    super.onDestroy()
-    cancel()
-  }
-}
-
-class MainActivity : ScopedAppActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     AndroidThreeTen.init(this)
 
-    // TODO: change later
-    launch {
-      val newsChannel = NewsApi.retrofitService.getNewsChannel()
-      Log.d("MainActivity", newsChannel.toString())
-      Log.d("MainActivity", newsChannel.newsItems[0].pubDate.toString())
-    }
+    compositeDisposable.add(NewsApi.retrofitService.getNewsChannel()
+      .subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribe(
+        { newsChannel ->
+          Log.d("MainActivity", newsChannel.toString())
+          Log.d("MainActivity", newsChannel.newsItems[0].pubDate.toString())
+        },
+        { e -> Log.d("MainActivity", e.toString()) }
+      )
+    )
 
     setContentView(R.layout.activity_main)
+  }
+
+  override fun onStop() {
+    compositeDisposable.clear();
+    super.onStop();
   }
 }

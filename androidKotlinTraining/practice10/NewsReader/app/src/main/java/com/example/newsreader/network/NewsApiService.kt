@@ -2,7 +2,9 @@ package com.example.newsreader.network
 
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
+import io.reactivex.rxjava3.core.Observable
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.http.GET
 
 private const val BASE_URL = "https://news.google.com/"
@@ -15,11 +17,12 @@ private val tikXml = TikXml.Builder()
 private val retrofit = Retrofit.Builder()
                         .addConverterFactory(TikXmlConverterFactory.create(tikXml))
                         .baseUrl(BASE_URL)
+                        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                         .build()
 
 interface NewsApiService {
   @GET(NEWS_CHANNEL_ENDPOINT)
-  suspend fun getNewsChannel(): NewsChannel
+  fun getNewsChannel(): Observable<NewsChannel>
 }
 
 object NewsApi {
