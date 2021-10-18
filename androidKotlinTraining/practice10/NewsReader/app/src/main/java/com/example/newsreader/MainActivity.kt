@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    AndroidThreeTen.init(this)
 
     compositeDisposable.add(NewsApi.retrofitService.getNewsChannel()
       .subscribeOn(Schedulers.io())
