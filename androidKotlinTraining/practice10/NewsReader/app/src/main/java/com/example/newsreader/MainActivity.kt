@@ -21,7 +21,6 @@ abstract class ScopedAppActivity: AppCompatActivity(), CoroutineScope by MainSco
 class MainActivity : ScopedAppActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    AndroidThreeTen.init(this)
 
     // TODO: change later
     launch {
