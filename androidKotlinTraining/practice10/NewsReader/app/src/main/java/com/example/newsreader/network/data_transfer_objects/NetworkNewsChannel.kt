@@ -12,7 +12,7 @@ data class NetworkNewsChannel(
   val networkNewsItem: List<NetworkNewsItem>
 )
 
-fun NetworkNewsChannel.asDomainModel() : List<NewsItem> {
+fun NetworkNewsChannel.toDomainModel() : List<NewsItem> {
   return networkNewsItem.map {
     NewsItem(
       title = it.title,
