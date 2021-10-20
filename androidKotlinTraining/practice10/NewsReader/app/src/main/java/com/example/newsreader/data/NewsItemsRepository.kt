@@ -15,8 +15,7 @@ object NewsItemsRepository {
         cachedNewsItems = newsItems
         Log.d("NewsItemsRepository", cachedNewsItems.toString())
       }
-    }
-    else {
+    } else {
       Observable.just(cachedNewsItems!!)
     }
   }
