@@ -3,7 +3,7 @@ package com.example.newsreader.data
 import android.util.Log
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.network.NewsApi
-import com.example.newsreader.network.data_transfer_objects.asDomainModel
+import com.example.newsreader.network.data_transfer_objects.toDomainModel
 import io.reactivex.rxjava3.core.Observable
 
 object NewsItemsRepository {
@@ -22,6 +22,6 @@ object NewsItemsRepository {
   }
 
   private fun requestNewsItems(): Observable<List<NewsItem>> {
-    return NewsApi.retrofitService.getNewsChannel().map { newsChannel -> newsChannel.asDomainModel() }
+    return NewsApi.retrofitService.getNewsChannel().map { newsChannel -> newsChannel.toDomainModel() }
   }
 }
