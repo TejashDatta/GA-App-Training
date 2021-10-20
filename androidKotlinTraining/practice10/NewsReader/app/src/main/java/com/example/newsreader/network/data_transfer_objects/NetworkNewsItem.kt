@@ -1,4 +1,4 @@
-package com.example.newsreader.network
+package com.example.newsreader.network.data_transfer_objects
 
 import com.tickaroo.tikxml.TypeConverter
 import com.tickaroo.tikxml.annotation.PropertyElement
@@ -10,7 +10,7 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.lang.Exception
 
 @Xml(name = "item")
-data class NewsItem(
+data class NetworkNewsItem(
   @PropertyElement val title: String,
   @PropertyElement val link: String,
   @PropertyElement(converter = DateConverter::class) val pubDate: LocalDateTime,
