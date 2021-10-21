@@ -13,8 +13,7 @@ import java.lang.Exception
 data class NetworkNewsItem(
   @PropertyElement val title: String,
   @PropertyElement val link: String,
-  @PropertyElement(converter = DateConverter::class) val pubDate: LocalDateTime,
-  @PropertyElement val source: String
+  @PropertyElement(converter = DateConverter::class) val pubDate: LocalDateTime
 )
 
 class DateConverter : TypeConverter<LocalDateTime> {

@@ -5,6 +5,5 @@ import org.threeten.bp.LocalDateTime
 data class NewsItem(
   val title: String,
   val link: String,
-  val pubDate: LocalDateTime,
-  val source: String
+  val pubDate: LocalDateTime
 )
