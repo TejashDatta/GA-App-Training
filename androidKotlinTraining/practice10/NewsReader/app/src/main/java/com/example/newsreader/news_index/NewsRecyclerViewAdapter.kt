@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.newsreader.R
 import com.example.newsreader.data.models.NewsItem
 
+// TODO: implement click handler to launch news link in browser
+
 class NewsRecyclerViewAdapter: RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder>() {
   class ViewHolder private constructor(val newsItemView: View): RecyclerView.ViewHolder(newsItemView) {
     companion object {
