@@ -23,10 +23,11 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val root = inflater.inflate(R.layout.fragment_news_list, container, false)
+    val root = inflater.inflate(R.layout.fragment_news_index, container, false)
 
     newsRecyclerView = root.findViewById(R.id.newsRecyclerView)
 
+//    TODO: create NewsRecyclerViewAdapter later
 //    newsRecyclerView.adapter = NewsRecyclerViewAdapter()
 
     return root
