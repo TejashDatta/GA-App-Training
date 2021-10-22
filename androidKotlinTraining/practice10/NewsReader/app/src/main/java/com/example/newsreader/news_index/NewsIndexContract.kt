@@ -2,13 +2,14 @@ package com.example.newsreader.news_index
 
 import com.example.newsreader.BasePresenter
 import com.example.newsreader.BaseView
+import com.example.newsreader.data.models.NewsItem
 
 class NewsIndexContract {
-  //  TODO: add methods later
   interface View: BaseView<Presenter> {
+    fun setRecyclerViewItems(newsItems: List<NewsItem>)
   }
 
-  //  TODO: add methods later
   interface Presenter: BasePresenter {
+    fun end()
   }
 }

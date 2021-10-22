@@ -18,7 +18,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    tools:text="G7 財務相・中央銀行総裁会議 デジタル通貨発行の共通原則 - NHK NEWS WEB" />
+    android:text="G7 財務相・中央銀行総裁会議 デジタル通貨発行の共通原則 - NHK NEWS WEB" />
 
   <TextView
     android:id="@+id/pubDateTextView"
@@ -29,6 +29,6 @@
     app:layout_constraintEnd_toEndOf="@+id/headlineTextView"
     app:layout_constraintStart_toStartOf="@+id/headlineTextView"
     app:layout_constraintTop_toBottomOf="@+id/headlineTextView"
-    tools:text="昨日" />
+    android:text="昨日" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
