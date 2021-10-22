@@ -1,6 +1,5 @@
 package com.example.newsreader.data
 
-import android.util.Log
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.network.NewsApi
 import com.example.newsreader.network.data_transfer_objects.toDomainModel
@@ -11,10 +10,7 @@ object NewsItemsRepository {
 
   fun getNewsItems(): Observable<List<NewsItem>> {
     return if (cachedNewsItems == null) {
-      requestNewsItems().doOnNext { newsItems ->
-        cachedNewsItems = newsItems
-        Log.d("NewsItemsRepository", cachedNewsItems.toString())
-      }
+      requestNewsItems().doOnNext { newsItems -> cachedNewsItems = newsItems }
     } else {
       Observable.just(cachedNewsItems!!)
     }
