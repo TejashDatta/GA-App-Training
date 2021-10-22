@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsreader.R
+import com.example.newsreader.data.NewsItemsRepository
 
 class NewsIndexFragment: Fragment(), NewsIndexContract.View {
   companion object {
@@ -27,8 +28,9 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
 
     newsRecyclerView = root.findViewById(R.id.newsRecyclerView)
 
-//    TODO: create NewsRecyclerViewAdapter later
-//    newsRecyclerView.adapter = NewsRecyclerViewAdapter()
+    val adapter = NewsRecyclerViewAdapter()
+
+    newsRecyclerView.adapter = adapter
 
     return root
   }

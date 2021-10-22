@@ -17,8 +17,7 @@ fun NetworkNewsChannel.toDomainModel() : List<NewsItem> {
     NewsItem(
       title = it.title,
       link = it.link,
-      pubDate = it.pubDate,
-      source = it.source
+      pubDate = it.pubDate
     )
   }
 }
