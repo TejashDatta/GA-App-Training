@@ -37,6 +37,7 @@ class NewsRecyclerViewAdapter: RecyclerView.Adapter<NewsRecyclerViewAdapter.View
     val newsItem = newsItems[position]
     viewHolder.newsItemView.apply {
       findViewById<TextView>(R.id.headlineTextView).text = newsItem.title
+//    TODO: display date as days before
       findViewById<TextView>(R.id.pubDateTextView).text = newsItem.pubDate.toString()
     }
   }
