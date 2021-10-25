@@ -19,7 +19,7 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
   }
 
   override lateinit var presenter: NewsIndexContract.Presenter
-  private var recyclerViewAdapter = NewsRecyclerViewAdapter()
+  private lateinit var recyclerViewAdapter: NewsRecyclerViewAdapter
 
   override fun onResume() {
     super.onResume()
@@ -35,6 +35,7 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val root = inflater.inflate(R.layout.fragment_news_index, container, false)
 
+    recyclerViewAdapter = NewsRecyclerViewAdapter()
     root.findViewById<RecyclerView>(R.id.newsRecyclerView).adapter = recyclerViewAdapter
 
     return root
