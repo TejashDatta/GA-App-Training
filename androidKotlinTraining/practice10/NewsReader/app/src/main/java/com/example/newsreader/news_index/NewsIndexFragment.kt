@@ -19,42 +19,28 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
   }
 
   override lateinit var presenter: NewsIndexContract.Presenter
-//  private var recyclerViewAdapter = NewsRecyclerViewAdapter()
+  private var recyclerViewAdapter = NewsRecyclerViewAdapter()
 
   override fun onResume() {
     super.onResume()
-//    presenter.start()
+    presenter.start()
   }
 
   override fun onPause() {
     super.onPause()
-//    presenter.end()
+    presenter.end()
   }
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val root = inflater.inflate(R.layout.fragment_news_index, container, false)
 
-//    root.findViewById<RecyclerView>(R.id.newsRecyclerView).adapter = recyclerViewAdapter
-
-    NewsItemsRepository.getNewsItems()
-      .subscribeOn(Schedulers.io())
-      .observeOn(AndroidSchedulers.mainThread())
-      .subscribe(
-        { newsItems ->
-            val recyclerViewAdapter = NewsRecyclerViewAdapter()
-            recyclerViewAdapter.newsItems = newsItems
-            recyclerViewAdapter.notifyDataSetChanged()
-            root.findViewById<RecyclerView>(R.id.newsRecyclerView).adapter = recyclerViewAdapter
-            Log.d("NewsIndexFragment", newsItems.toString())
-        },
-        { e -> Log.d("NewsIndexFragment", e.toString()) }
-      )
-
+    root.findViewById<RecyclerView>(R.id.newsRecyclerView).adapter = recyclerViewAdapter
+    
     return root
   }
 
   override fun setRecyclerViewItems(newsItems: List<NewsItem>) {
-//    recyclerViewAdapter.newsItems = newsItems
+    recyclerViewAdapter.newsItems = newsItems
   }
 }
