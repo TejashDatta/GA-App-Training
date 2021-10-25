@@ -2,6 +2,6 @@
 <resources>
   <dimen name="doubleSpace">16dp</dimen>
   <dimen name="singleSpace">8dp</dimen>
-  <dimen name="largeText">20sp</dimen>
-  <dimen name="normalText">16sp</dimen>
+  <dimen name="largeText">16sp</dimen>
+  <dimen name="normalText">14sp</dimen>
 </resources>
