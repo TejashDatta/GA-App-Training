@@ -36,7 +36,7 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
     val root = inflater.inflate(R.layout.fragment_news_index, container, false)
 
     root.findViewById<RecyclerView>(R.id.newsRecyclerView).adapter = recyclerViewAdapter
-    
+
     return root
   }
 
