@@ -16,14 +16,14 @@ class NewsIndexPresenter(
   }
 
   override fun start() {
-    getAndSetNewsItems()
+    refreshNewsItems()
   }
 
   override fun end() {
     clearObservers()
   }
 
-  private fun getAndSetNewsItems() {
+  override fun refreshNewsItems() {
     compositeDisposable.add(NewsItemsRepository.getNewsItems()
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())

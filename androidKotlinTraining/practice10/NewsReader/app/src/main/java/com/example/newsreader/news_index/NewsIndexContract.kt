@@ -9,5 +9,7 @@ class NewsIndexContract {
     fun setRecyclerViewItems(newsItems: List<NewsItem>)
   }
 
-  interface Presenter: BasePresenter
+  interface Presenter: BasePresenter {
+    fun refreshNewsItems()
+  }
 }
