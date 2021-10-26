@@ -13,21 +13,20 @@ import java.lang.Exception
 data class NetworkNewsItem(
   @PropertyElement val title: String,
   @PropertyElement val link: String,
-  @PropertyElement(converter = DateConverter::class) val pubDate: LocalDateTime
+  @PropertyElement(converter = DateConverter::class) val pubDate: ZonedDateTime
 )
 
-class DateConverter : TypeConverter<LocalDateTime> {
+class DateConverter : TypeConverter<ZonedDateTime> {
   private val formatter = DateTimeFormatter.RFC_1123_DATE_TIME
 
   @Throws(Exception::class)
-  override fun read(value: String): LocalDateTime {
+  override fun read(value: String): ZonedDateTime {
     return ZonedDateTime.parse(value, formatter)
             .withZoneSameInstant(ZoneId.systemDefault())
-            .toLocalDateTime()
   }
 
   @Throws(Exception::class)
-  override fun write(value: LocalDateTime): String {
+  override fun write(value: ZonedDateTime): String {
     return formatter.format(value)
   }
 }
