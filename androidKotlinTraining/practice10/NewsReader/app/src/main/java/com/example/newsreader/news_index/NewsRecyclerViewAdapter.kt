@@ -10,7 +10,9 @@ import com.example.newsreader.data.models.NewsItem
 
 // TODO: implement click handler to launch news link in browser
 
-class NewsRecyclerViewAdapter: RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder>() {
+class NewsRecyclerViewAdapter(
+  private val newsItemClickListener: (NewsItem) -> Unit
+): RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder>() {
   class ViewHolder private constructor(val newsItemView: View): RecyclerView.ViewHolder(newsItemView) {
     companion object {
       fun from(parent: ViewGroup): ViewHolder {
@@ -39,6 +41,8 @@ class NewsRecyclerViewAdapter: RecyclerView.Adapter<NewsRecyclerViewAdapter.View
       findViewById<TextView>(R.id.headlineTextView).text = newsItem.title
 //    TODO: display date as days before
       findViewById<TextView>(R.id.pubDateTextView).text = newsItem.pubDate.toString()
+
+      setOnClickListener { newsItemClickListener(newsItem) }
     }
   }
 }

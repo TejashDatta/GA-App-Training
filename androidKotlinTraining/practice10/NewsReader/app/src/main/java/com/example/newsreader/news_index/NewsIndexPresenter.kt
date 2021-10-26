@@ -2,6 +2,7 @@ package com.example.newsreader.news_index
 
 import android.util.Log
 import com.example.newsreader.data.NewsItemsRepository
+import com.example.newsreader.data.models.NewsItem
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -35,6 +36,10 @@ class NewsIndexPresenter(
         { e -> Log.e("NewsIndexPresenter", e.toString()) }
       )
     )
+  }
+
+  override fun onClickNewsItem(newsItem: NewsItem) {
+    newsIndexView.openInTab(newsItem.link)
   }
 
   private fun clearObservers() {

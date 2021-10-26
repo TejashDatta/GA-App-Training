@@ -8,9 +8,11 @@ class NewsIndexContract {
   interface View: BaseView<Presenter> {
     fun setRecyclerViewItems(newsItems: List<NewsItem>)
     fun refreshComplete()
+    fun openInTab(url: String)
   }
 
   interface Presenter: BasePresenter {
     fun refreshNewsItems()
+    fun onClickNewsItem(newsItem: NewsItem)
   }
 }
