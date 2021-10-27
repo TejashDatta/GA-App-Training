@@ -3,7 +3,6 @@ package com.example.newsreader.network.data_transfer_objects
 import com.tickaroo.tikxml.TypeConverter
 import com.tickaroo.tikxml.annotation.PropertyElement
 import com.tickaroo.tikxml.annotation.Xml
-import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter

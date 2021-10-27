@@ -1,6 +1,5 @@
 package com.example.newsreader.data.models
 
-import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZonedDateTime
 
 data class NewsItem(
