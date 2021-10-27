@@ -11,5 +11,6 @@ class NewsIndexContract {
 
   interface Presenter: BasePresenter {
     fun refreshNewsItems()
+    fun onClickNewsItem(newsItem: NewsItem)
   }
 }
