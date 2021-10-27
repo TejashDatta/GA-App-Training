@@ -1,5 +1,6 @@
 package com.example.newsreader.news_index
 
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,8 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsreader.R
 import com.example.newsreader.data.models.NewsItem
-
-// TODO: implement click handler to launch news link in browser
+import org.threeten.bp.ZonedDateTime
 
 class NewsRecyclerViewAdapter(
   private val newsItemClickListener: (NewsItem) -> Unit
@@ -39,10 +39,13 @@ class NewsRecyclerViewAdapter(
     val newsItem = newsItems[position]
     viewHolder.newsItemView.apply {
       findViewById<TextView>(R.id.headlineTextView).text = newsItem.title
-//    TODO: display date as days before
-      findViewById<TextView>(R.id.pubDateTextView).text = newsItem.pubDate.toString()
+      findViewById<TextView>(R.id.pubDateTextView).text = dateToTimeAgo(newsItem.pubDate)
 
       setOnClickListener { newsItemClickListener(newsItem) }
     }
+  }
+
+  private fun dateToTimeAgo(date: ZonedDateTime): String {
+    return DateUtils.getRelativeTimeSpanString(date.toInstant().toEpochMilli()).toString()
   }
 }
