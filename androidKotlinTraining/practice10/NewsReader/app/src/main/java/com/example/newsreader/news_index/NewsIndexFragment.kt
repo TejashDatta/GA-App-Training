@@ -11,10 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.newsreader.R
-import com.example.newsreader.data.NewsItemsRepository
 import com.example.newsreader.data.models.NewsItem
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 class NewsIndexFragment: Fragment(), NewsIndexContract.View {
   companion object {
