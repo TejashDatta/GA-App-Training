@@ -50,9 +50,6 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
 
   override fun setRecyclerViewItems(newsItems: List<NewsItem>) {
     recyclerViewAdapter.newsItems = newsItems
-  }
-
-  override fun refreshComplete() {
     swipeRefreshLayout.isRefreshing = false
   }
 

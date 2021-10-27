@@ -29,10 +29,7 @@ class NewsIndexPresenter(
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
       .subscribe(
-        { newsItems ->
-          newsIndexView.setRecyclerViewItems(newsItems)
-          newsIndexView.refreshComplete()
-        },
+        { newsItems -> newsIndexView.setRecyclerViewItems(newsItems) },
         { e -> Log.e("NewsIndexPresenter", e.toString()) }
       )
     )
