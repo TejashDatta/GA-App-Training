@@ -25,12 +25,22 @@ class NewsIndexPresenter(
   }
 
   override fun refreshNewsItems() {
+    newsIndexView.showLoading()
+
     compositeDisposable.add(NewsItemsRepository.getNewsItems()
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
       .subscribe(
-        { newsItems -> newsIndexView.setRecyclerViewItems(newsItems) },
-        { e -> Log.e("NewsIndexPresenter", e.toString()) }
+        { newsItems ->
+            if (newsItems.isEmpty())
+              newsIndexView.showNoResults()
+            else
+              newsIndexView.showItemsInRecyclerView(newsItems)
+        },
+        { e ->
+            newsIndexView.showError()
+            Log.e("NewsIndexPresenter", e.toString())
+        }
       )
     )
   }
