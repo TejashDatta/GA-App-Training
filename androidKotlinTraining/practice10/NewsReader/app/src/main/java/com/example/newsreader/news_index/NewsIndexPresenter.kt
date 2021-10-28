@@ -5,6 +5,7 @@ import com.example.newsreader.data.NewsItemsRepository
 import com.example.newsreader.data.models.NewsItem
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class NewsIndexPresenter(
@@ -25,19 +26,18 @@ class NewsIndexPresenter(
   }
 
   override fun refreshNewsItems() {
-    newsIndexView.showLoading()
-
     compositeDisposable.add(NewsItemsRepository.getNewsItems()
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
-      .subscribe(
-        { newsItems ->
+      .doOnSubscribe { newsIndexView.showLoading() }
+      .subscribeBy(
+        onNext = { newsItems ->
             if (newsItems.isEmpty())
               newsIndexView.showNoResults()
             else
               newsIndexView.showItemsInRecyclerView(newsItems)
         },
-        { e ->
+        onError = { e ->
             newsIndexView.showError()
             Log.e("NewsIndexPresenter", e.toString())
         }
