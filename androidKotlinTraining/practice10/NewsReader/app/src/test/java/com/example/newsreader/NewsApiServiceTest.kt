@@ -19,7 +19,6 @@ class NewsApiServiceTest {
 
   private val exampleResponseContent = MockResponseFileReader("example-rss-response.xml").content
 
-
   @Before fun setup() {
     server = MockWebServer()
 
