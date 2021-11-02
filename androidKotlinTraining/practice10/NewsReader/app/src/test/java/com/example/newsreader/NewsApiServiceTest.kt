@@ -1,8 +1,10 @@
 package com.example.newsreader
 
 import com.example.newsreader.network.NewsApiService
+import com.example.newsreader.network.data_transfer_objects.NetworkNewsChannel
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -19,6 +21,8 @@ class NewsApiServiceTest {
 
   private val exampleResponseContent = MockResponseFileReader("example-rss-response.xml").content
 
+  private val tikXml = TikXml.Builder().exceptionOnUnreadXml(false).build()
+
   @Before fun setup() {
     server = MockWebServer()
 
@@ -30,10 +34,6 @@ class NewsApiServiceTest {
   }
 
   private fun createRetrofit(server: MockWebServer): Retrofit {
-    val tikXml = TikXml.Builder()
-      .exceptionOnUnreadXml(false)
-      .build()
-
     return Retrofit.Builder()
       .addConverterFactory(TikXmlConverterFactory.create(tikXml))
       .baseUrl(server.url("/"))
@@ -53,12 +53,10 @@ class NewsApiServiceTest {
   }
 
   @Test fun getNewsChannel_receivesAndParsesResponseCorrectly() {
+    val exampleResponseContentSource = exampleResponseContent.toResponseBody().source()
+    val expected = tikXml.read(exampleResponseContentSource, NetworkNewsChannel::class.java)
     val response = retrofitService.getNewsChannel().blockingFirst()
 
-    assertEquals(response.networkNewsItems.size, 30)
-    assertEquals(
-      response.networkNewsItems[0].title,
-      "＜新型コロナ・1日＞東京で新たに9人感染、昨年5月以来の1桁 20代の男性死亡 - 東京新聞"
-    )
+    assertEquals(response, expected)
   }
 }
