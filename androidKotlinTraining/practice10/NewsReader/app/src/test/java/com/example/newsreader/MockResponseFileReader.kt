@@ -6,8 +6,8 @@ class MockResponseFileReader(path: String) {
   val content: String
 
   init {
-    val reader = InputStreamReader(this.javaClass.classLoader?.getResourceAsStream(path))
-    content = reader.readText()
-    reader.close()
+    InputStreamReader(this.javaClass.classLoader?.getResourceAsStream(path)).use {
+      content = it.readText()
+    }
   }
 }
