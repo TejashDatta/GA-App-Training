@@ -19,7 +19,8 @@ class NewsIndexPresenterTest {
 
   @Mock private lateinit var newsItemsRepository: NewsItemsRepository
 
-  @Mock private lateinit var newsItem: NewsItem
+  @Mock private lateinit var newsItem1: NewsItem
+  @Mock private lateinit var newsItem2: NewsItem
 
   private lateinit var newsIndexPresenter: NewsIndexPresenter
 
@@ -35,13 +36,13 @@ class NewsIndexPresenterTest {
   }
 
   @Test fun onClickNewsItem_opensTabInView() {
-    newsIndexPresenter.onClickNewsItem(newsItem)
+    newsIndexPresenter.onClickNewsItem(newsItem1)
 
-    verify(newsIndexView).openInTab(newsItem.link)
+    verify(newsIndexView).openInTab(newsItem1.link)
   }
 
   @Test fun refreshNewsItems_showItemsInRecyclerViewWhenThereAreResults() {
-    val resultsList = listOf(newsItem, newsItem)
+    val resultsList = listOf(newsItem1, newsItem2)
     `when`(newsItemsRepository.getNewsItems()).thenReturn(Observable.just(resultsList))
 
     newsIndexPresenter.refreshNewsItems()
