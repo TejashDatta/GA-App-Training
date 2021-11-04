@@ -50,12 +50,22 @@ class NewsIndexPresenterTest {
     verify(newsIndexView).showItemsInRecyclerView(resultsList)
   }
 
-  @Test fun refreshNewsItems_showMessageWhenThereAreNoResults() {
+  @Test fun refreshNewsItems_showNoResultsMessageWhenThereAreNoResults() {
     `when`(newsItemsRepository.getNewsItems()).thenReturn(Observable.just(emptyList()))
 
     newsIndexPresenter.refreshNewsItems()
     testScheduler.triggerActions()
 
     verify(newsIndexView).showNoResults()
+  }
+
+  @Test fun refreshNewsItems_showErrorMessageWhenError () {
+    `when`(newsItemsRepository.getNewsItems())
+      .thenReturn(Observable.error(RuntimeException("example error")))
+
+    newsIndexPresenter.refreshNewsItems()
+    testScheduler.triggerActions()
+
+    verify(newsIndexView).showError()
   }
 }
