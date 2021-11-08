@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingStart="@dimen/doubleSpace"
+  android:paddingTop="@dimen/doubleSpace"
+  android:paddingEnd="@dimen/doubleSpace"
+  android:paddingBottom="@dimen/doubleSpace">
+
+  <TextView
+    android:id="@+id/headlineTextView"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/largeText"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="G7 財務相・中央銀行総裁会議 デジタル通貨発行の共通原則 - NHK NEWS WEB" />
+
+  <TextView
+    android:id="@+id/pubDateTextView"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/singleSpace"
+    android:textSize="@dimen/normalText"
+    app:layout_constraintEnd_toEndOf="@+id/headlineTextView"
+    app:layout_constraintStart_toStartOf="@+id/headlineTextView"
+    app:layout_constraintTop_toBottomOf="@+id/headlineTextView"
+    tools:text="昨日" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
