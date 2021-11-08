@@ -26,7 +26,6 @@ class NewsIndexPresenterTest {
     verify(newsIndexView).presenter = newsIndexPresenter
   }
 
-
   @Test fun onClickNewsItem_opensTabInView() {
     newsIndexPresenter.onClickNewsItem(newsItem)
 
