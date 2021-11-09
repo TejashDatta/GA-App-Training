@@ -1,8 +1,8 @@
 package com.example.newsreader
 
-import io.reactivex.rxjava3.schedulers.TestScheduler
+import io.reactivex.rxjava3.schedulers.Schedulers
 
-class TestSchedulerProvider(private val scheduler: TestScheduler) : BaseSchedulerProvider {
-  override fun ui() = scheduler
-  override fun io() = scheduler
+class TestSchedulerProvider : BaseSchedulerProvider {
+  override fun ui() = Schedulers.trampoline()
+  override fun io() = Schedulers.trampoline()
 }
