@@ -1,10 +1,11 @@
 package com.example.newsreader.news_index
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.calculator.util.replaceFragmentInActivity
 import com.example.newsreader.R
+import com.example.newsreader.SchedulerProvider
+import com.example.newsreader.data.NewsItemsRepositoryLocator
 
 class NewsIndexActivity : AppCompatActivity() {
   private lateinit var newsIndexPresenter: NewsIndexPresenter
@@ -19,6 +20,7 @@ class NewsIndexActivity : AppCompatActivity() {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
 
-    newsIndexPresenter = NewsIndexPresenter(newsIndexFragment)
+    newsIndexPresenter =
+      NewsIndexPresenter(newsIndexFragment, NewsItemsRepositoryLocator.repository, SchedulerProvider())
   }
 }

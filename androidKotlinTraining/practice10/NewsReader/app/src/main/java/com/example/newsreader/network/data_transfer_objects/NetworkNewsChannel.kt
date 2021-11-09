@@ -9,11 +9,11 @@ import com.tickaroo.tikxml.annotation.Xml
 data class NetworkNewsChannel(
   @Path("channel")
   @Element
-  val networkNewsItem: List<NetworkNewsItem>
+  val networkNewsItems: List<NetworkNewsItem>
 )
 
 fun NetworkNewsChannel.toDomainModel() : List<NewsItem> {
-  return networkNewsItem.map {
+  return networkNewsItems.map {
     NewsItem(
       title = it.title,
       link = it.link,

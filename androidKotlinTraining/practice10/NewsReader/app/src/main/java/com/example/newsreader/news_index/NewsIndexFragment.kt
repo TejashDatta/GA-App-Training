@@ -2,10 +2,10 @@ package com.example.newsreader.news_index
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +19,10 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
   }
 
   override lateinit var presenter: NewsIndexContract.Presenter
+  private lateinit var newsRecyclerView: RecyclerView
   private lateinit var recyclerViewAdapter: NewsRecyclerViewAdapter
   private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+  private lateinit var messageTextView: TextView
 
   override fun onResume() {
     super.onResume()
@@ -36,8 +38,11 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val root = inflater.inflate(R.layout.fragment_news_index, container, false)
 
+    newsRecyclerView = root.findViewById(R.id.newsRecyclerView)
     recyclerViewAdapter = NewsRecyclerViewAdapter { newsItem -> presenter.onClickNewsItem(newsItem) }
-    root.findViewById<RecyclerView>(R.id.newsRecyclerView).adapter = recyclerViewAdapter
+    newsRecyclerView.adapter = recyclerViewAdapter
+
+    messageTextView = root.findViewById(R.id.messageTextView)
 
     swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout)
     swipeRefreshLayout.setOnRefreshListener { presenter.refreshNewsItems() }
@@ -45,12 +50,38 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
     return root
   }
 
-  override fun setRecyclerViewItems(newsItems: List<NewsItem>) {
+  override fun showItemsInRecyclerView(newsItems: List<NewsItem>) {
+    displayRecyclerView()
     recyclerViewAdapter.newsItems = newsItems
     swipeRefreshLayout.isRefreshing = false
   }
 
   override fun openInTab(url: String) {
     CustomTabsIntent.Builder().build().launchUrl(requireContext(), Uri.parse(url))
+  }
+
+  override fun showLoading() {
+    displayMessageTextView()
+    messageTextView.text = getString(R.string.loading)
+  }
+
+  override fun showError() {
+    displayMessageTextView()
+    messageTextView.text = getString(R.string.error)
+  }
+
+  override fun showNoResults() {
+    displayMessageTextView()
+    messageTextView.text = getString(R.string.no_results)
+  }
+  
+  private fun displayRecyclerView() {
+    newsRecyclerView.visibility = View.VISIBLE
+    messageTextView.visibility = View.GONE
+  }
+
+  private fun displayMessageTextView() {
+    newsRecyclerView.visibility = View.GONE
+    messageTextView.visibility = View.VISIBLE
   }
 }
