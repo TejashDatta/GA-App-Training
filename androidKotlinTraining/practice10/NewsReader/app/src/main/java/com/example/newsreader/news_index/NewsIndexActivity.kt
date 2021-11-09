@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.calculator.util.replaceFragmentInActivity
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
-import com.example.newsreader.data.NewsItemsRepository
+import com.example.newsreader.data.NewsItemsRepositoryLocator
 
 class NewsIndexActivity : AppCompatActivity() {
   private lateinit var newsIndexPresenter: NewsIndexPresenter
@@ -21,6 +21,6 @@ class NewsIndexActivity : AppCompatActivity() {
         }
 
     newsIndexPresenter =
-      NewsIndexPresenter(newsIndexFragment, NewsItemsRepository, SchedulerProvider())
+      NewsIndexPresenter(newsIndexFragment, NewsItemsRepositoryLocator.repository, SchedulerProvider())
   }
 }
