@@ -1,3 +1,5 @@
+課題： NewsReader app でニュースの一覧からシェアする機能を作る
+
 タスク：
 bottom sheet modal の使い方、実装例について読む
 見積もり：2時間
