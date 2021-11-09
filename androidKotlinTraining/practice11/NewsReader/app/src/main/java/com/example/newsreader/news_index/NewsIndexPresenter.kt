@@ -13,7 +13,7 @@ class NewsIndexPresenter(
   private val schedulerProvider: BaseSchedulerProvider
 ): NewsIndexContract.Presenter {
 
-  var compositeDisposable = CompositeDisposable()
+  private var compositeDisposable = CompositeDisposable()
 
   init {
     newsIndexView.presenter = this
