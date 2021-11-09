@@ -10,7 +10,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -48,6 +49,8 @@ class NewsIndexPresenterTest {
     newsIndexPresenter.refreshNewsItems()
     testScheduler.triggerActions()
 
+    verify(newsItemsRepository).getNewsItems()
+    verify(newsIndexView).showLoading()
     verify(newsIndexView).showItemsInRecyclerView(resultsList)
   }
 
@@ -57,6 +60,8 @@ class NewsIndexPresenterTest {
     newsIndexPresenter.refreshNewsItems()
     testScheduler.triggerActions()
 
+    verify(newsItemsRepository).getNewsItems()
+    verify(newsIndexView).showLoading()
     verify(newsIndexView).showNoResults()
   }
 
@@ -67,6 +72,8 @@ class NewsIndexPresenterTest {
     newsIndexPresenter.refreshNewsItems()
     testScheduler.triggerActions()
 
+    verify(newsItemsRepository).getNewsItems()
+    verify(newsIndexView).showLoading()
     verify(newsIndexView).showError()
   }
 }
