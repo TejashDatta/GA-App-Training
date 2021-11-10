@@ -4,6 +4,7 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsreader.R
@@ -11,7 +12,8 @@ import com.example.newsreader.data.models.NewsItem
 import org.threeten.bp.ZonedDateTime
 
 class NewsRecyclerViewAdapter(
-  private val newsItemClickListener: (NewsItem) -> Unit
+  private val newsItemClickListener: (NewsItem) -> Unit,
+  private val newsItemOptionsClickListener: (NewsItem) -> Unit
 ): RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder>() {
   class ViewHolder private constructor(val newsItemView: View): RecyclerView.ViewHolder(newsItemView) {
     companion object {
@@ -40,6 +42,9 @@ class NewsRecyclerViewAdapter(
     viewHolder.newsItemView.apply {
       findViewById<TextView>(R.id.headlineTextView).text = newsItem.title
       findViewById<TextView>(R.id.pubDateTextView).text = dateToTimeAgo(newsItem.pubDate)
+
+      findViewById<ImageButton>(R.id.options_button)
+        .setOnClickListener { newsItemOptionsClickListener(newsItem) }
 
       setOnClickListener { newsItemClickListener(newsItem) }
     }
