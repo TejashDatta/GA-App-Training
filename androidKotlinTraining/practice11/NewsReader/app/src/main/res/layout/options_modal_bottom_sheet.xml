@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingBottom="@dimen/singleSpace">
+
+  <TextView
+    android:id="@+id/share_option"
+    style="@style/BottomSheetItem"
+    android:layout_marginTop="@dimen/singleSpace"
+    android:text="@string/share"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:drawableStartCompat="?attr/actionModeShareDrawable" />
+</androidx.constraintlayout.widget.ConstraintLayout>
