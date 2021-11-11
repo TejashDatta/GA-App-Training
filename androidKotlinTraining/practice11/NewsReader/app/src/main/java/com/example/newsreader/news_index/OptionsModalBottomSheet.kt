@@ -15,15 +15,15 @@ class OptionsModalBottomSheet : BottomSheetDialogFragment() {
     fun newInstance() = OptionsModalBottomSheet()
   }
 
-  private lateinit var shareOption: TextView
+  private lateinit var shareOptionTextView: TextView
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ): View? {
     val root = inflater.inflate(R.layout.options_modal_bottom_sheet, container, false)
-    shareOption = root.findViewById(R.id.share_option)
+    shareOptionTextView = root.findViewById(R.id.share_option)
 
-    shareOption.setOnClickListener {
+    shareOptionTextView.setOnClickListener {
       dismissAllowingStateLoss()
       shareNews()
     }
