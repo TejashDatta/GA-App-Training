@@ -39,6 +39,12 @@ class NewsIndexPresenterTest {
     verify(newsIndexView).openInTab(newsItem1.link)
   }
 
+  @Test fun onClickNewsItemOptions_opensOptionsMenu() {
+    newsIndexPresenter.onClickNewsItemOptions(newsItem1)
+
+    verify(newsIndexView).openOptionsMenu(newsItem1)
+  }
+  
   @Test fun start_showItemsInRecyclerViewWhenThereAreResults() {
     val resultsList = listOf(newsItem1, newsItem2)
     `when`(newsItemsRepository.getNewsItems()).thenReturn(Observable.just(resultsList))
