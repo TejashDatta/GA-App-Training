@@ -44,7 +44,7 @@ class NewsIndexPresenterTest {
 
     verify(newsIndexView).openOptionsMenu(newsItem1)
   }
-  
+
   @Test fun start_showItemsInRecyclerViewWhenThereAreResults() {
     val resultsList = listOf(newsItem1, newsItem2)
     `when`(newsItemsRepository.getNewsItems()).thenReturn(Observable.just(resultsList))
