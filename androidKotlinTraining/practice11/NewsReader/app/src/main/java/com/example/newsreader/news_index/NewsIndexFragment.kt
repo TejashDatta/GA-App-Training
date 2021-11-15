@@ -39,7 +39,10 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
     val root = inflater.inflate(R.layout.fragment_news_index, container, false)
 
     newsRecyclerView = root.findViewById(R.id.newsRecyclerView)
-    recyclerViewAdapter = NewsRecyclerViewAdapter { newsItem -> presenter.onClickNewsItem(newsItem) }
+    recyclerViewAdapter = NewsRecyclerViewAdapter(
+      newsItemClickListener = { newsItem -> presenter.onClickNewsItem(newsItem) },
+      newsItemOptionsClickListener = { newsItem -> presenter.onClickNewsItemOptions(newsItem) }
+    )
     newsRecyclerView.adapter = recyclerViewAdapter
 
     messageTextView = root.findViewById(R.id.messageTextView)
@@ -58,6 +61,11 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
 
   override fun openInTab(url: String) {
     CustomTabsIntent.Builder().build().launchUrl(requireContext(), Uri.parse(url))
+  }
+
+  override fun openOptionsMenu(newsItem: NewsItem) {
+//    TODO: pass news item title and url as arguments to modal
+    OptionsModalBottomSheet.newInstance().show(childFragmentManager, tag)
   }
 
   override fun showLoading() {

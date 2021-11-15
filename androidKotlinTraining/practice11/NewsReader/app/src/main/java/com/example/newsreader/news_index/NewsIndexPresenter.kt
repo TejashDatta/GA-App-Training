@@ -51,6 +51,10 @@ class NewsIndexPresenter(
     newsIndexView.openInTab(newsItem.link)
   }
 
+  override fun onClickNewsItemOptions(newsItem: NewsItem) {
+    newsIndexView.openOptionsMenu(newsItem)
+  }
+
   private fun clearObservers() {
     compositeDisposable.clear()
   }
