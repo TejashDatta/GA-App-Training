@@ -15,9 +15,10 @@ data class NetworkNewsChannel(
 fun NetworkNewsChannel.toDomainModel() : List<NewsItem> {
   return networkNewsItems.map {
     NewsItem(
-      title = it.title,
+      title = it.title.removeSuffix(" - ${it.source}"),
       link = it.link,
-      pubDate = it.pubDate
+      pubDate = it.pubDate,
+      source = it.source
     )
   }
 }

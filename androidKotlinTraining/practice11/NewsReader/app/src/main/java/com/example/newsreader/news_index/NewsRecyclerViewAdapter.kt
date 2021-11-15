@@ -40,10 +40,11 @@ class NewsRecyclerViewAdapter(
   override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
     val newsItem = newsItems[position]
     viewHolder.newsItemView.apply {
+      findViewById<TextView>(R.id.sourceTextView).text = newsItem.source
       findViewById<TextView>(R.id.headlineTextView).text = newsItem.title
       findViewById<TextView>(R.id.pubDateTextView).text = dateToTimeAgo(newsItem.pubDate)
 
-      findViewById<ImageButton>(R.id.options_button)
+      findViewById<ImageButton>(R.id.optionsButton)
         .setOnClickListener { newsItemOptionsClickListener(newsItem) }
 
       setOnClickListener { newsItemClickListener(newsItem) }

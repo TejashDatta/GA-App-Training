@@ -4,43 +4,65 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:paddingStart="@dimen/doubleSpace"
-  android:paddingTop="@dimen/doubleSpace"
-  android:paddingEnd="@dimen/doubleSpace"
-  android:paddingBottom="@dimen/doubleSpace">
+  android:paddingTop="@dimen/doubleSpace">
+
+  <TextView
+    android:id="@+id/sourceTextView"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/normalText"
+    android:layout_marginStart="@dimen/doubleSpace"
+    android:layout_marginEnd="@dimen/doubleSpace"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="産経ニュース" />
 
   <TextView
     android:id="@+id/headlineTextView"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/singleSpace"
+    android:layout_marginStart="@dimen/doubleSpace"
+    android:layout_marginEnd="@dimen/doubleSpace"
     android:textSize="@dimen/largeText"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/sourceTextView"
     tools:text="G7 財務相・中央銀行総裁会議 デジタル通貨発行の共通原則 - NHK NEWS WEB" />
 
   <TextView
     android:id="@+id/pubDateTextView"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/singleSpace"
     android:textSize="@dimen/normalText"
-    app:layout_constraintStart_toStartOf="@+id/headlineTextView"
+    android:layout_marginStart="@dimen/doubleSpace"
+    app:layout_constraintBottom_toBottomOf="@+id/optionsButton"
+    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/headlineTextView"
     tools:text="昨日" />
 
   <ImageButton
-    android:id="@+id/options_button"
+    android:id="@+id/optionsButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:contentDescription="@string/options_menu"
-    android:minWidth="48dp"
-    android:minHeight="48dp"
+    android:minWidth="@dimen/optionsButtonDimension"
+    android:minHeight="@dimen/optionsButtonDimension"
     android:src="@drawable/ic_baseline_more_vert_24"
-    app:layout_constraintEnd_toEndOf="@+id/headlineTextView"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="1.0"
     app:layout_constraintStart_toEndOf="@+id/pubDateTextView"
     app:layout_constraintTop_toBottomOf="@+id/headlineTextView" />
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="@dimen/doubleSpace"
+    android:layout_marginStart="@dimen/doubleSpace"
+    android:layout_marginEnd="@dimen/doubleSpace"
+    android:background="@color/light_gray"
+    app:layout_constraintTop_toBottomOf="@+id/pubDateTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
