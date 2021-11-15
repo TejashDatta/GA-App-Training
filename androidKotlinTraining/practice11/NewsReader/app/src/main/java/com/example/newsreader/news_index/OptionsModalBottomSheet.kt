@@ -14,7 +14,7 @@ class OptionsModalBottomSheet : BottomSheetDialogFragment() {
     private const val ARGUMENT_TITLE = "TITLE"
     private const val ARGUMENT_LINK = "LINK"
 
-    @JvmStatic fun newInstance(title: String, link: String) =
+    fun newInstance(title: String, link: String) =
       OptionsModalBottomSheet().apply {
         arguments = Bundle().apply {
           putString(ARGUMENT_TITLE, title)
@@ -50,12 +50,14 @@ class OptionsModalBottomSheet : BottomSheetDialogFragment() {
   }
 
   private fun shareNews() {
-    val shareIntent = Intent.createChooser(Intent().apply {
+    val sendIntent = Intent().apply {
       action = Intent.ACTION_SEND
       type = "text/plain"
       putExtra(Intent.EXTRA_TEXT, link)
       putExtra(Intent.EXTRA_TITLE, title)
-    }, null)
+    }
+    
+    val shareIntent = Intent.createChooser(sendIntent, null)
     startActivity(shareIntent)
   }
 }
