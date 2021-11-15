@@ -11,27 +11,27 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class OptionsModalBottomSheet : BottomSheetDialogFragment() {
   companion object {
-    private const val ARGUMENT_NEWS_ITEM_TITLE = "NEWS_ITEM_TITLE"
-    private const val ARGUMENT_NEWS_ITEM_LINK = "NEWS_ITEM_LINK"
+    private const val ARGUMENT_TITLE = "TITLE"
+    private const val ARGUMENT_LINK = "LINK"
 
-    @JvmStatic fun newInstance(newsItemTitle: String, newsItemLink: String) =
+    @JvmStatic fun newInstance(title: String, link: String) =
       OptionsModalBottomSheet().apply {
         arguments = Bundle().apply {
-          putString(ARGUMENT_NEWS_ITEM_TITLE, newsItemTitle)
-          putString(ARGUMENT_NEWS_ITEM_LINK, newsItemLink)
+          putString(ARGUMENT_TITLE, title)
+          putString(ARGUMENT_LINK, link)
         }
       }
   }
 
-  private lateinit var newsItemTitle: String
-  private lateinit var newsItemLink: String
+  private lateinit var title: String
+  private lateinit var link: String
   private lateinit var shareOptionTextView: TextView
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     arguments?.let {
-      newsItemTitle = it.getString(ARGUMENT_NEWS_ITEM_TITLE)!!
-      newsItemLink = it.getString(ARGUMENT_NEWS_ITEM_LINK)!!
+      title = it.getString(ARGUMENT_TITLE)!!
+      link = it.getString(ARGUMENT_LINK)!!
     }
   }
 
@@ -53,8 +53,8 @@ class OptionsModalBottomSheet : BottomSheetDialogFragment() {
     val shareIntent = Intent.createChooser(Intent().apply {
       action = Intent.ACTION_SEND
       type = "text/plain"
-      putExtra(Intent.EXTRA_TEXT, newsItemLink)
-      putExtra(Intent.EXTRA_TITLE, newsItemTitle)
+      putExtra(Intent.EXTRA_TEXT, link)
+      putExtra(Intent.EXTRA_TITLE, title)
     }, null)
     startActivity(shareIntent)
   }
