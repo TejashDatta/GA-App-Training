@@ -64,8 +64,9 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
   }
 
   override fun openOptionsMenu(newsItem: NewsItem) {
-//    TODO: pass news item title and url as arguments to modal
-    OptionsModalBottomSheet.newInstance().show(childFragmentManager, tag)
+    OptionsModalBottomSheet
+      .newInstance(newsItem.title, newsItem.link)
+      .show(childFragmentManager, tag)
   }
 
   override fun showLoading() {
