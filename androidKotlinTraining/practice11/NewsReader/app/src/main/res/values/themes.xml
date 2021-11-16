@@ -15,4 +15,5 @@
   </style>
 
   <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+  <style name="ToolbarMenu" parent="Theme.AppCompat.DayNight.DarkActionBar"/>
 </resources>
