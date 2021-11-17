@@ -39,5 +39,3 @@ class NewsItemsRepositoryTest {
     assertEquals(actual, expected)
   }
 }
-
-
