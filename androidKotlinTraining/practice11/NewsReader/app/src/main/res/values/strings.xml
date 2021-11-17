@@ -5,6 +5,7 @@
   <string name="no_results">ニュース項目はありません</string>
   <string name="options_menu">オプションメニュー</string>
   <string name="share">シェア</string>
+  <string name="save_for_later">後で読むために保存</string>
   <string name="toolbar_share">ニュースをシェアする</string>
   <string name="toolbar_followed_items">フォロー中</string>
 </resources>

@@ -2,7 +2,7 @@ package com.example.newsreader
 
 import android.content.SharedPreferences
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.followed_news.FollowedNewsManager
+import com.example.newsreader.data.source.FollowedNewsManager
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -48,32 +48,32 @@ class FollowedNewsManagerTest {
     assertEquals(followedNewsManager.items[0], newsItem)
   }
 
-  @Test fun add_addsToList() {
+  @Test fun addOrRemove_addsToListWhenNewsItemIsNotSaved() {
     setupEmptyFollowedNewsManager()
 
-    followedNewsManager.add(newsItem)
+    followedNewsManager.addOrRemove(newsItem)
     assertEquals(followedNewsManager.items[0], newsItem)
   }
 
-  @Test fun add_addsToSharedPreferences() {
+  @Test fun addOrRemove_addsToSharedPreferencesWhenNewsItemIsNotSaved() {
     setupEmptyFollowedNewsManager()
 
-    followedNewsManager.add(newsItem)
+    followedNewsManager.addOrRemove(newsItem)
     verify(sharedPreferences).edit()
     verify(sharedPreferencesEditor).putString(ITEMS_KEY, newsItemListJson)
   }
 
-  @Test fun remove_removesFromList() {
+  @Test fun addOrRemove_removesFromListWhenNewsItemIsSaved() {
     setupFollowedNewsManagerWithNewsItem()
 
-    followedNewsManager.remove(newsItem)
+    followedNewsManager.addOrRemove(newsItem)
     assertEquals(followedNewsManager.items.size, 0)
   }
 
-  @Test fun remove_removesFromSharedPreferences() {
+  @Test fun addOrRemove_removesFromSharedPreferencesWhenNewsItemIsSaved() {
     setupFollowedNewsManagerWithNewsItem()
 
-    followedNewsManager.remove(newsItem)
+    followedNewsManager.addOrRemove(newsItem)
     verify(sharedPreferences).edit()
     verify(sharedPreferencesEditor).putString(ITEMS_KEY, "[]")
   }

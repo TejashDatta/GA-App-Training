@@ -1,5 +1,6 @@
 package com.example.newsreader.news_index
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -41,7 +42,7 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
     newsRecyclerView = root.findViewById(R.id.newsRecyclerView)
     recyclerViewAdapter = NewsRecyclerViewAdapter(
       newsItemClickListener = { newsItem -> presenter.onClickNewsItem(newsItem) },
-      newsItemOptionsClickListener = { newsItem -> presenter.onClickNewsItemOptions(newsItem) }
+      newsItemOptionsClickListener = { newsItem -> presenter.onClickNewsItemOptionsMenu(newsItem) }
     )
     newsRecyclerView.adapter = recyclerViewAdapter
 
@@ -64,9 +65,20 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
   }
 
   override fun openOptionsMenu(newsItem: NewsItem) {
-    OptionsModalBottomSheet
-      .newInstance(newsItem.title, newsItem.link)
+    OptionsModalBottomSheet { option -> presenter.onClickNewsItemOption(newsItem, option) }
       .show(childFragmentManager, tag)
+  }
+
+  override fun shareNews(newsItem: NewsItem) {
+    val sendIntent = Intent().apply {
+      action = Intent.ACTION_SEND
+      type = "text/plain"
+      putExtra(Intent.EXTRA_TEXT, newsItem.link)
+      putExtra(Intent.EXTRA_TITLE, newsItem.title)
+    }
+
+    val shareIntent = Intent.createChooser(sendIntent, null)
+    startActivity(shareIntent)
   }
 
   override fun showLoading() {

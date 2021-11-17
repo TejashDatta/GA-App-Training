@@ -1,9 +1,11 @@
 package com.example.newsreader
 
-import com.example.newsreader.data.NewsItemsRepository
 import com.example.newsreader.data.models.NewsItem
+import com.example.newsreader.data.source.FollowedNewsManager
+import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.news_index.NewsIndexContract
 import com.example.newsreader.news_index.NewsIndexPresenter
+import com.example.newsreader.news_index.NewsItemMenuOption
 import io.reactivex.rxjava3.core.Observable
 import org.junit.Before
 import org.junit.Test
@@ -18,6 +20,7 @@ class NewsIndexPresenterTest {
   @Mock private lateinit var newsIndexView: NewsIndexContract.View
 
   @Mock private lateinit var newsItemsRepository: NewsItemsRepository
+  @Mock private lateinit var followedNewsManager: FollowedNewsManager
 
   @Mock private lateinit var newsItem1: NewsItem
   @Mock private lateinit var newsItem2: NewsItem
@@ -26,7 +29,7 @@ class NewsIndexPresenterTest {
 
   @Before fun setupNewsIndexPresenter() {
     newsIndexPresenter =
-      NewsIndexPresenter(newsIndexView, newsItemsRepository, TestSchedulerProvider())
+      NewsIndexPresenter(newsIndexView, newsItemsRepository, followedNewsManager, TestSchedulerProvider())
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -39,10 +42,22 @@ class NewsIndexPresenterTest {
     verify(newsIndexView).openInTab(newsItem1.link)
   }
 
-  @Test fun onClickNewsItemOptions_opensOptionsMenu() {
-    newsIndexPresenter.onClickNewsItemOptions(newsItem1)
+  @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
+    newsIndexPresenter.onClickNewsItemOptionsMenu(newsItem1)
 
     verify(newsIndexView).openOptionsMenu(newsItem1)
+  }
+
+  @Test fun onClickNewsItemOption_addsOrRemovesNewsItemFromSavedItemsWhenOptionIsSave() {
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, NewsItemMenuOption.SAVE)
+
+    verify(followedNewsManager).addOrRemove(newsItem1)
+  }
+
+  @Test fun onClickNewsItemOption_sharesNewsWhenOptionIsShare() {
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, NewsItemMenuOption.SHARE)
+
+    verify(newsIndexView).shareNews(newsItem1)
   }
 
   @Test fun start_showItemsInRecyclerViewWhenThereAreResults() {

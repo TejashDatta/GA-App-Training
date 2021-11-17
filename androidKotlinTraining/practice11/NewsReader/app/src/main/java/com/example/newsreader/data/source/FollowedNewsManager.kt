@@ -1,6 +1,7 @@
-package com.example.newsreader.followed_news
+package com.example.newsreader.data.source
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.newsreader.data.models.NewsItem
 import com.squareup.moshi.*
 import org.threeten.bp.ZonedDateTime
@@ -26,6 +27,7 @@ class FollowedNewsManager(private val sharedPreferences: SharedPreferences) {
 
   init {
     loadItems()
+    debugOutput()
   }
 
   private fun saveItems() {
@@ -42,13 +44,19 @@ class FollowedNewsManager(private val sharedPreferences: SharedPreferences) {
     }
   }
 
-  fun add(newsItem: NewsItem) {
-    _items.add(newsItem)
-    saveItems()
+  private fun debugOutput() {
+    Log.d("FollowedNewsManager", items.toString())
   }
 
-  fun remove(newsItem: NewsItem) {
-    _items.remove(newsItem)
+  fun isSaved(newsItem: NewsItem) = newsItem in _items
+
+  fun addOrRemove(newsItem: NewsItem) {
+    if (isSaved(newsItem)) {
+      _items.remove(newsItem)
+    } else {
+      _items.add(newsItem)
+    }
     saveItems()
+    debugOutput()
   }
 }

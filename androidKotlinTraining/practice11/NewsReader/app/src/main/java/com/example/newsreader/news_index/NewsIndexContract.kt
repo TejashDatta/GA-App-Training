@@ -9,6 +9,7 @@ class NewsIndexContract {
     fun showItemsInRecyclerView(newsItems: List<NewsItem>)
     fun openInTab(url: String)
     fun openOptionsMenu(newsItem: NewsItem)
+    fun shareNews(newsItem: NewsItem)
     fun showLoading()
     fun showError()
     fun showNoResults()
@@ -17,6 +18,7 @@ class NewsIndexContract {
   interface Presenter: BasePresenter {
     fun refreshNewsItems()
     fun onClickNewsItem(newsItem: NewsItem)
-    fun onClickNewsItemOptions(newsItem: NewsItem)
+    fun onClickNewsItemOptionsMenu(newsItem: NewsItem)
+    fun onClickNewsItemOption(newsItem: NewsItem, option: NewsItemMenuOption)
   }
 }

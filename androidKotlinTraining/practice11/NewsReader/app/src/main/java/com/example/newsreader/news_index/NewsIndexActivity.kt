@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.calculator.util.replaceFragmentInActivity
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
-import com.example.newsreader.data.NewsItemsRepositoryLocator
+import com.example.newsreader.data.source.FollowedNewsManager
+import com.example.newsreader.data.source.FollowedNewsSharedPreferencesRetriever
+import com.example.newsreader.data.source.NewsItemsRepositoryLocator
 
 class NewsIndexActivity : AppCompatActivity() {
   private lateinit var newsIndexPresenter: NewsIndexPresenter
@@ -18,6 +20,10 @@ class NewsIndexActivity : AppCompatActivity() {
     setContentView(R.layout.activity_content_frame)
     setSupportActionBar(findViewById(R.id.toolbar))
 
+    val followedNewsSharedPreferences =
+      FollowedNewsSharedPreferencesRetriever(applicationContext).retrieve()
+    val followedNewsManager = FollowedNewsManager(followedNewsSharedPreferences)
+
     val newsIndexFragment =
       supportFragmentManager.findFragmentById(R.id.contentFrame) as NewsIndexFragment?
         ?: NewsIndexFragment.newInstance().also {
@@ -25,7 +31,12 @@ class NewsIndexActivity : AppCompatActivity() {
         }
 
     newsIndexPresenter =
-      NewsIndexPresenter(newsIndexFragment, NewsItemsRepositoryLocator.repository, SchedulerProvider())
+      NewsIndexPresenter(
+        newsIndexFragment,
+        NewsItemsRepositoryLocator.repository,
+        followedNewsManager,
+        SchedulerProvider()
+      )
   }
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {

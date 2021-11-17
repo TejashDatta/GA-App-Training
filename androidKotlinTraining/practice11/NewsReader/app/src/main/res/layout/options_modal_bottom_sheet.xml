@@ -2,9 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:paddingBottom="@dimen/singleSpace">
+
+  <TextView
+    android:id="@+id/save_option"
+    style="@style/BottomSheetItem"
+    android:text="@string/save_for_later"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:drawableStartCompat="@drawable/ic_baseline_bookmark_border_24" />
 
   <TextView
     android:id="@+id/share_option"
@@ -13,6 +23,6 @@
     android:text="@string/share"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/save_option"
     app:drawableStartCompat="?attr/actionModeShareDrawable" />
 </androidx.constraintlayout.widget.ConstraintLayout>
