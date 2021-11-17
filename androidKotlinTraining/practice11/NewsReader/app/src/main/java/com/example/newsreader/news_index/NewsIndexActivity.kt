@@ -33,18 +33,20 @@ class NewsIndexActivity : AppCompatActivity() {
     return true
   }
 
-  override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-    R.id.action_share -> {
-      shareGoogleNewsHomepageURL()
-      true
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
+      R.id.action_share -> {
+        shareGoogleNewsHomepageURL()
+        true
+      }
+
+  //    TODO: implement navigation to followed items list screen
+  //    R.id.action_followed_items -> {
+  //      true
+  //    }
+
+      else -> super.onOptionsItemSelected(item)
     }
-
-//    TODO: implement navigation to followed items list screen
-//    R.id.action_followed_items -> {
-//      true
-//    }
-
-    else -> super.onOptionsItemSelected(item)
   }
 
   private fun shareGoogleNewsHomepageURL() {
