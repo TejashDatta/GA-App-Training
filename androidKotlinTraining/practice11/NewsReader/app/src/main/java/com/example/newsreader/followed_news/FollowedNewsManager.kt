@@ -16,7 +16,7 @@ class FollowedNewsManager(private val sharedPreferences: SharedPreferences) {
     @FromJson fun fromJson(dateTimeString: String) = ZonedDateTime.parse(dateTimeString)
   }
 
-  private var jsonAdapter: JsonAdapter<List<NewsItem>> =
+  private val jsonAdapter: JsonAdapter<List<NewsItem>> =
     Moshi.Builder().add(ZonedDateTimeAdapter()).build()
       .adapter(Types.newParameterizedType(List::class.java, NewsItem::class.java))
   
