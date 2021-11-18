@@ -49,7 +49,7 @@ class NewsIndexPresenterTest {
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
     newsIndexPresenter.onClickNewsItemOptionsMenu(newsItem1)
 
-    verify(newsIndexView).openOptionsMenu(newsItem1)
+    verify(newsIndexView).openOptionsMenu(newsItem1, isNewsItemSaved)
   }
 
   @Test fun onClickNewsItemOption_addsOrRemovesNewsItemFromSavedItemsWhenOptionIsSave() {
