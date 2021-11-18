@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -64,8 +65,8 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
     CustomTabsIntent.Builder().build().launchUrl(requireContext(), Uri.parse(url))
   }
 
-  override fun openOptionsMenu(newsItem: NewsItem) {
-    OptionsModalBottomSheet { option -> presenter.onClickNewsItemOption(newsItem, option) }
+  override fun openOptionsMenu(newsItem: NewsItem, isNewsItemSaved: Boolean) {
+    OptionsModalBottomSheet(isNewsItemSaved) { option -> presenter.onClickNewsItemOption(newsItem, option) }
       .show(childFragmentManager, tag)
   }
 
@@ -79,6 +80,12 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
 
     val shareIntent = Intent.createChooser(sendIntent, null)
     startActivity(shareIntent)
+  }
+
+  override fun showToastForSaveClicked(isSaved: Boolean) {
+    val messageResourceID = if (isSaved) R.string.item_followed else R.string.item_unfollowed
+
+    Toast.makeText(context, messageResourceID, Toast.LENGTH_SHORT).show()
   }
 
   override fun showLoading() {

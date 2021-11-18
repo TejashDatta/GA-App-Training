@@ -11,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 enum class NewsItemMenuOption { SAVE, SHARE }
 
 class OptionsModalBottomSheet(
+  private val isNewsItemSaved: Boolean,
   private val optionClickListener: (NewsItemMenuOption) -> Unit
 ) : BottomSheetDialogFragment() {
   private lateinit var saveOptionTextView: TextView
@@ -23,6 +24,8 @@ class OptionsModalBottomSheet(
     saveOptionTextView = root.findViewById(R.id.save_option)
     shareOptionTextView = root.findViewById(R.id.share_option)
 
+    setSaveOptionTextAndIcon()
+
     saveOptionTextView.setOnClickListener {
       dismissAllowingStateLoss()
       optionClickListener(NewsItemMenuOption.SAVE)
@@ -34,5 +37,15 @@ class OptionsModalBottomSheet(
     }
 
     return root
+  }
+
+  private fun setSaveOptionTextAndIcon() {
+    if (isNewsItemSaved) {
+      saveOptionTextView.text = getString(R.string.remove_from_followed_items)
+      saveOptionTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_bookmark_24, 0, 0, 0)
+    } else {
+      saveOptionTextView.text = getString(R.string.save_for_later)
+      saveOptionTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_bookmark_border_24, 0, 0, 0)
+    }
   }
 }

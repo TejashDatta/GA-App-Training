@@ -54,12 +54,15 @@ class NewsIndexPresenter(
   }
 
   override fun onClickNewsItemOptionsMenu(newsItem: NewsItem) {
-    newsIndexView.openOptionsMenu(newsItem)
+    newsIndexView.openOptionsMenu(newsItem, followedNewsManager.isSaved(newsItem))
   }
 
   override fun onClickNewsItemOption(newsItem: NewsItem, option: NewsItemMenuOption) {
     when(option) {
-      NewsItemMenuOption.SAVE -> followedNewsManager.addOrRemove(newsItem)
+      NewsItemMenuOption.SAVE -> {
+        followedNewsManager.addOrRemove(newsItem)
+        newsIndexView.showToastForSaveClicked(followedNewsManager.isSaved(newsItem))
+      }
 
       NewsItemMenuOption.SHARE -> newsIndexView.shareNews(newsItem)
     }

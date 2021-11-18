@@ -8,8 +8,9 @@ class NewsIndexContract {
   interface View: BaseView<Presenter> {
     fun showItemsInRecyclerView(newsItems: List<NewsItem>)
     fun openInTab(url: String)
-    fun openOptionsMenu(newsItem: NewsItem)
+    fun openOptionsMenu(newsItem: NewsItem, isNewsItemSaved: Boolean)
     fun shareNews(newsItem: NewsItem)
+    fun showToastForSaveClicked(isSaved: Boolean)
     fun showLoading()
     fun showError()
     fun showNoResults()

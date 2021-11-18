@@ -25,11 +25,15 @@ class NewsIndexPresenterTest {
   @Mock private lateinit var newsItem1: NewsItem
   @Mock private lateinit var newsItem2: NewsItem
 
+  private val isNewsItemSaved = true
+
   private lateinit var newsIndexPresenter: NewsIndexPresenter
 
   @Before fun setupNewsIndexPresenter() {
     newsIndexPresenter =
       NewsIndexPresenter(newsIndexView, newsItemsRepository, followedNewsManager, TestSchedulerProvider())
+
+    `when`(followedNewsManager.isSaved(newsItem1)).thenReturn(isNewsItemSaved)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -52,6 +56,12 @@ class NewsIndexPresenterTest {
     newsIndexPresenter.onClickNewsItemOption(newsItem1, NewsItemMenuOption.SAVE)
 
     verify(followedNewsManager).addOrRemove(newsItem1)
+  }
+
+  @Test fun onClickNewsItemOption_showsToastWhenOptionIsSave() {
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, NewsItemMenuOption.SAVE)
+
+    verify(newsIndexView).showToastForSaveClicked(isNewsItemSaved)
   }
 
   @Test fun onClickNewsItemOption_sharesNewsWhenOptionIsShare() {
