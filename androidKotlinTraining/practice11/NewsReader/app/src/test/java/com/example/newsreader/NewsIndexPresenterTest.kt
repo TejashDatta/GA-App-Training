@@ -5,7 +5,7 @@ import com.example.newsreader.data.source.FollowedNewsManager
 import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.news_index.NewsIndexContract
 import com.example.newsreader.news_index.NewsIndexPresenter
-import com.example.newsreader.news_index.NewsItemMenuOption
+import com.example.newsreader.news_index.OptionsModalBottomSheet
 import io.reactivex.rxjava3.core.Observable
 import org.junit.Before
 import org.junit.Test
@@ -32,8 +32,6 @@ class NewsIndexPresenterTest {
   @Before fun setupNewsIndexPresenter() {
     newsIndexPresenter =
       NewsIndexPresenter(newsIndexView, newsItemsRepository, followedNewsManager, TestSchedulerProvider())
-
-    `when`(followedNewsManager.isSaved(newsItem1)).thenReturn(isNewsItemSaved)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -47,25 +45,39 @@ class NewsIndexPresenterTest {
   }
 
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
+    `when`(followedNewsManager.isSaved(newsItem1)).thenReturn(isNewsItemSaved)
+
     newsIndexPresenter.onClickNewsItemOptionsMenu(newsItem1)
 
     verify(newsIndexView).openOptionsMenu(newsItem1, isNewsItemSaved)
   }
 
-  @Test fun onClickNewsItemOption_addsOrRemovesNewsItemFromSavedItemsWhenOptionIsSave() {
-    newsIndexPresenter.onClickNewsItemOption(newsItem1, NewsItemMenuOption.SAVE)
+  @Test fun onClickNewsItemOption_savesNewsItemWhenOptionIsSaveAndItemIsUnsaved() {
+    `when`(followedNewsManager.isSaved(newsItem1)).thenReturn(false)
 
-    verify(followedNewsManager).addOrRemove(newsItem1)
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SAVE)
+
+    verify(followedNewsManager).add(newsItem1)
+  }
+
+  @Test fun onClickNewsItemOption_unsavesNewsItemWhenOptionIsSaveAndItemIsSaved() {
+    `when`(followedNewsManager.isSaved(newsItem1)).thenReturn(true)
+
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SAVE)
+
+    verify(followedNewsManager).remove(newsItem1)
   }
 
   @Test fun onClickNewsItemOption_showsToastWhenOptionIsSave() {
-    newsIndexPresenter.onClickNewsItemOption(newsItem1, NewsItemMenuOption.SAVE)
+    `when`(followedNewsManager.isSaved(newsItem1)).thenReturn(isNewsItemSaved)
+
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SAVE)
 
     verify(newsIndexView).showToastForSaveClicked(isNewsItemSaved)
   }
 
   @Test fun onClickNewsItemOption_sharesNewsWhenOptionIsShare() {
-    newsIndexPresenter.onClickNewsItemOption(newsItem1, NewsItemMenuOption.SHARE)
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SHARE)
 
     verify(newsIndexView).shareNews(newsItem1)
   }

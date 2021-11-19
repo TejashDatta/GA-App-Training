@@ -48,32 +48,32 @@ class FollowedNewsManagerTest {
     assertEquals(followedNewsManager.items[0], newsItem)
   }
 
-  @Test fun addOrRemove_addsToListWhenNewsItemIsNotSaved() {
+  @Test fun add_addsToList() {
     setupEmptyFollowedNewsManager()
 
-    followedNewsManager.addOrRemove(newsItem)
+    followedNewsManager.add(newsItem)
     assertEquals(followedNewsManager.items[0], newsItem)
   }
 
-  @Test fun addOrRemove_addsToSharedPreferencesWhenNewsItemIsNotSaved() {
+  @Test fun add_addsToSharedPreferences() {
     setupEmptyFollowedNewsManager()
 
-    followedNewsManager.addOrRemove(newsItem)
+    followedNewsManager.add(newsItem)
     verify(sharedPreferences).edit()
     verify(sharedPreferencesEditor).putString(ITEMS_KEY, newsItemListJson)
   }
 
-  @Test fun addOrRemove_removesFromListWhenNewsItemIsSaved() {
+  @Test fun remove_removesFromList() {
     setupFollowedNewsManagerWithNewsItem()
 
-    followedNewsManager.addOrRemove(newsItem)
+    followedNewsManager.remove(newsItem)
     assertEquals(followedNewsManager.items.size, 0)
   }
 
-  @Test fun addOrRemove_removesFromSharedPreferencesWhenNewsItemIsSaved() {
+  @Test fun remove_removesFromSharedPreferences() {
     setupFollowedNewsManagerWithNewsItem()
 
-    followedNewsManager.addOrRemove(newsItem)
+    followedNewsManager.remove(newsItem)
     verify(sharedPreferences).edit()
     verify(sharedPreferencesEditor).putString(ITEMS_KEY, "[]")
   }
