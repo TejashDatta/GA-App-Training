@@ -57,14 +57,18 @@ class NewsIndexPresenter(
     newsIndexView.openOptionsMenu(newsItem, followedNewsManager.isSaved(newsItem))
   }
 
-  override fun onClickNewsItemOption(newsItem: NewsItem, option: NewsItemMenuOption) {
+  override fun onClickNewsItemOption(newsItem: NewsItem, option: OptionsModalBottomSheet.Option) {
     when(option) {
-      NewsItemMenuOption.SAVE -> {
-        followedNewsManager.addOrRemove(newsItem)
+      OptionsModalBottomSheet.Option.SAVE -> {
+        if(followedNewsManager.isSaved(newsItem)) {
+          followedNewsManager.remove(newsItem)
+        } else {
+          followedNewsManager.add(newsItem)
+        }
         newsIndexView.showToastForSaveClicked(followedNewsManager.isSaved(newsItem))
       }
 
-      NewsItemMenuOption.SHARE -> newsIndexView.shareNews(newsItem)
+      OptionsModalBottomSheet.Option.SHARE -> newsIndexView.shareNews(newsItem)
     }
   }
 
