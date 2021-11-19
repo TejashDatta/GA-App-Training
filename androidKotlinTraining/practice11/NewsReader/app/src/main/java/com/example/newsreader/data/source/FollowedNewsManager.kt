@@ -27,7 +27,7 @@ class FollowedNewsManager(private val sharedPreferences: SharedPreferences) {
 
   init {
     loadItems()
-    debugOutput()
+    logOutput()
   }
 
   private fun saveItems() {
@@ -44,7 +44,7 @@ class FollowedNewsManager(private val sharedPreferences: SharedPreferences) {
     }
   }
 
-  private fun debugOutput() {
+  private fun logOutput() {
     Log.d("FollowedNewsManager", items.toString())
   }
 
@@ -57,6 +57,6 @@ class FollowedNewsManager(private val sharedPreferences: SharedPreferences) {
       _items.add(newsItem)
     }
     saveItems()
-    debugOutput()
+    logOutput()
   }
 }
