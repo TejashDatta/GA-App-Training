@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.example.newsreader.data.models.NewsItem
 import com.squareup.moshi.*
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.threeten.bp.ZonedDateTime
 
 class FollowedNewsManager(private val sharedPreferences: SharedPreferences) {
@@ -21,44 +22,51 @@ class FollowedNewsManager(private val sharedPreferences: SharedPreferences) {
     Moshi.Builder().add(ZonedDateTimeAdapter()).build()
       .adapter(Types.newParameterizedType(List::class.java, NewsItem::class.java))
   
-  private var _items = mutableListOf<NewsItem>()
-  val items: List<NewsItem>
-    get() = _items
+  private var items = mutableListOf<NewsItem>()
+
+  val itemsSubject: BehaviorSubject<List<NewsItem>> = BehaviorSubject.create()
 
   init {
     loadItems()
     logOutput()
   }
 
+  private fun publishChanges() {
+    itemsSubject.onNext(items)
+  }
+
   private fun saveItems() {
     sharedPreferences
       .edit()
-      .putString(ITEMS_KEY, jsonAdapter.toJson(_items))
+      .putString(ITEMS_KEY, jsonAdapter.toJson(items))
       .apply()
   }
 
   private fun loadItems() {
     val safeJson = sharedPreferences.getString(ITEMS_KEY, null) ?: return
     jsonAdapter.fromJson(safeJson)?.let {
-      _items = it.toMutableList()
+      items = it.toMutableList()
     }
+    publishChanges()
   }
 
   private fun logOutput() {
     Log.d("FollowedNewsManager", items.toString())
   }
 
-  fun isSaved(newsItem: NewsItem) = newsItem in _items
+  fun isSaved(newsItem: NewsItem) = newsItem in items
 
   fun add(newsItem: NewsItem) {
-    _items.add(newsItem)
+    items.add(newsItem)
     saveItems()
     logOutput()
+    publishChanges()
   }
 
   fun remove(newsItem: NewsItem) {
-    _items.remove(newsItem)
+    items.remove(newsItem)
     saveItems()
     logOutput()
+    publishChanges()
   }
 }
