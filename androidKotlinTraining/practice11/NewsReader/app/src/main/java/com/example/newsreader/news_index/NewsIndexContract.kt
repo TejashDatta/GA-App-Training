@@ -20,6 +20,6 @@ class NewsIndexContract {
     fun refreshNewsItems()
     fun onClickNewsItem(newsItem: NewsItem)
     fun onClickNewsItemOptionsMenu(newsItem: NewsItem)
-    fun onClickNewsItemOption(newsItem: NewsItem, option: NewsItemMenuOption)
+    fun onClickNewsItemOption(newsItem: NewsItem, option: OptionsModalBottomSheet.Option)
   }
 }

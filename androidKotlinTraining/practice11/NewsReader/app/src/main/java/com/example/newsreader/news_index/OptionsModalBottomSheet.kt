@@ -8,14 +8,14 @@ import android.widget.TextView
 import com.example.newsreader.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-enum class NewsItemMenuOption { SAVE, SHARE }
-
 class OptionsModalBottomSheet(
   private val isNewsItemSaved: Boolean,
-  private val optionClickListener: (NewsItemMenuOption) -> Unit
+  private val optionClickListener: (Option) -> Unit
 ) : BottomSheetDialogFragment() {
   private lateinit var saveOptionTextView: TextView
   private lateinit var shareOptionTextView: TextView
+
+  enum class Option { SAVE, SHARE }
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -28,12 +28,12 @@ class OptionsModalBottomSheet(
 
     saveOptionTextView.setOnClickListener {
       dismissAllowingStateLoss()
-      optionClickListener(NewsItemMenuOption.SAVE)
+      optionClickListener(Option.SAVE)
     }
 
     shareOptionTextView.setOnClickListener {
       dismissAllowingStateLoss()
-      optionClickListener(NewsItemMenuOption.SHARE)
+      optionClickListener(Option.SHARE)
     }
 
     return root
