@@ -50,12 +50,14 @@ class FollowedNewsManager(private val sharedPreferences: SharedPreferences) {
 
   fun isSaved(newsItem: NewsItem) = newsItem in _items
 
-  fun addOrRemove(newsItem: NewsItem) {
-    if (isSaved(newsItem)) {
-      _items.remove(newsItem)
-    } else {
-      _items.add(newsItem)
-    }
+  fun add(newsItem: NewsItem) {
+    _items.add(newsItem)
+    saveItems()
+    logOutput()
+  }
+
+  fun remove(newsItem: NewsItem) {
+    _items.remove(newsItem)
     saveItems()
     logOutput()
   }
