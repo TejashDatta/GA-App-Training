@@ -30,7 +30,8 @@ class NewsItemsRepositoryTest {
   }
 
   @Test fun getNewsItems_returnsNewsItems() {
-    newsChannel = NetworkNewsChannel(listOf(NetworkNewsItem("test", "testUrl", ZonedDateTime.now())))
+    newsChannel =
+      NetworkNewsChannel(listOf(NetworkNewsItem("test", "testUrl", ZonedDateTime.now(), "testSource")))
     `when`(newsApi.retrofitService).thenReturn(retrofitService)
     `when`(retrofitService.getNewsChannel()).thenReturn(Observable.just(newsChannel))
 
