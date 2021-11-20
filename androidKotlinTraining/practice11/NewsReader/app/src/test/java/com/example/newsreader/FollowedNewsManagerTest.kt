@@ -45,14 +45,16 @@ class FollowedNewsManagerTest {
     setupFollowedNewsManagerWithNewsItem()
 
     verify(sharedPreferences).getString(ITEMS_KEY, null)
-    assertEquals(followedNewsManager.items[0], newsItem)
+    val items = followedNewsManager.itemsSubject.blockingFirst()
+    assertEquals(items[0], newsItem)
   }
 
   @Test fun add_addsToList() {
     setupEmptyFollowedNewsManager()
 
     followedNewsManager.add(newsItem)
-    assertEquals(followedNewsManager.items[0], newsItem)
+    val items = followedNewsManager.itemsSubject.blockingFirst()
+    assertEquals(items[0], newsItem)
   }
 
   @Test fun add_addsToSharedPreferences() {
@@ -67,7 +69,8 @@ class FollowedNewsManagerTest {
     setupFollowedNewsManagerWithNewsItem()
 
     followedNewsManager.remove(newsItem)
-    assertEquals(followedNewsManager.items.size, 0)
+    val items = followedNewsManager.itemsSubject.blockingFirst()
+    assertEquals(items.size, 0)
   }
 
   @Test fun remove_removesFromSharedPreferences() {
