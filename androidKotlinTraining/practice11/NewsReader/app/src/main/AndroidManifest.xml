@@ -21,6 +21,9 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <activity
+      android:name=".followed_news.FollowedNewsActivity"
+      android:label="フォロー中" />
   </application>
 
 </manifest>
