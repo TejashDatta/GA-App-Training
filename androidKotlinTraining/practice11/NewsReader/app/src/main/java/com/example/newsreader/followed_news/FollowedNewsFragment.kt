@@ -24,7 +24,7 @@ class FollowedNewsFragment: Fragment(), FollowedNewsContract.View {
   override lateinit var presenter: FollowedNewsContract.Presenter
   private lateinit var newsRecyclerView: RecyclerView
   private lateinit var recyclerViewAdapter: NewsRecyclerViewAdapter
-  private lateinit var messageTextView: TextView
+  private lateinit var noFollowedItemsTextView: TextView
 
   override fun onResume() {
     super.onResume()
@@ -47,7 +47,7 @@ class FollowedNewsFragment: Fragment(), FollowedNewsContract.View {
     )
     newsRecyclerView.adapter = recyclerViewAdapter
 
-    messageTextView = root.findViewById(R.id.messageTextView)
+    noFollowedItemsTextView = root.findViewById(R.id.noFollowedItemsTextView)
 
     return root
   }
@@ -84,18 +84,17 @@ class FollowedNewsFragment: Fragment(), FollowedNewsContract.View {
     Toast.makeText(context, messageResourceID, Toast.LENGTH_SHORT).show()
   }
 
-  override fun showNoResults() {
-    displayMessageTextView()
-    messageTextView.text = getString(R.string.no_followed_items)
+  override fun showNoFollowedItems() {
+    displayNoFollowedItemsTextView()
   }
 
   private fun displayRecyclerView() {
     newsRecyclerView.visibility = View.VISIBLE
-    messageTextView.visibility = View.GONE
+    noFollowedItemsTextView.visibility = View.GONE
   }
 
-  private fun displayMessageTextView() {
+  private fun displayNoFollowedItemsTextView() {
     newsRecyclerView.visibility = View.GONE
-    messageTextView.visibility = View.VISIBLE
+    noFollowedItemsTextView.visibility = View.VISIBLE
   }
 }

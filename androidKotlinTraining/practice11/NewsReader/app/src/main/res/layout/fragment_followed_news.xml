@@ -14,11 +14,11 @@
     app:layout_constraintStart_toStartOf="parent" />
 
   <TextView
-    android:id="@+id/messageTextView"
+    android:id="@+id/noFollowedItemsTextView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:visibility="gone"
-    android:text="loading"
+    android:text="@string/no_followed_items"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

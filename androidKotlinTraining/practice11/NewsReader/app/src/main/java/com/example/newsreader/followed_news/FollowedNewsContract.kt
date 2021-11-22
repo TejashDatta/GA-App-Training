@@ -12,11 +12,10 @@ class FollowedNewsContract {
     fun openOptionsMenu(newsItem: NewsItem, isNewsItemSaved: Boolean)
     fun shareNews(newsItem: NewsItem)
     fun showToastForSaveClicked(isSaved: Boolean)
-    fun showNoResults()
+    fun showNoFollowedItems()
   }
 
   interface Presenter: BasePresenter {
-    fun setupView()
     fun onClickNewsItem(newsItem: NewsItem)
     fun onClickNewsItemOptionsMenu(newsItem: NewsItem)
     fun onClickNewsItemOption(newsItem: NewsItem, option: OptionsModalBottomSheet.Option)

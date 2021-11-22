@@ -1,6 +1,5 @@
 package com.example.newsreader.followed_news
 
-import android.util.Log
 import com.example.newsreader.BaseSchedulerProvider
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.source.FollowedNewsManager
@@ -28,17 +27,16 @@ class FollowedNewsPresenter(
     clearObservers()
   }
 
-  override fun setupView() {
-    followedNewsManager.itemsSubject
+  private fun setupView() {
+    compositeDisposable.add(followedNewsManager.itemsSubject
       .observeOn(schedulerProvider.ui())
       .subscribeBy(
         onNext = { newsItems ->
-          Log.d("FollowedNewsPresenter", newsItems.toString())
           if (newsItems.isEmpty())
-            newsIndexView.showNoResults()
+            newsIndexView.showNoFollowedItems()
           else
             newsIndexView.showItemsInRecyclerView(newsItems)
-        })
+        }))
   }
 
   override fun onClickNewsItem(newsItem: NewsItem) {
