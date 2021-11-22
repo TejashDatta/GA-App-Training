@@ -1,9 +1,11 @@
 package com.example.newsreader
 
-import com.example.newsreader.data.NewsItemsRepository
 import com.example.newsreader.data.models.NewsItem
+import com.example.newsreader.data.source.FollowedNewsManager
+import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.news_index.NewsIndexContract
 import com.example.newsreader.news_index.NewsIndexPresenter
+import com.example.newsreader.news_index.OptionsModalBottomSheet
 import io.reactivex.rxjava3.core.Observable
 import org.junit.Before
 import org.junit.Test
@@ -18,15 +20,18 @@ class NewsIndexPresenterTest {
   @Mock private lateinit var newsIndexView: NewsIndexContract.View
 
   @Mock private lateinit var newsItemsRepository: NewsItemsRepository
+  @Mock private lateinit var followedNewsManager: FollowedNewsManager
 
   @Mock private lateinit var newsItem1: NewsItem
   @Mock private lateinit var newsItem2: NewsItem
+
+  private val isNewsItemSaved = true
 
   private lateinit var newsIndexPresenter: NewsIndexPresenter
 
   @Before fun setupNewsIndexPresenter() {
     newsIndexPresenter =
-      NewsIndexPresenter(newsIndexView, newsItemsRepository, TestSchedulerProvider())
+      NewsIndexPresenter(newsIndexView, newsItemsRepository, followedNewsManager, TestSchedulerProvider())
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -39,10 +44,42 @@ class NewsIndexPresenterTest {
     verify(newsIndexView).openInTab(newsItem1.link)
   }
 
-  @Test fun onClickNewsItemOptions_opensOptionsMenu() {
-    newsIndexPresenter.onClickNewsItemOptions(newsItem1)
+  @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
+    `when`(followedNewsManager.isSaved(newsItem1)).thenReturn(isNewsItemSaved)
 
-    verify(newsIndexView).openOptionsMenu(newsItem1)
+    newsIndexPresenter.onClickNewsItemOptionsMenu(newsItem1)
+
+    verify(newsIndexView).openOptionsMenu(newsItem1, isNewsItemSaved)
+  }
+
+  @Test fun onClickNewsItemOption_savesNewsItemWhenOptionIsSaveAndItemIsUnsaved() {
+    `when`(followedNewsManager.isSaved(newsItem1)).thenReturn(false)
+
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SAVE)
+
+    verify(followedNewsManager).add(newsItem1)
+  }
+
+  @Test fun onClickNewsItemOption_unsavesNewsItemWhenOptionIsSaveAndItemIsSaved() {
+    `when`(followedNewsManager.isSaved(newsItem1)).thenReturn(true)
+
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SAVE)
+
+    verify(followedNewsManager).remove(newsItem1)
+  }
+
+  @Test fun onClickNewsItemOption_showsToastWhenOptionIsSave() {
+    `when`(followedNewsManager.isSaved(newsItem1)).thenReturn(isNewsItemSaved)
+
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SAVE)
+
+    verify(newsIndexView).showToastForSaveClicked(isNewsItemSaved)
+  }
+
+  @Test fun onClickNewsItemOption_sharesNewsWhenOptionIsShare() {
+    newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SHARE)
+
+    verify(newsIndexView).shareNews(newsItem1)
   }
 
   @Test fun start_showItemsInRecyclerViewWhenThereAreResults() {

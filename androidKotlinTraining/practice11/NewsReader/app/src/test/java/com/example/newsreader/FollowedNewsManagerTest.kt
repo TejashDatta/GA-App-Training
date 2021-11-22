@@ -2,7 +2,7 @@ package com.example.newsreader
 
 import android.content.SharedPreferences
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.followed_news.FollowedNewsManager
+import com.example.newsreader.data.source.FollowedNewsManager
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.example.newsreader.data
+package com.example.newsreader.data.source
 
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.network.NewsApi

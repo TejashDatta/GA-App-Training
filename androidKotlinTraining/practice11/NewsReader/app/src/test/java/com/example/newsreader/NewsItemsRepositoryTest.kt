@@ -1,6 +1,6 @@
 package com.example.newsreader
 
-import com.example.newsreader.data.NewsItemsRepository
+import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.network.NewsApi
 import com.example.newsreader.network.NewsApiService
 import com.example.newsreader.network.data_transfer_objects.NetworkNewsChannel
