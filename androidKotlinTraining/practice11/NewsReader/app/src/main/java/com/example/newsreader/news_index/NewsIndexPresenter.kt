@@ -49,29 +49,6 @@ class NewsIndexPresenter(
     )
   }
 
-  override fun onClickNewsItem(newsItem: NewsItem) {
-    newsIndexView.openInTab(newsItem.link)
-  }
-
-  override fun onClickNewsItemOptionsMenu(newsItem: NewsItem) {
-    newsIndexView.openOptionsMenu(newsItem, followedNewsManager.isSaved(newsItem))
-  }
-
-  override fun onClickNewsItemOption(newsItem: NewsItem, option: OptionsModalBottomSheet.Option) {
-    when(option) {
-      OptionsModalBottomSheet.Option.SAVE -> {
-        if(followedNewsManager.isSaved(newsItem)) {
-          followedNewsManager.remove(newsItem)
-        } else {
-          followedNewsManager.add(newsItem)
-        }
-        newsIndexView.showToastForSaveClicked(followedNewsManager.isSaved(newsItem))
-      }
-
-      OptionsModalBottomSheet.Option.SHARE -> newsIndexView.shareNews(newsItem)
-    }
-  }
-
   private fun clearObservers() {
     compositeDisposable.clear()
   }
