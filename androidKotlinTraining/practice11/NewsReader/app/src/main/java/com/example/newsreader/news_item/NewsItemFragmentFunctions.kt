@@ -9,17 +9,17 @@ import com.example.newsreader.R
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.news_index.OptionsModalBottomSheet
 
-class NewsItemFragmentFunctions(
-  var newsItemFunctionsPresenter: NewsItemFunctionsContract.Presenter
-) : Fragment(), NewsItemFunctionsContract.View {
+class NewsItemFragmentFunctions: NewsItemFunctionsContract.View {
+  lateinit var presenter: NewsItemFunctionsContract.Presenter
+  lateinit var fragment: Fragment
 
   override fun openInTab(url: String) {
-    CustomTabsIntent.Builder().build().launchUrl(requireContext(), Uri.parse(url))
+    CustomTabsIntent.Builder().build().launchUrl(fragment.requireContext(), Uri.parse(url))
   }
 
   override fun openOptionsMenu(newsItem: NewsItem, isNewsItemSaved: Boolean) {
-    OptionsModalBottomSheet(isNewsItemSaved) { option -> newsItemFunctionsPresenter.onClickNewsItemOption(newsItem, option) }
-      .show(childFragmentManager, tag)
+    OptionsModalBottomSheet(isNewsItemSaved) { option -> presenter.onClickNewsItemOption(newsItem, option) }
+      .show(fragment.childFragmentManager, fragment.tag)
   }
 
   override fun shareNews(newsItem: NewsItem) {
@@ -31,12 +31,12 @@ class NewsItemFragmentFunctions(
     }
 
     val shareIntent = Intent.createChooser(sendIntent, null)
-    startActivity(shareIntent)
+    fragment.startActivity(shareIntent)
   }
 
   override fun showToastForSaveClicked(isSaved: Boolean) {
     val messageResourceID = if (isSaved) R.string.item_followed else R.string.item_unfollowed
 
-    Toast.makeText(context, messageResourceID, Toast.LENGTH_SHORT).show()
+    Toast.makeText(fragment.context, messageResourceID, Toast.LENGTH_SHORT).show()
   }
 }
