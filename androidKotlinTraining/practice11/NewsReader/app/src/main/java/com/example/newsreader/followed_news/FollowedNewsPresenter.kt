@@ -8,16 +8,16 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class FollowedNewsPresenter(
-  private val newsIndexView: FollowedNewsContract.View,
+  private val followedNewsView: FollowedNewsContract.View,
   private val followedNewsManager: FollowedNewsManager,
   private val schedulerProvider: BaseSchedulerProvider
 ): FollowedNewsContract.Presenter,
-  NewsItemFunctionsContract.Presenter by NewsItemPresenterFunctions(newsIndexView, followedNewsManager)
+  NewsItemFunctionsContract.Presenter by NewsItemPresenterFunctions(followedNewsView, followedNewsManager)
 {
   private var compositeDisposable = CompositeDisposable()
 
   init {
-    newsIndexView.presenter = this
+    followedNewsView.presenter = this
   }
 
   override fun start() {
@@ -34,9 +34,9 @@ class FollowedNewsPresenter(
       .subscribeBy(
         onNext = { newsItems ->
           if (newsItems.isEmpty())
-            newsIndexView.showNoFollowedItems()
+            followedNewsView.showNoFollowedItems()
           else
-            newsIndexView.showItemsInRecyclerView(newsItems)
+            followedNewsView.showItemsInRecyclerView(newsItems)
         }))
   }
 
