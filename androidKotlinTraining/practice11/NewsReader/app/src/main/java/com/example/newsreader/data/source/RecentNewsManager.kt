@@ -16,7 +16,8 @@ class RecentNewsManager(private val sharedPreferences: SharedPreferences) {
   private val jsonAdapter: JsonAdapter<List<RecentNewsItem>> =
     Moshi.Builder().build()
       .adapter(Types.newParameterizedType(List::class.java, RecentNewsItem::class.java))
-  
+
+//  TODO: limit number of items
   private var _items = mutableListOf<RecentNewsItem>()
   val items: List<RecentNewsItem>
     get() = _items
