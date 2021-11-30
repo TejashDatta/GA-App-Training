@@ -3,6 +3,7 @@ package com.example.newsreader
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.source.FollowedNewsManager
 import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.RecentNewsManager
 import com.example.newsreader.news_index.NewsIndexContract
 import com.example.newsreader.news_index.NewsIndexPresenter
 import com.example.newsreader.news_index.OptionsModalBottomSheet
@@ -21,6 +22,7 @@ class NewsIndexPresenterTest {
 
   @Mock private lateinit var newsItemsRepository: NewsItemsRepository
   @Mock private lateinit var followedNewsManager: FollowedNewsManager
+  @Mock private lateinit var recentNewsManager: RecentNewsManager
 
   @Mock private lateinit var newsItem1: NewsItem
   @Mock private lateinit var newsItem2: NewsItem
@@ -31,7 +33,8 @@ class NewsIndexPresenterTest {
 
   @Before fun setupNewsIndexPresenter() {
     newsIndexPresenter =
-      NewsIndexPresenter(newsIndexView, newsItemsRepository, followedNewsManager, TestSchedulerProvider())
+      NewsIndexPresenter(newsIndexView, newsItemsRepository, followedNewsManager, recentNewsManager,
+        TestSchedulerProvider())
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -42,6 +45,12 @@ class NewsIndexPresenterTest {
     newsIndexPresenter.onClickNewsItem(newsItem1)
 
     verify(newsIndexView).openInTab(newsItem1.link)
+  }
+
+  @Test fun onClickNewsItem_savesToRecentNews() {
+    newsIndexPresenter.onClickNewsItem(newsItem1)
+
+    verify(recentNewsManager).add(newsItem1)
   }
 
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {

@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.newsreader.BaseSchedulerProvider
 import com.example.newsreader.data.source.FollowedNewsManager
 import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.RecentNewsManager
 import com.example.newsreader.news_item.NewsItemFunctionsContract
 import com.example.newsreader.news_item.NewsItemPresenterFunctions
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -13,9 +14,11 @@ class NewsIndexPresenter(
   private val newsIndexView: NewsIndexContract.View,
   private val newsItemsRepository: NewsItemsRepository,
   private val followedNewsManager: FollowedNewsManager,
+  private val recentNewsManager: RecentNewsManager,
   private val schedulerProvider: BaseSchedulerProvider
 ): NewsIndexContract.Presenter,
-  NewsItemFunctionsContract.Presenter by NewsItemPresenterFunctions(newsIndexView, followedNewsManager)
+  NewsItemFunctionsContract.Presenter by
+    NewsItemPresenterFunctions(newsIndexView, followedNewsManager, recentNewsManager)
 {
   private var compositeDisposable = CompositeDisposable()
 

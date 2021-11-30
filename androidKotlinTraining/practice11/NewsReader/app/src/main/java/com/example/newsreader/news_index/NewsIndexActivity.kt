@@ -9,8 +9,9 @@ import com.example.calculator.util.replaceFragmentInActivity
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
 import com.example.newsreader.data.source.FollowedNewsManager
-import com.example.newsreader.data.source.FollowedNewsSharedPreferencesRetriever
 import com.example.newsreader.data.source.NewsItemsRepositoryLocator
+import com.example.newsreader.data.source.RecentNewsManager
+import com.example.newsreader.data.source.SharedPreferencesRetriever
 import com.example.newsreader.followed_news.FollowedNewsActivity
 
 class NewsIndexActivity : AppCompatActivity() {
@@ -22,8 +23,12 @@ class NewsIndexActivity : AppCompatActivity() {
     setSupportActionBar(findViewById(R.id.toolbar))
 
     val followedNewsSharedPreferences =
-      FollowedNewsSharedPreferencesRetriever(applicationContext).retrieve()
+      SharedPreferencesRetriever(applicationContext).retrieveFollowedNews()
     val followedNewsManager = FollowedNewsManager(followedNewsSharedPreferences)
+
+    val recentNewsSharedPreferences =
+      SharedPreferencesRetriever(applicationContext).retrieveRecentNews()
+    val recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
 
     val newsIndexFragment =
       supportFragmentManager.findFragmentById(R.id.contentFrame) as NewsIndexFragment?
@@ -36,6 +41,7 @@ class NewsIndexActivity : AppCompatActivity() {
         newsIndexFragment,
         NewsItemsRepositoryLocator.repository,
         followedNewsManager,
+        recentNewsManager,
         SchedulerProvider()
       )
   }

@@ -6,7 +6,8 @@ import com.example.calculator.util.replaceFragmentInActivity
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
 import com.example.newsreader.data.source.FollowedNewsManager
-import com.example.newsreader.data.source.FollowedNewsSharedPreferencesRetriever
+import com.example.newsreader.data.source.RecentNewsManager
+import com.example.newsreader.data.source.SharedPreferencesRetriever
 
 class FollowedNewsActivity : AppCompatActivity() {
   private lateinit var followedNewsPresenter: FollowedNewsPresenter
@@ -21,8 +22,12 @@ class FollowedNewsActivity : AppCompatActivity() {
     }
 
     val followedNewsSharedPreferences =
-      FollowedNewsSharedPreferencesRetriever(applicationContext).retrieve()
+      SharedPreferencesRetriever(applicationContext).retrieveFollowedNews()
     val followedNewsManager = FollowedNewsManager(followedNewsSharedPreferences)
+
+    val recentNewsSharedPreferences =
+      SharedPreferencesRetriever(applicationContext).retrieveRecentNews()
+    val recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
 
     val followedNewsFragment =
       supportFragmentManager.findFragmentById(R.id.contentFrame) as FollowedNewsFragment?
@@ -34,6 +39,7 @@ class FollowedNewsActivity : AppCompatActivity() {
       FollowedNewsPresenter(
         followedNewsFragment,
         followedNewsManager,
+        recentNewsManager,
         SchedulerProvider()
       )
   }

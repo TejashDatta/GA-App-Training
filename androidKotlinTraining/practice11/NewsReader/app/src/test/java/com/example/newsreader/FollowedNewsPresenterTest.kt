@@ -2,6 +2,7 @@ package com.example.newsreader
 
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.source.FollowedNewsManager
+import com.example.newsreader.data.source.RecentNewsManager
 import com.example.newsreader.followed_news.FollowedNewsContract
 import com.example.newsreader.followed_news.FollowedNewsPresenter
 import com.example.newsreader.news_index.OptionsModalBottomSheet
@@ -19,6 +20,7 @@ class FollowedNewsPresenterTest {
   @Mock private lateinit var followedNewsView: FollowedNewsContract.View
 
   @Mock private lateinit var followedNewsManager: FollowedNewsManager
+  @Mock private lateinit var recentNewsManager: RecentNewsManager
 
   @Mock private lateinit var newsItem: NewsItem
 
@@ -28,7 +30,7 @@ class FollowedNewsPresenterTest {
 
   @Before fun setupFollowedNewsPresenter() {
     followedNewsPresenter =
-      FollowedNewsPresenter(followedNewsView, followedNewsManager, TestSchedulerProvider())
+      FollowedNewsPresenter(followedNewsView, followedNewsManager, recentNewsManager, TestSchedulerProvider())
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -62,6 +64,12 @@ class FollowedNewsPresenterTest {
     followedNewsPresenter.onClickNewsItem(newsItem)
 
     verify(followedNewsView).openInTab(newsItem.link)
+  }
+
+  @Test fun onClickNewsItem_savesToRecentNews() {
+    followedNewsPresenter.onClickNewsItem(newsItem)
+
+    verify(recentNewsManager).add(newsItem)
   }
 
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
