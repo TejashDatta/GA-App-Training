@@ -28,6 +28,7 @@ class RecentNewsManagerTest {
     "[{\"link\":\"testUrl\",\"source\":\"testSource\",\"title\":\"test\"}]"
 
   private val ITEMS_KEY = "recent_news"
+  private val MAX_ITEMS = 20
 
   @Before fun setupSharedPreferencesMocks() {
     `when`(sharedPreferences.edit()).thenReturn(sharedPreferencesEditor)
@@ -51,11 +52,16 @@ class RecentNewsManagerTest {
     assertEquals(recentNewsManager.items[0], recentNewsItem)
   }
 
-  @Test fun add_addsToList() {
-    setupEmptyRecentNewsManager()
+  @Test fun add_addsToFrontOfList() {
+    setupRecentNewsManagerWithRecentNewsItem()
 
-    recentNewsManager.add(newsItem)
-    assertEquals(recentNewsManager.items[0], recentNewsItem)
+    var newsItem2 =
+      NewsItem("test2", "testUrl", ZonedDateTime.parse("2021-11-16T16:31:29.042+05:30[Asia/Calcutta]"), "testSource")
+    var recentNewsItem2 =
+      RecentNewsItem("test2", "testUrl", "testSource")
+
+    recentNewsManager.add(newsItem2)
+    assertEquals(recentNewsManager.items[0], recentNewsItem2)
   }
 
   @Test fun add_addsToSharedPreferences() {
@@ -64,5 +70,15 @@ class RecentNewsManagerTest {
     recentNewsManager.add(newsItem)
     verify(sharedPreferences).edit()
     verify(sharedPreferencesEditor).putString(ITEMS_KEY, recentNewsItemListJson)
+  }
+
+  @Test fun onlyContainsLessThanOrEqualToMaxItems() {
+    setupEmptyRecentNewsManager()
+
+    repeat(MAX_ITEMS + 1) {
+      recentNewsManager.add(newsItem)
+    }
+
+    assertEquals(recentNewsManager.items.size, MAX_ITEMS)
   }
 }

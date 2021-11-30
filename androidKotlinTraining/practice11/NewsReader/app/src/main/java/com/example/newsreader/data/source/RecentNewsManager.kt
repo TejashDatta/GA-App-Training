@@ -4,23 +4,29 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.models.RecentNewsItem
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
+import com.squareup.moshi.*
 
 class RecentNewsManager(private val sharedPreferences: SharedPreferences) {
   companion object {
+    private const val MAX_ITEMS = 20
     private const val ITEMS_KEY = "recent_news"
   }
 
-  private val jsonAdapter: JsonAdapter<List<RecentNewsItem>> =
-    Moshi.Builder().build()
-      .adapter(Types.newParameterizedType(List::class.java, RecentNewsItem::class.java))
+  class ArrayDequeAdapter {
+    @FromJson
+    fun fromJson(items: Array<RecentNewsItem>) = ArrayDeque(items.toList())
 
-//  TODO: limit number of items
-  private var _items = mutableListOf<RecentNewsItem>()
+    @ToJson
+    fun toJson(items: ArrayDeque<RecentNewsItem>) = items.toArray()
+  }
+
+  private val jsonAdapter: JsonAdapter<ArrayDeque<RecentNewsItem>> =
+    Moshi.Builder().add(ArrayDequeAdapter()).build()
+      .adapter(Types.newParameterizedType(ArrayDeque::class.java, RecentNewsItem::class.java))
+
+  private var _items = ArrayDeque<RecentNewsItem>(MAX_ITEMS)
   val items: List<RecentNewsItem>
-    get() = _items
+    get() = _items.toList()
 
   init {
     loadItems()
@@ -44,17 +50,18 @@ class RecentNewsManager(private val sharedPreferences: SharedPreferences) {
 
   private fun loadItems() {
     val safeJson = sharedPreferences.getString(ITEMS_KEY, null) ?: return
-    jsonAdapter.fromJson(safeJson)?.let {
-      _items = it.toMutableList()
-    }
+    _items = jsonAdapter.fromJson(safeJson)!!
   }
+
+  private fun isFull() = _items.size == MAX_ITEMS
 
   private fun logOutput() {
     Log.d("RecentNewsManager", _items.toString())
   }
 
   fun add(newsItem: NewsItem) {
-    _items.add(newsItemToRecentNewsItem(newsItem))
+    if (isFull()) _items.removeLast()
+    _items.addFirst(newsItemToRecentNewsItem(newsItem))
     saveItems()
     logOutput()
   }
