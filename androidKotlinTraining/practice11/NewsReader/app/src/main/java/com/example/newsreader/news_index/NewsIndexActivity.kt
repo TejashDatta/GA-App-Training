@@ -51,12 +51,10 @@ class NewsIndexActivity : AppCompatActivity() {
         shareGoogleNewsHomepageURL()
         true
       }
-
       R.id.action_followed_items -> {
         showSavedNews()
         true
       }
-
       else -> super.onOptionsItemSelected(item)
     }
   }
