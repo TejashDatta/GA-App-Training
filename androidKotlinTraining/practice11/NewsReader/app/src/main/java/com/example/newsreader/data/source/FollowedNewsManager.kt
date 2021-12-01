@@ -3,19 +3,15 @@ package com.example.newsreader.data.source
 import android.content.SharedPreferences
 import android.util.Log
 import com.example.newsreader.data.models.NewsItem
-import com.squareup.moshi.*
+import com.example.newsreader.data.source.moshi_adapters.ZonedDateTimeAdapter
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import org.threeten.bp.ZonedDateTime
 
 class FollowedNewsManager(private val sharedPreferences: SharedPreferences) {
   companion object {
     private const val ITEMS_KEY = "followed_news"
-  }
-
-  class ZonedDateTimeAdapter {
-    @ToJson fun toJson(zonedDateTime: ZonedDateTime) = zonedDateTime.toString()
-
-    @FromJson fun fromJson(dateTimeString: String) = ZonedDateTime.parse(dateTimeString)
   }
 
   private val jsonAdapter: JsonAdapter<List<NewsItem>> =
