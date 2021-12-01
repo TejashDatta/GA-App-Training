@@ -7,7 +7,7 @@ import com.example.newsreader.data.models.NewsItem
 class NewsIndexContract {
   interface View: BaseView<Presenter> {
     fun showItemsInRecyclerView(newsItems: List<NewsItem>)
-    fun openInTab(url: String)
+    fun openInCustomTab(url: String)
     fun openOptionsMenu(newsItem: NewsItem, isNewsItemSaved: Boolean)
     fun shareNews(newsItem: NewsItem)
     fun showToastForSaveClicked(isSaved: Boolean)

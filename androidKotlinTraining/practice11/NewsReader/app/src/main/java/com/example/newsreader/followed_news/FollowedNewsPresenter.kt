@@ -40,7 +40,7 @@ class FollowedNewsPresenter(
   }
 
   override fun onClickNewsItem(newsItem: NewsItem) {
-    newsIndexView.openInTab(newsItem.link)
+    newsIndexView.openInCustomTab(newsItem.link)
   }
 
   override fun onClickNewsItemOptionsMenu(newsItem: NewsItem) {

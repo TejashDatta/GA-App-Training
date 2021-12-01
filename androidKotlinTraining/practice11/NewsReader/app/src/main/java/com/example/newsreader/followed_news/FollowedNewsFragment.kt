@@ -57,7 +57,7 @@ class FollowedNewsFragment: Fragment(), FollowedNewsContract.View {
     recyclerViewAdapter.newsItems = newsItems
   }
 
-  override fun openInTab(url: String) {
+  override fun openInCustomTab(url: String) {
     CustomTabsIntent.Builder().build().launchUrl(requireContext(), Uri.parse(url))
   }
 

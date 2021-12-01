@@ -8,7 +8,7 @@ import com.example.newsreader.news_index.OptionsModalBottomSheet
 class FollowedNewsContract {
   interface View: BaseView<Presenter> {
     fun showItemsInRecyclerView(newsItems: List<NewsItem>)
-    fun openInTab(url: String)
+    fun openInCustomTab(url: String)
     fun openOptionsMenu(newsItem: NewsItem, isNewsItemSaved: Boolean)
     fun shareNews(newsItem: NewsItem)
     fun showToastForSaveClicked(isSaved: Boolean)

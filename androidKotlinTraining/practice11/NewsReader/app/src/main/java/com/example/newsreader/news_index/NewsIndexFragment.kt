@@ -61,7 +61,7 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
     swipeRefreshLayout.isRefreshing = false
   }
 
-  override fun openInTab(url: String) {
+  override fun openInCustomTab(url: String) {
     CustomTabsIntent.Builder().build().launchUrl(requireContext(), Uri.parse(url))
   }
 
