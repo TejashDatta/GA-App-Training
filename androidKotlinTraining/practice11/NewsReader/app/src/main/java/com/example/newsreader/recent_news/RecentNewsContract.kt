@@ -12,6 +12,6 @@ class RecentNewsContract {
   }
 
   interface Presenter: BasePresenter {
-    fun onClickRecentNewsItem(newsItem: NewsItem)
+    fun onClickNewsItem(newsItem: NewsItem)
   }
 }

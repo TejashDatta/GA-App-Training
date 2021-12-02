@@ -23,7 +23,7 @@ class RecentNewsPresenter(
     }
   }
 
-  override fun onClickRecentNewsItem(newsItem: NewsItem) {
+  override fun onClickNewsItem(newsItem: NewsItem) {
     recentNewsView.openInCustomTab(newsItem.link)
   }
 }
