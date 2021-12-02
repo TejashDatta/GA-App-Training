@@ -11,6 +11,7 @@ import com.example.newsreader.SchedulerProvider
 import com.example.newsreader.data.source.FollowedNewsManager
 import com.example.newsreader.data.source.FollowedNewsSharedPreferencesRetriever
 import com.example.newsreader.data.source.NewsItemsRepositoryLocator
+import com.example.newsreader.followed_news.FollowedNewsActivity
 
 class NewsIndexActivity : AppCompatActivity() {
   private lateinit var newsIndexPresenter: NewsIndexPresenter
@@ -50,12 +51,10 @@ class NewsIndexActivity : AppCompatActivity() {
         shareGoogleNewsHomepageURL()
         true
       }
-
-  //    TODO: implement navigation to followed items list screen
-  //    R.id.action_followed_items -> {
-  //      true
-  //    }
-
+      R.id.action_followed_items -> {
+        showSavedNews()
+        true
+      }
       else -> super.onOptionsItemSelected(item)
     }
   }
@@ -71,5 +70,10 @@ class NewsIndexActivity : AppCompatActivity() {
 
     val shareIntent = Intent.createChooser(sendIntent, null)
     startActivity(shareIntent)
+  }
+
+  private fun showSavedNews() {
+    val intent = Intent(applicationContext, FollowedNewsActivity::class.java)
+    startActivity(intent)
   }
 }

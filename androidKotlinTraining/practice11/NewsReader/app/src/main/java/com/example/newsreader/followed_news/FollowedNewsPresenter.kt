@@ -1,19 +1,17 @@
-package com.example.newsreader.news_index
+package com.example.newsreader.followed_news
 
-import android.util.Log
 import com.example.newsreader.BaseSchedulerProvider
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.source.FollowedNewsManager
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.news_index.OptionsModalBottomSheet
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
-class NewsIndexPresenter(
-  private val newsIndexView: NewsIndexContract.View,
-  private val newsItemsRepository: NewsItemsRepository,
+class FollowedNewsPresenter(
+  private val newsIndexView: FollowedNewsContract.View,
   private val followedNewsManager: FollowedNewsManager,
   private val schedulerProvider: BaseSchedulerProvider
-): NewsIndexContract.Presenter {
+): FollowedNewsContract.Presenter {
 
   private var compositeDisposable = CompositeDisposable()
 
@@ -22,31 +20,23 @@ class NewsIndexPresenter(
   }
 
   override fun start() {
-    refreshNewsItems()
+    setupView()
   }
 
   override fun end() {
     clearObservers()
   }
 
-  override fun refreshNewsItems() {
-    compositeDisposable.add(newsItemsRepository.getNewsItems()
-      .subscribeOn(schedulerProvider.io())
+  private fun setupView() {
+    compositeDisposable.add(followedNewsManager.itemsSubject
       .observeOn(schedulerProvider.ui())
-      .doOnSubscribe { newsIndexView.showLoading() }
       .subscribeBy(
         onNext = { newsItems ->
-            if (newsItems.isEmpty())
-              newsIndexView.showNoResults()
-            else
-              newsIndexView.showItemsInRecyclerView(newsItems)
-        },
-        onError = { e ->
-            newsIndexView.showError()
-            Log.e("NewsIndexPresenter", e.toString())
-        }
-      )
-    )
+          if (newsItems.isEmpty())
+            newsIndexView.showNoFollowedItems()
+          else
+            newsIndexView.showItemsInRecyclerView(newsItems)
+        }))
   }
 
   override fun onClickNewsItem(newsItem: NewsItem) {
