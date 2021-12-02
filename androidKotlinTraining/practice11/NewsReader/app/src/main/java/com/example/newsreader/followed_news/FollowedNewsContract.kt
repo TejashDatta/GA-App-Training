@@ -11,5 +11,7 @@ class FollowedNewsContract {
     fun showNoFollowedItems()
   }
 
-  interface Presenter: BasePresenter, NewsItemFunctionsContract.Presenter
+  interface Presenter: BasePresenter, NewsItemFunctionsContract.Presenter {
+    fun end()
+  }
 }

@@ -14,6 +14,7 @@ class NewsIndexContract {
   }
 
   interface Presenter: BasePresenter, NewsItemFunctionsContract.Presenter {
+    fun end()
     fun refreshNewsItems()
   }
 }

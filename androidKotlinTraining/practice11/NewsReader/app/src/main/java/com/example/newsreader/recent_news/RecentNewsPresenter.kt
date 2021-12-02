@@ -15,8 +15,6 @@ class RecentNewsPresenter(
     setupView()
   }
 
-  override fun end() {}
-
   private fun setupView() {
     if (recentNewsManager.items.isEmpty()) {
       recentNewsView.showNoRecentItems()
