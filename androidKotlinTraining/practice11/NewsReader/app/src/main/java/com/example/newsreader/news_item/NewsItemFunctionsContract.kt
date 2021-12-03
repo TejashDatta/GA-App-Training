@@ -5,7 +5,7 @@ import com.example.newsreader.news_index.OptionsModalBottomSheet
 
 class NewsItemFunctionsContract {
   interface View {
-    fun openInTab(url: String)
+    fun openInCustomTab(url: String)
     fun openOptionsMenu(newsItem: NewsItem, isNewsItemSaved: Boolean)
     fun shareNews(newsItem: NewsItem)
     fun showToastForSaveClicked(isSaved: Boolean)

@@ -30,10 +30,10 @@ class NewsItemPresenterFunctionsTest {
       NewsItemPresenterFunctions(newsItemFunctionsView, followedNewsManager)
   }
 
-  @Test fun onClickNewsItem_opensTabInView() {
+  @Test fun onClickNewsItem_opensCustomTabInView() {
     newsItemPresenterFunctions.onClickNewsItem(newsItem)
 
-    verify(newsItemFunctionsView).openInTab(newsItem.link)
+    verify(newsItemFunctionsView).openInCustomTab(newsItem.link)
   }
 
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
