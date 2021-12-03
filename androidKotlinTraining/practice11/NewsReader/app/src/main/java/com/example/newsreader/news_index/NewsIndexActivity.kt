@@ -13,6 +13,7 @@ import com.example.newsreader.data.source.NewsItemsRepositoryLocator
 import com.example.newsreader.data.source.RecentNewsManager
 import com.example.newsreader.data.source.SharedPreferencesRetriever
 import com.example.newsreader.followed_news.FollowedNewsActivity
+import com.example.newsreader.recent_news.RecentNewsActivity
 
 class NewsIndexActivity : AppCompatActivity() {
   private lateinit var newsIndexPresenter: NewsIndexPresenter
@@ -57,12 +58,14 @@ class NewsIndexActivity : AppCompatActivity() {
         shareGoogleNewsHomepageURL()
         true
       }
-
       R.id.action_followed_items -> {
         showSavedNews()
         true
       }
-
+      R.id.action_recent_items -> {
+        showRecentNews()
+        true
+      }
       else -> super.onOptionsItemSelected(item)
     }
   }
@@ -82,6 +85,11 @@ class NewsIndexActivity : AppCompatActivity() {
 
   private fun showSavedNews() {
     val intent = Intent(applicationContext, FollowedNewsActivity::class.java)
+    startActivity(intent)
+  }
+
+  private fun showRecentNews() {
+    val intent = Intent(applicationContext, RecentNewsActivity::class.java)
     startActivity(intent)
   }
 }

@@ -24,6 +24,9 @@
     <activity
       android:name=".followed_news.FollowedNewsActivity"
       android:label="フォロー中" />
+    <activity
+      android:name=".recent_news.RecentNewsActivity"
+      android:label="最近閲覧した記事" />
   </application>
 
 </manifest>

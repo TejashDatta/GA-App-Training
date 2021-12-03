@@ -13,4 +13,9 @@
     android:id="@+id/action_followed_items"
     android:title="@string/toolbar_followed_items"
     app:showAsAction="never"/>
+
+  <item
+    android:id="@+id/action_recent_items"
+    android:title="@string/toolbar_recent_items"
+    app:showAsAction="never"/>
 </menu>
