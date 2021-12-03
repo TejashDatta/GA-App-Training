@@ -8,6 +8,7 @@
   <string name="save_for_later">後で読むために保存</string>
   <string name="remove_from_followed_items">[保存した記事]から削除</string>
   <string name="no_followed_items">保存した記事はありません。</string>
+  <string name="no_recent_items">最近閲覧した記事はありません。</string>
   <string name="toolbar_share">ニュースをシェアする</string>
   <string name="toolbar_followed_items">フォロー中</string>
   <string name="item_followed">記事を[フォロー中]に保存しました</string>
