@@ -2,9 +2,10 @@ package com.example.newsreader.news_index
 
 import android.util.Log
 import com.example.newsreader.BaseSchedulerProvider
-import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.source.FollowedNewsManager
 import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.news_item.NewsItemFunctionsContract
+import com.example.newsreader.news_item.NewsItemPresenterFunctions
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
@@ -13,8 +14,9 @@ class NewsIndexPresenter(
   private val newsItemsRepository: NewsItemsRepository,
   private val followedNewsManager: FollowedNewsManager,
   private val schedulerProvider: BaseSchedulerProvider
-): NewsIndexContract.Presenter {
-
+): NewsIndexContract.Presenter,
+  NewsItemFunctionsContract.Presenter by NewsItemPresenterFunctions(newsIndexView, followedNewsManager)
+{
   private var compositeDisposable = CompositeDisposable()
 
   init {
@@ -47,29 +49,6 @@ class NewsIndexPresenter(
         }
       )
     )
-  }
-
-  override fun onClickNewsItem(newsItem: NewsItem) {
-    newsIndexView.openInCustomTab(newsItem.link)
-  }
-
-  override fun onClickNewsItemOptionsMenu(newsItem: NewsItem) {
-    newsIndexView.openOptionsMenu(newsItem, followedNewsManager.isSaved(newsItem))
-  }
-
-  override fun onClickNewsItemOption(newsItem: NewsItem, option: OptionsModalBottomSheet.Option) {
-    when(option) {
-      OptionsModalBottomSheet.Option.SAVE -> {
-        if(followedNewsManager.isSaved(newsItem)) {
-          followedNewsManager.remove(newsItem)
-        } else {
-          followedNewsManager.add(newsItem)
-        }
-        newsIndexView.showToastForSaveClicked(followedNewsManager.isSaved(newsItem))
-      }
-
-      OptionsModalBottomSheet.Option.SHARE -> newsIndexView.shareNews(newsItem)
-    }
   }
 
   private fun clearObservers() {

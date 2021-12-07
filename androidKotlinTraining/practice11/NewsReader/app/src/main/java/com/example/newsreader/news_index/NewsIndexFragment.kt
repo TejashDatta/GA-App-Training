@@ -14,8 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.newsreader.R
 import com.example.newsreader.data.models.NewsItem
+import com.example.newsreader.news_item.NewsItemFragmentFunctions
+import com.example.newsreader.news_item.NewsItemFunctionsContract
 
-class NewsIndexFragment: Fragment(), NewsIndexContract.View {
+class NewsIndexFragment(
+  private val newsItemFragmentFunctions: NewsItemFragmentFunctions = NewsItemFragmentFunctions()
+):
+  Fragment(), NewsIndexContract.View, NewsItemFunctionsContract.View by newsItemFragmentFunctions
+{
   companion object {
     fun newInstance() = NewsIndexFragment()
   }
@@ -51,6 +57,9 @@ class NewsIndexFragment: Fragment(), NewsIndexContract.View {
 
     swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout)
     swipeRefreshLayout.setOnRefreshListener { presenter.refreshNewsItems() }
+
+    newsItemFragmentFunctions.presenter = presenter
+    newsItemFragmentFunctions.fragment = this
 
     return root
   }
