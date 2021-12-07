@@ -1,7 +1,7 @@
 package com.example.newsreader
 
-import com.example.newsreader.network.NewsApiService
-import com.example.newsreader.network.data_transfer_objects.NetworkNewsChannel
+import com.example.newsreader.network.GoogleNewsApiService
+import com.example.newsreader.network.data_transfer_objects.google_news.NetworkGoogleNewsChannel
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -14,10 +14,10 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 
-class NewsApiServiceTest {
+class GoogleNewsApiServiceTest {
   private lateinit var server: MockWebServer
 
-  private lateinit var retrofitService: NewsApiService
+  private lateinit var retrofitService: GoogleNewsApiService
 
   private val exampleResponseContent = MockResponseFileReader("example-rss-response.xml").content
 
@@ -30,7 +30,7 @@ class NewsApiServiceTest {
 
     server.start()
 
-    retrofitService = createRetrofit(server).create(NewsApiService::class.java)
+    retrofitService = createRetrofit(server).create(GoogleNewsApiService::class.java)
   }
 
   private fun createRetrofit(server: MockWebServer): Retrofit {
@@ -54,7 +54,7 @@ class NewsApiServiceTest {
 
   @Test fun getNewsChannel_receivesAndParsesResponseCorrectly() {
     val exampleResponseContentSource = exampleResponseContent.toResponseBody().source()
-    val expected = tikXml.read(exampleResponseContentSource, NetworkNewsChannel::class.java)
+    val expected = tikXml.read(exampleResponseContentSource, NetworkGoogleNewsChannel::class.java)
     val response = retrofitService.getNewsChannel().blockingFirst()
 
     assertEquals(response, expected)
