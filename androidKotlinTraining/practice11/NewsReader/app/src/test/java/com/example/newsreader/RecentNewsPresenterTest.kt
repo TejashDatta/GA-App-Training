@@ -45,8 +45,8 @@ class RecentNewsPresenterTest {
     verify(recentNewsView).showNoRecentItems()
   }
 
-  @Test fun onClickRecentNewsItem_opensCustomTabInView() {
-    recentNewsPresenter.onClickRecentNewsItem(newsItem)
+  @Test fun onClickNewsItem_opensCustomTabInView() {
+    recentNewsPresenter.onClickNewsItem(newsItem)
 
     verify(recentNewsView).openInCustomTab(newsItem.link)
   }
