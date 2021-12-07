@@ -41,10 +41,10 @@ class NewsIndexPresenterTest {
     verify(newsIndexView).presenter = newsIndexPresenter
   }
 
-  @Test fun onClickNewsItem_opensTabInView() {
+  @Test fun onClickNewsItem_opensCustomTabInView() {
     newsIndexPresenter.onClickNewsItem(newsItem1)
 
-    verify(newsIndexView).openInTab(newsItem1.link)
+    verify(newsIndexView).openInCustomTab(newsItem1.link)
   }
 
   @Test fun onClickNewsItem_savesToRecentNews() {
