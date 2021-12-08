@@ -2,6 +2,7 @@ package com.example.newsreader
 
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.source.FollowedNewsManager
+import com.example.newsreader.data.source.RecentNewsManager
 import com.example.newsreader.news_index.OptionsModalBottomSheet
 import com.example.newsreader.news_item.NewsItemFunctionsContract
 import com.example.newsreader.news_item.NewsItemPresenterFunctions
@@ -18,6 +19,7 @@ class NewsItemPresenterFunctionsTest {
   @Mock private lateinit var newsItemFunctionsView: NewsItemFunctionsContract.View
 
   @Mock private lateinit var followedNewsManager: FollowedNewsManager
+  @Mock private lateinit var recentNewsManager: RecentNewsManager
 
   @Mock private lateinit var newsItem: NewsItem
 
@@ -27,13 +29,19 @@ class NewsItemPresenterFunctionsTest {
 
   @Before fun setupNewsItemPresenterFunctions() {
     newsItemPresenterFunctions =
-      NewsItemPresenterFunctions(newsItemFunctionsView, followedNewsManager)
+      NewsItemPresenterFunctions(newsItemFunctionsView, followedNewsManager, recentNewsManager)
   }
 
   @Test fun onClickNewsItem_opensCustomTabInView() {
     newsItemPresenterFunctions.onClickNewsItem(newsItem)
 
     verify(newsItemFunctionsView).openInCustomTab(newsItem.link)
+  }
+
+  @Test fun onClickNewsItem_savesToRecentNews() {
+    newsItemPresenterFunctions.onClickNewsItem(newsItem)
+
+    verify(recentNewsManager).add(newsItem)
   }
 
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {

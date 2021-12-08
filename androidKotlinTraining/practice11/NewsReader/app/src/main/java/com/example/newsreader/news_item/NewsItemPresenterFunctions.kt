@@ -2,15 +2,18 @@ package com.example.newsreader.news_item
 
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.source.FollowedNewsManager
+import com.example.newsreader.data.source.RecentNewsManager
 import com.example.newsreader.news_index.OptionsModalBottomSheet
 
 class NewsItemPresenterFunctions(
   private val newsItemFunctionsView: NewsItemFunctionsContract.View,
-  private val followedNewsManager: FollowedNewsManager
+  private val followedNewsManager: FollowedNewsManager,
+  private val recentNewsManager: RecentNewsManager
 ): NewsItemFunctionsContract.Presenter {
 
   override fun onClickNewsItem(newsItem: NewsItem) {
     newsItemFunctionsView.openInCustomTab(newsItem.link)
+    recentNewsManager.add(newsItem)
   }
 
   override fun onClickNewsItemOptionsMenu(newsItem: NewsItem) {
