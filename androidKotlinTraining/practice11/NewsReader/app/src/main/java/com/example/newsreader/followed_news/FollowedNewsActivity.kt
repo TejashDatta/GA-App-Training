@@ -30,7 +30,7 @@ class FollowedNewsActivity : AppCompatActivity() {
     val recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
 
     val followedNewsFragment =
-      supportFragmentManager.findFragmentById(R.id.contentFrame) as FollowedNewsFragment?
+      supportFragmentManager.findFragmentById(R.id.contentFrame) as? FollowedNewsFragment
         ?: FollowedNewsFragment.newInstance().also {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }

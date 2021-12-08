@@ -32,7 +32,7 @@ class NewsIndexActivity : AppCompatActivity() {
     val recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
 
     val newsIndexFragment =
-      supportFragmentManager.findFragmentById(R.id.contentFrame) as NewsIndexFragment?
+      supportFragmentManager.findFragmentById(R.id.contentFrame) as? NewsIndexFragment
         ?: NewsIndexFragment.newInstance().also {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
