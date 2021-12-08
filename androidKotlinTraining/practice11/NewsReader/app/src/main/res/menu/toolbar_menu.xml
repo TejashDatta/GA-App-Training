@@ -11,11 +11,11 @@
 
   <item
     android:id="@+id/action_followed_items"
-    android:title="@string/toolbar_followed_items"
+    android:title="@string/followed_news_title"
     app:showAsAction="never"/>
 
   <item
     android:id="@+id/action_recent_items"
-    android:title="@string/toolbar_recent_items"
+    android:title="@string/recent_news_title"
     app:showAsAction="never"/>
 </menu>

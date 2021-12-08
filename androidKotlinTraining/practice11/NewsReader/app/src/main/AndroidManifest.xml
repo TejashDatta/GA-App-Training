@@ -23,10 +23,10 @@
     </activity>
     <activity
       android:name=".followed_news.FollowedNewsActivity"
-      android:label="フォロー中" />
+      android:label="@string/followed_news_title" />
     <activity
       android:name=".recent_news.RecentNewsActivity"
-      android:label="最近閲覧した記事" />
+      android:label="@string/recent_news_title" />
   </application>
 
 </manifest>
