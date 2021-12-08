@@ -3,9 +3,14 @@ package com.example.newsreader
 import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.network.GoogleNewsApi
 import com.example.newsreader.network.GoogleNewsApiService
+import com.example.newsreader.network.ToyokeizaiNewsApi
+import com.example.newsreader.network.ToyokeizaiNewsApiService
 import com.example.newsreader.network.data_transfer_objects.google_news.NetworkGoogleNewsChannel
 import com.example.newsreader.network.data_transfer_objects.google_news.NetworkGoogleNewsItem
 import com.example.newsreader.network.data_transfer_objects.google_news.toDomainModel
+import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.NetworkToyokeizaiNewsChannel
+import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.NetworkToyokeizaiNewsItem
+import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.toDomainModel
 import io.reactivex.rxjava3.core.Observable
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -19,24 +24,32 @@ import org.threeten.bp.ZonedDateTime
 @RunWith(MockitoJUnitRunner::class)
 class NewsItemsRepositoryTest {
   @Mock private lateinit var googleNewsApi: GoogleNewsApi
-  @Mock private lateinit var retrofitService: GoogleNewsApiService
-
+  @Mock private lateinit var googleNewsRetrofitService: GoogleNewsApiService
   @Mock private lateinit var googleNewsChannel: NetworkGoogleNewsChannel
+
+  @Mock private lateinit var toyokeizaiNewsApi: ToyokeizaiNewsApi
+  @Mock private lateinit var toyokeizaiNewsRetrofitService: ToyokeizaiNewsApiService
+  @Mock private lateinit var toyokeizaiNewsChannel: NetworkToyokeizaiNewsChannel
 
   private lateinit var newsItemsRepository: NewsItemsRepository
 
   @Before fun setupNewsItemsRepository() {
-    newsItemsRepository = NewsItemsRepository(googleNewsApi)
+    newsItemsRepository = NewsItemsRepository(googleNewsApi, toyokeizaiNewsApi)
   }
 
   @Test fun getNewsItems_returnsNewsItems() {
     googleNewsChannel =
-      NetworkGoogleNewsChannel(listOf(NetworkGoogleNewsItem("test", "testUrl", ZonedDateTime.now(), "testSource")))
-    `when`(googleNewsApi.retrofitService).thenReturn(retrofitService)
-    `when`(retrofitService.getNewsChannel()).thenReturn(Observable.just(googleNewsChannel))
+      NetworkGoogleNewsChannel(listOf(NetworkGoogleNewsItem("test1", "testUrl1", ZonedDateTime.now(), "testSource")))
+    `when`(googleNewsApi.retrofitService).thenReturn(googleNewsRetrofitService)
+    `when`(googleNewsRetrofitService.getNewsChannel()).thenReturn(Observable.just(googleNewsChannel))
+
+    toyokeizaiNewsChannel =
+      NetworkToyokeizaiNewsChannel(listOf(NetworkToyokeizaiNewsItem("test2", "testUrl2", ZonedDateTime.now().minusHours(1))))
+    `when`(toyokeizaiNewsApi.retrofitService).thenReturn(toyokeizaiNewsRetrofitService)
+    `when`(toyokeizaiNewsRetrofitService.getNewsChannel()).thenReturn(Observable.just(toyokeizaiNewsChannel))
 
     val actual = newsItemsRepository.getNewsItems().blockingFirst()
-    val expected = googleNewsChannel.toDomainModel()
+    val expected = googleNewsChannel.toDomainModel() + toyokeizaiNewsChannel.toDomainModel()
     assertEquals(actual, expected)
   }
 }
