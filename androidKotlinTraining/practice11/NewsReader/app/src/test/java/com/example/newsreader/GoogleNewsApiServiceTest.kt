@@ -19,7 +19,7 @@ class GoogleNewsApiServiceTest {
 
   private lateinit var retrofitService: GoogleNewsApiService
 
-  private val exampleResponseContent = MockResponseFileReader("example-rss-response.xml").content
+  private val exampleResponseContent = MockResponseFileReader("example-google-news-rss-response.xml").content
 
   private val tikXml = TikXml.Builder().exceptionOnUnreadXml(false).build()
 
