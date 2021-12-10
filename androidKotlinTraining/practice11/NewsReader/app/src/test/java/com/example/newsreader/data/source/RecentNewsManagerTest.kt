@@ -1,8 +1,7 @@
-package com.example.newsreader
+package com.example.newsreader.data.source
 
 import android.content.SharedPreferences
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.data.source.RecentNewsManager
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
