@@ -19,7 +19,7 @@ fun NetworkToyokeizaiNewsChannel.toDomainModel() : List<NewsItem> {
     NewsItem(
       title = it.title,
       link = it.link,
-      pubDate = it.pubDate,
+      publishedDate = it.pubDate,
       source = TOYOKEIZAI_NEWS_SOURCE_NAME
     )
   }

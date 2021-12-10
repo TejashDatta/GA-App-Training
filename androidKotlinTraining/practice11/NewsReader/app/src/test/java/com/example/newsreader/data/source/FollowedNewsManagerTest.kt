@@ -1,8 +1,7 @@
-package com.example.newsreader
+package com.example.newsreader.data.source
 
 import android.content.SharedPreferences
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.data.source.FollowedNewsManager
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -22,7 +21,7 @@ class FollowedNewsManagerTest {
   private var newsItem =
     NewsItem("test", "testUrl", ZonedDateTime.parse("2021-11-16T16:31:29.042+05:30[Asia/Calcutta]"), "testSource")
   private var newsItemListJson =
-    "[{\"link\":\"testUrl\",\"pubDate\":\"2021-11-16T16:31:29.042+05:30[Asia/Calcutta]\",\"source\":\"testSource\",\"title\":\"test\"}]"
+    "[{\"link\":\"testUrl\",\"publishedDate\":\"2021-11-16T16:31:29.042+05:30[Asia/Calcutta]\",\"source\":\"testSource\",\"title\":\"test\"}]"
 
   private val ITEMS_KEY = "followed_news"
 

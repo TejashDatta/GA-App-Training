@@ -17,7 +17,7 @@ fun NetworkGoogleNewsChannel.toDomainModel() : List<NewsItem> {
     NewsItem(
       title = it.title.removeSuffix(" - ${it.source}"),
       link = it.link,
-      pubDate = it.pubDate,
+      publishedDate = it.pubDate,
       source = it.source
     )
   }

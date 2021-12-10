@@ -5,6 +5,6 @@ import org.threeten.bp.ZonedDateTime
 data class NewsItem(
   val title: String,
   val link: String,
-  val pubDate: ZonedDateTime,
+  val publishedDate: ZonedDateTime,
   val source: String
 )

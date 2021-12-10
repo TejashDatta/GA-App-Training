@@ -1,6 +1,5 @@
-package com.example.newsreader
+package com.example.newsreader.network
 
-import com.example.newsreader.network.ToyokeizaiNewsApiService
 import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.NetworkToyokeizaiNewsChannel
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
