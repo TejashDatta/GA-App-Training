@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.calculator.util.replaceFragmentInActivity
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
-import com.example.newsreader.data.source.FollowedNewsManager
-import com.example.newsreader.data.source.RecentNewsManager
-import com.example.newsreader.data.source.SharedPreferencesRetriever
+import com.example.newsreader.data.source.NewsItemsRepositoryFactory
 
 class FollowedNewsActivity : AppCompatActivity() {
   private lateinit var followedNewsPresenter: FollowedNewsPresenter
@@ -21,14 +19,6 @@ class FollowedNewsActivity : AppCompatActivity() {
       setDisplayHomeAsUpEnabled(true)
     }
 
-    val followedNewsSharedPreferences =
-      SharedPreferencesRetriever(applicationContext).retrieveFollowedNews()
-    val followedNewsManager = FollowedNewsManager(followedNewsSharedPreferences)
-
-    val recentNewsSharedPreferences =
-      SharedPreferencesRetriever(applicationContext).retrieveRecentNews()
-    val recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
-
     val followedNewsFragment =
       supportFragmentManager.findFragmentById(R.id.contentFrame) as FollowedNewsFragment?
         ?: FollowedNewsFragment.newInstance().also {
@@ -38,8 +28,7 @@ class FollowedNewsActivity : AppCompatActivity() {
     followedNewsPresenter =
       FollowedNewsPresenter(
         followedNewsFragment,
-        followedNewsManager,
-        recentNewsManager,
+        NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext),
         SchedulerProvider()
       )
   }

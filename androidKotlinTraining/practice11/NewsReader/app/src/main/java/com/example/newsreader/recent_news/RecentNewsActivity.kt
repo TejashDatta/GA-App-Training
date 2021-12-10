@@ -4,8 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.calculator.util.replaceFragmentInActivity
 import com.example.newsreader.R
-import com.example.newsreader.data.source.RecentNewsManager
-import com.example.newsreader.data.source.SharedPreferencesRetriever
+import com.example.newsreader.data.source.NewsItemsRepositoryFactory
 
 class RecentNewsActivity : AppCompatActivity() {
   private lateinit var recentNewsPresenter: RecentNewsPresenter
@@ -19,10 +18,6 @@ class RecentNewsActivity : AppCompatActivity() {
       setDisplayHomeAsUpEnabled(true)
     }
 
-    val recentNewsSharedPreferences =
-      SharedPreferencesRetriever(applicationContext).retrieveRecentNews()
-    val recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
-
     val recentNewsFragment =
       supportFragmentManager.findFragmentById(R.id.contentFrame) as RecentNewsFragment?
         ?: RecentNewsFragment.newInstance().also {
@@ -32,7 +27,7 @@ class RecentNewsActivity : AppCompatActivity() {
     recentNewsPresenter =
       RecentNewsPresenter(
         recentNewsFragment,
-        recentNewsManager
+        NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext)
       )
   }
 
