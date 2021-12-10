@@ -1,6 +1,6 @@
 package com.example.newsreader.network
 
-import com.example.newsreader.network.data_transfer_objects.NetworkNewsChannel
+import com.example.newsreader.network.data_transfer_objects.google_news.NetworkGoogleNewsChannel
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import io.reactivex.rxjava3.core.Observable
@@ -21,13 +21,13 @@ private val retrofit = Retrofit.Builder()
                         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                         .build()
 
-interface NewsApiService {
+interface GoogleNewsApiService {
   @GET(NEWS_CHANNEL_ENDPOINT)
-  fun getNewsChannel(): Observable<NetworkNewsChannel>
+  fun getNewsChannel(): Observable<NetworkGoogleNewsChannel>
 }
 
-object NewsApi {
-  val retrofitService: NewsApiService by lazy {
-    retrofit.create(NewsApiService::class.java)
+object GoogleNewsApi {
+  val retrofitService: GoogleNewsApiService by lazy {
+    retrofit.create(GoogleNewsApiService::class.java)
   }
 }
