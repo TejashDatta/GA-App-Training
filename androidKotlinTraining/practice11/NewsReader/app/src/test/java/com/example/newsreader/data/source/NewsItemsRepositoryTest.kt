@@ -1,6 +1,5 @@
-package com.example.newsreader
+package com.example.newsreader.data.source
 
-import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.network.GoogleNewsApi
 import com.example.newsreader.network.GoogleNewsApiService
 import com.example.newsreader.network.ToyokeizaiNewsApi
