@@ -19,7 +19,7 @@ class RecentNewsPresenter(
     if (recentNewsManager.items.isEmpty()) {
       recentNewsView.showNoRecentItems()
     } else {
-      recentNewsView.showItemsInRecyclerView(recentNewsManager.items)
+      recentNewsView.showItemsInRecyclerView(recentNewsManager.items.reversed())
     }
   }
 

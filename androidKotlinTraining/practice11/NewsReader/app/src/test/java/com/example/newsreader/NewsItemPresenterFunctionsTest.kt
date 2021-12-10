@@ -32,10 +32,10 @@ class NewsItemPresenterFunctionsTest {
       NewsItemPresenterFunctions(newsItemFunctionsView, followedNewsManager, recentNewsManager)
   }
 
-  @Test fun onClickNewsItem_opensTabInView() {
+  @Test fun onClickNewsItem_opensCustomTabInView() {
     newsItemPresenterFunctions.onClickNewsItem(newsItem)
 
-    verify(newsItemFunctionsView).openInTab(newsItem.link)
+    verify(newsItemFunctionsView).openInCustomTab(newsItem.link)
   }
 
   @Test fun onClickNewsItem_savesToRecentNews() {

@@ -60,10 +60,10 @@ class FollowedNewsPresenterTest {
     verify(followedNewsView).showNoFollowedItems()
   }
 
-  @Test fun onClickNewsItem_opensTabInView() {
+  @Test fun onClickNewsItem_opensCustomTabInView() {
     followedNewsPresenter.onClickNewsItem(newsItem)
 
-    verify(followedNewsView).openInTab(newsItem.link)
+    verify(followedNewsView).openInCustomTab(newsItem.link)
   }
 
   @Test fun onClickNewsItem_savesToRecentNews() {
