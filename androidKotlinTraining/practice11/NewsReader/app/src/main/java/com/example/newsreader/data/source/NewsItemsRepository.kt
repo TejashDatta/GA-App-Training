@@ -15,19 +15,27 @@ object NewsItemsRepositoryFactory: Application() {
   private const val FOLLOWED_NEWS_SHARED_PREFERENCES_KEY = "FOLLOWED_NEWS_SHARED_PREFERENCES"
   private const val RECENT_NEWS_SHARED_PREFERENCES_KEY = "RECENT_NEWS_SHARED_PREFERENCES"
 
-  private val followedNewsSharedPreferences =
-    applicationContext.getSharedPreferences(FOLLOWED_NEWS_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+  private var repository : NewsItemsRepository? = null
 
-  private val recentNewsSharedPreferences =
-    applicationContext.getSharedPreferences(RECENT_NEWS_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+  fun getOrCreateRepository(context: Context): NewsItemsRepository {
+    if (repository != null) return repository!!
 
-  val repository =
-    NewsItemsRepository(
-      GoogleNewsApi,
-      ToyokeizaiNewsApi,
-      followedNewsSharedPreferences,
-      recentNewsSharedPreferences
-    )
+    val followedNewsSharedPreferences =
+      context.getSharedPreferences(FOLLOWED_NEWS_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+
+    val recentNewsSharedPreferences =
+      context.getSharedPreferences(RECENT_NEWS_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+
+    repository =
+      NewsItemsRepository(
+        GoogleNewsApi,
+        ToyokeizaiNewsApi,
+        followedNewsSharedPreferences,
+        recentNewsSharedPreferences
+      )
+
+    return repository!!
+  }
 }
 
 class NewsItemsRepository(
@@ -68,7 +76,7 @@ class NewsItemsRepository(
       toyokeizaiNewsApi.retrofitService.getNewsChannel(),
       { networkGoogleNewsChannel, networkToyokeizaiNewsChannel ->
         (networkGoogleNewsChannel.toDomainModel() + networkToyokeizaiNewsChannel.toDomainModel())
-          .sortedByDescending { it.pubDate }
+          .sortedByDescending { it.publishedDate }
       }
     )
   }
