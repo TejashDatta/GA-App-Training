@@ -13,6 +13,7 @@ import com.example.newsreader.data.source.NewsItemsRepositoryLocator
 import com.example.newsreader.data.source.RecentNewsManager
 import com.example.newsreader.data.source.SharedPreferencesRetriever
 import com.example.newsreader.followed_news.FollowedNewsActivity
+import com.example.newsreader.recent_news.RecentNewsActivity
 
 class NewsIndexActivity : AppCompatActivity() {
   private lateinit var newsIndexPresenter: NewsIndexPresenter
@@ -31,7 +32,7 @@ class NewsIndexActivity : AppCompatActivity() {
     val recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
 
     val newsIndexFragment =
-      supportFragmentManager.findFragmentById(R.id.contentFrame) as NewsIndexFragment?
+      supportFragmentManager.findFragmentById(R.id.contentFrame) as? NewsIndexFragment
         ?: NewsIndexFragment.newInstance().also {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
@@ -61,6 +62,10 @@ class NewsIndexActivity : AppCompatActivity() {
         showSavedNews()
         true
       }
+      R.id.action_recent_items -> {
+        showRecentNews()
+        true
+      }
       else -> super.onOptionsItemSelected(item)
     }
   }
@@ -80,6 +85,11 @@ class NewsIndexActivity : AppCompatActivity() {
 
   private fun showSavedNews() {
     val intent = Intent(applicationContext, FollowedNewsActivity::class.java)
+    startActivity(intent)
+  }
+
+  private fun showRecentNews() {
+    val intent = Intent(applicationContext, RecentNewsActivity::class.java)
     startActivity(intent)
   }
 }
