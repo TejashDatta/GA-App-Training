@@ -42,7 +42,7 @@ class NewsRecyclerViewAdapter(
     viewHolder.newsItemView.apply {
       findViewById<TextView>(R.id.sourceTextView).text = newsItem.source
       findViewById<TextView>(R.id.headlineTextView).text = newsItem.title
-      findViewById<TextView>(R.id.pubDateTextView).text = dateToTimeAgo(newsItem.pubDate)
+      findViewById<TextView>(R.id.pubDateTextView).text = dateToTimeAgo(newsItem.publishedDate)
 
       findViewById<ImageButton>(R.id.optionsButton)
         .setOnClickListener { newsItemOptionsClickListener(newsItem) }

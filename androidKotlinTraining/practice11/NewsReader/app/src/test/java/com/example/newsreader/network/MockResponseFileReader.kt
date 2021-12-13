@@ -1,4 +1,4 @@
-package com.example.newsreader
+package com.example.newsreader.network
 
 import java.io.InputStreamReader
 
