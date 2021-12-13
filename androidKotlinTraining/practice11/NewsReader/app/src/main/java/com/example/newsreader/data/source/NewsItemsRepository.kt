@@ -12,7 +12,8 @@ object NewsItemsRepositoryLocator {
 }
 
 class NewsItemsRepository(
-  private val googleNewsApi: GoogleNewsApi, private val toyokeizaiNewsApi: ToyokeizaiNewsApi
+  private val googleNewsApi: GoogleNewsApi,
+  private val toyokeizaiNewsApi: ToyokeizaiNewsApi
 ) {
   private var cachedNewsItems: List<NewsItem>? = null
 
@@ -30,7 +31,7 @@ class NewsItemsRepository(
       toyokeizaiNewsApi.retrofitService.getNewsChannel(),
       { networkGoogleNewsChannel, networkToyokeizaiNewsChannel ->
         (networkGoogleNewsChannel.toDomainModel() + networkToyokeizaiNewsChannel.toDomainModel())
-          .sortedByDescending { it.pubDate }
+          .sortedByDescending { it.publishedDate }
       }
     )
   }
