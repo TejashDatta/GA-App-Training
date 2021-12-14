@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item
+    android:id="@+id/action_all_news"
+    android:title="@string/drawer_all_news"
+    android:checked="true" />
+
+  <item
+    android:id="@+id/action_google_news"
+    android:title="@string/drawer_google_news" />
+
+  <item
+    android:id="@+id/action_toyokeizai_news"
+    android:title="@string/drawer_toyokeizai_news" />
+
+  <item
+    android:id="@+id/action_followed_news"
+    android:title="@string/drawer_followed_news" />
+
+  <item
+    android:id="@+id/action_recent_news"
+    android:title="@string/drawer_recent_news" />
+</menu>
