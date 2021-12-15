@@ -27,7 +27,7 @@ class RecentNewsActivity : AppCompatActivity() {
     recentNewsPresenter =
       RecentNewsPresenter(
         recentNewsFragment,
-        NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext)
+        NewsItemsRepositoryFactory.getInstance(applicationContext)
       )
   }
 

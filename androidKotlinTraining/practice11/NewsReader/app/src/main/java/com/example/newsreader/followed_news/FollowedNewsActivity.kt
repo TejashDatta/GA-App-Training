@@ -28,7 +28,7 @@ class FollowedNewsActivity : AppCompatActivity() {
     followedNewsPresenter =
       FollowedNewsPresenter(
         followedNewsFragment,
-        NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext),
+        NewsItemsRepositoryFactory.getInstance(applicationContext),
         SchedulerProvider()
       )
   }

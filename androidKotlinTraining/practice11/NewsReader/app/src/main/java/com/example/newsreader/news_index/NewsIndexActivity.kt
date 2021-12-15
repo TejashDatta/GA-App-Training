@@ -29,7 +29,7 @@ class NewsIndexActivity : AppCompatActivity() {
     newsIndexPresenter =
       NewsIndexPresenter(
         newsIndexFragment,
-        NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext),
+        NewsItemsRepositoryFactory.getInstance(applicationContext),
         SchedulerProvider()
       )
   }

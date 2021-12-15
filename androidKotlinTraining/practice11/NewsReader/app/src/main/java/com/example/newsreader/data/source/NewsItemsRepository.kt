@@ -17,24 +17,24 @@ object NewsItemsRepositoryFactory: Application() {
 
   private var repository : NewsItemsRepository? = null
 
-  fun getOrCreateRepository(context: Context): NewsItemsRepository {
-    if (repository != null) return repository!!
+  fun getInstance(context: Context) = repository ?: initRepository(context)
 
+  private fun initRepository(context: Context): NewsItemsRepository  {
     val followedNewsSharedPreferences =
       context.getSharedPreferences(FOLLOWED_NEWS_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
 
     val recentNewsSharedPreferences =
       context.getSharedPreferences(RECENT_NEWS_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
 
-    repository =
-      NewsItemsRepository(
+    val newRepository = NewsItemsRepository(
         GoogleNewsApi,
         ToyokeizaiNewsApi,
         followedNewsSharedPreferences,
         recentNewsSharedPreferences
       )
 
-    return repository!!
+    repository = newRepository
+    return newRepository
   }
 }
 
