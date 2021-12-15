@@ -67,12 +67,13 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   override fun showAllNews() {
     if(supportFragmentManager.findFragmentById(R.id.contentFrame) as? NewsIndexFragment != null)  return
 
-    if (newsIndexFragment == null) newsIndexFragment = NewsIndexFragment.newInstance()
-    replaceFragmentInActivity(R.id.contentFrame, newsIndexFragment!!)
+    val currentFragment = newsIndexFragment ?: NewsIndexFragment.newInstance()
+    newsIndexFragment = currentFragment
+    replaceFragmentInActivity(R.id.contentFrame, currentFragment)
 
     if (newsIndexPresenter == null) {
       newsIndexPresenter = NewsIndexPresenter(
-        newsIndexFragment!!,
+        currentFragment,
         NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext),
         SchedulerProvider()
       )
@@ -90,12 +91,13 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   override fun showFollowedNews() {
     if(supportFragmentManager.findFragmentById(R.id.contentFrame) as? FollowedNewsFragment != null)  return
 
-    if (followedNewsFragment == null) followedNewsFragment = FollowedNewsFragment.newInstance()
-    replaceFragmentInActivity(R.id.contentFrame, followedNewsFragment!!)
+    val currentFragment = followedNewsFragment ?: FollowedNewsFragment.newInstance()
+    followedNewsFragment = currentFragment
+    replaceFragmentInActivity(R.id.contentFrame, currentFragment)
 
     if (followedNewsPresenter == null) {
       followedNewsPresenter = FollowedNewsPresenter(
-        followedNewsFragment!!,
+        currentFragment,
         NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext),
         SchedulerProvider()
       )
@@ -105,12 +107,13 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   override fun showRecentNews() {
     if(supportFragmentManager.findFragmentById(R.id.contentFrame) as? RecentNewsFragment != null)  return
 
-    if (recentNewsFragment == null) recentNewsFragment = RecentNewsFragment.newInstance()
-    replaceFragmentInActivity(R.id.contentFrame, recentNewsFragment!!)
+    val currentFragment = recentNewsFragment ?: RecentNewsFragment.newInstance()
+    recentNewsFragment = currentFragment
+    replaceFragmentInActivity(R.id.contentFrame, currentFragment)
 
     if (recentNewsPresenter == null) {
       recentNewsPresenter = RecentNewsPresenter(
-        recentNewsFragment!!,
+        currentFragment,
         NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext)
       )
     }
