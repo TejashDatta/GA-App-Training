@@ -25,18 +25,26 @@ import org.threeten.bp.ZonedDateTime
 class NewsItemsRepositoryTest {
   @Mock private lateinit var googleNewsApi: GoogleNewsApi
   @Mock private lateinit var googleNewsRetrofitService: GoogleNewsApiService
-  @Mock private lateinit var googleNewsChannel: NetworkGoogleNewsChannel
+  private val googleNewsChannel =
+    NetworkGoogleNewsChannel(listOf(NetworkGoogleNewsItem("test1", "testUrl1", ZonedDateTime.now(), "testSource")))
 
   @Mock private lateinit var toyokeizaiNewsApi: ToyokeizaiNewsApi
   @Mock private lateinit var toyokeizaiNewsRetrofitService: ToyokeizaiNewsApiService
-  @Mock private lateinit var toyokeizaiNewsChannel: NetworkToyokeizaiNewsChannel
+  private val toyokeizaiNewsChannel =
+    NetworkToyokeizaiNewsChannel(listOf(NetworkToyokeizaiNewsItem("test2", "testUrl2", ZonedDateTime.now().minusHours(1))))
 
   @Mock private lateinit var followedNewsSharedPreferences: SharedPreferences
   @Mock private lateinit var recentNewsSharedPreferences: SharedPreferences
 
   private lateinit var newsItemsRepository: NewsItemsRepository
 
-  @Before fun setupNewsItemsRepository() {
+  @Before fun setupMocksAndNewsItemsRepository() {
+    `when`(googleNewsApi.retrofitService).thenReturn(googleNewsRetrofitService)
+    `when`(googleNewsRetrofitService.getNewsChannel()).thenReturn(Observable.just(googleNewsChannel))
+
+    `when`(toyokeizaiNewsApi.retrofitService).thenReturn(toyokeizaiNewsRetrofitService)
+    `when`(toyokeizaiNewsRetrofitService.getNewsChannel()).thenReturn(Observable.just(toyokeizaiNewsChannel))
+
     newsItemsRepository = NewsItemsRepository(
       googleNewsApi,
       toyokeizaiNewsApi,
@@ -45,18 +53,20 @@ class NewsItemsRepositoryTest {
     )
   }
 
-  @Test fun getNewsItems_returnsNewsItems() {
-    googleNewsChannel =
-      NetworkGoogleNewsChannel(listOf(NetworkGoogleNewsItem("test1", "testUrl1", ZonedDateTime.now(), "testSource")))
-    `when`(googleNewsApi.retrofitService).thenReturn(googleNewsRetrofitService)
-    `when`(googleNewsRetrofitService.getNewsChannel()).thenReturn(Observable.just(googleNewsChannel))
+  @Test fun getGoogleNews_returnsGoogleNewsItems() {
+    val actual = newsItemsRepository.getGoogleNews(refresh = true).blockingFirst()
+    val expected = googleNewsChannel.toDomainModel()
+    assertEquals(actual, expected)
+  }
 
-    toyokeizaiNewsChannel =
-      NetworkToyokeizaiNewsChannel(listOf(NetworkToyokeizaiNewsItem("test2", "testUrl2", ZonedDateTime.now().minusHours(1))))
-    `when`(toyokeizaiNewsApi.retrofitService).thenReturn(toyokeizaiNewsRetrofitService)
-    `when`(toyokeizaiNewsRetrofitService.getNewsChannel()).thenReturn(Observable.just(toyokeizaiNewsChannel))
+  @Test fun getToyokeizaiNews_returnsToyokeizaiNewsItems() {
+    val actual = newsItemsRepository.getToyokeizaiNews(refresh = true).blockingFirst()
+    val expected = toyokeizaiNewsChannel.toDomainModel()
+    assertEquals(actual, expected)
+  }
 
-    val actual = newsItemsRepository.getNewsItems().blockingFirst()
+  @Test fun getAllNews_returnsAllNewsItemsByDescendingOrderOfPublishedDate() {
+    val actual = newsItemsRepository.getAllNews(refresh = true).blockingFirst()
     val expected = googleNewsChannel.toDomainModel() + toyokeizaiNewsChannel.toDomainModel()
     assertEquals(actual, expected)
   }
