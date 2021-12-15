@@ -1,14 +1,10 @@
 package com.example.newsreader.news_index
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -68,33 +64,6 @@ class NewsIndexFragment(
     displayRecyclerView()
     recyclerViewAdapter.newsItems = newsItems
     swipeRefreshLayout.isRefreshing = false
-  }
-
-  override fun openInTab(url: String) {
-    CustomTabsIntent.Builder().build().launchUrl(requireContext(), Uri.parse(url))
-  }
-
-  override fun openOptionsMenu(newsItem: NewsItem, isNewsItemSaved: Boolean) {
-    OptionsModalBottomSheet(isNewsItemSaved) { option -> presenter.onClickNewsItemOption(newsItem, option) }
-      .show(childFragmentManager, tag)
-  }
-
-  override fun shareNews(newsItem: NewsItem) {
-    val sendIntent = Intent().apply {
-      action = Intent.ACTION_SEND
-      type = "text/plain"
-      putExtra(Intent.EXTRA_TEXT, newsItem.link)
-      putExtra(Intent.EXTRA_TITLE, newsItem.title)
-    }
-
-    val shareIntent = Intent.createChooser(sendIntent, null)
-    startActivity(shareIntent)
-  }
-
-  override fun showToastForSaveClicked(isSaved: Boolean) {
-    val messageResourceID = if (isSaved) R.string.item_followed else R.string.item_unfollowed
-
-    Toast.makeText(context, messageResourceID, Toast.LENGTH_SHORT).show()
   }
 
   override fun showLoading() {
