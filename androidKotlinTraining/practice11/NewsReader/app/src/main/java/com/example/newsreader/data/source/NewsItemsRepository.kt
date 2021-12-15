@@ -59,7 +59,7 @@ class NewsItemsRepository(
   val followedNewsItemsSubject: BehaviorSubject<List<NewsItem>>
     get() = followedNewsManager.itemsSubject
 
-  fun newsIsFollowed(newsItem: NewsItem) = followedNewsManager.isSaved(newsItem)
+  fun isNewsFollowed(newsItem: NewsItem) = followedNewsManager.isSaved(newsItem)
 
   fun addFollowedNews(newsItem: NewsItem) = followedNewsManager.add(newsItem)
 

@@ -43,7 +43,7 @@ class NewsItemPresenterFunctionsTest {
   }
 
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
-    `when`(newsItemsRepository.newsIsFollowed(newsItem)).thenReturn(isNewsItemSaved)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(isNewsItemSaved)
 
     newsItemPresenterFunctions.onClickNewsItemOptionsMenu(newsItem)
 
@@ -51,7 +51,7 @@ class NewsItemPresenterFunctionsTest {
   }
 
   @Test fun onClickNewsItemOption_savesNewsItemWhenOptionIsSaveAndItemIsUnsaved() {
-    `when`(newsItemsRepository.newsIsFollowed(newsItem)).thenReturn(false)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(false)
 
     newsItemPresenterFunctions.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 
@@ -59,7 +59,7 @@ class NewsItemPresenterFunctionsTest {
   }
 
   @Test fun onClickNewsItemOption_unsavesNewsItemWhenOptionIsSaveAndItemIsSaved() {
-    `when`(newsItemsRepository.newsIsFollowed(newsItem)).thenReturn(true)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(true)
 
     newsItemPresenterFunctions.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 
@@ -67,7 +67,7 @@ class NewsItemPresenterFunctionsTest {
   }
 
   @Test fun onClickNewsItemOption_showsToastWhenOptionIsSave() {
-    `when`(newsItemsRepository.newsIsFollowed(newsItem)).thenReturn(isNewsItemSaved)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(isNewsItemSaved)
 
     newsItemPresenterFunctions.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 
