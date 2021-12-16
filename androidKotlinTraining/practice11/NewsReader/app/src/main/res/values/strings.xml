@@ -10,8 +10,8 @@
   <string name="no_followed_items">保存した記事はありません。</string>
   <string name="no_recent_items">最近閲覧した記事はありません。</string>
   <string name="toolbar_share">ニュースをシェアする</string>
-  <string name="toolbar_followed_items">フォロー中</string>
-  <string name="toolbar_recent_items">最近閲覧した記事</string>
   <string name="item_followed">記事を[フォロー中]に保存しました</string>
   <string name="item_unfollowed">記事を[フォロー中]から削除しました</string>
+  <string name="followed_news_title">フォロー中</string>
+  <string name="recent_news_title">最近閲覧した記事</string>
 </resources>

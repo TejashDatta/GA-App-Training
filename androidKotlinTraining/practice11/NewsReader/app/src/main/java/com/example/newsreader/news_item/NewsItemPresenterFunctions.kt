@@ -10,7 +10,7 @@ class NewsItemPresenterFunctions(
 ): NewsItemFunctionsContract.Presenter {
 
   override fun onClickNewsItem(newsItem: NewsItem) {
-    newsItemFunctionsView.openInTab(newsItem.link)
+    newsItemFunctionsView.openInCustomTab(newsItem.link)
     newsItemsRepository.addRecentNews(newsItem)
   }
 

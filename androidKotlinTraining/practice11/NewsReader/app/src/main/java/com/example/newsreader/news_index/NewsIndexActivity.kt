@@ -21,7 +21,7 @@ class NewsIndexActivity : AppCompatActivity() {
     setSupportActionBar(findViewById(R.id.toolbar))
 
     val newsIndexFragment =
-      supportFragmentManager.findFragmentById(R.id.contentFrame) as NewsIndexFragment?
+      supportFragmentManager.findFragmentById(R.id.contentFrame) as? NewsIndexFragment
         ?: NewsIndexFragment.newInstance().also {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
