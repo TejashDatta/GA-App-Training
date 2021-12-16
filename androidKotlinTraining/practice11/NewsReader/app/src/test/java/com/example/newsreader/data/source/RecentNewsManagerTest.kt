@@ -55,7 +55,9 @@ class RecentNewsManagerTest {
     setupEmptyRecentNewsManager()
 
     repeat(MAX_ITEMS + 1) {
-      recentNewsManager.add(newsItem1)
+      val iteratedNewsItem =
+        NewsItem("test-$it", newsItem1.link, newsItem1.publishedDate, newsItem1.source)
+      recentNewsManager.add(iteratedNewsItem)
     }
 
     assertEquals(recentNewsManager.items.size, MAX_ITEMS)
@@ -80,9 +82,13 @@ class RecentNewsManagerTest {
     setupEmptyRecentNewsManager()
 
     recentNewsManager.add(newsItem1)
+    var firstNewsItem = newsItem1
     repeat(MAX_ITEMS) {
-      recentNewsManager.add(newsItem2)
+      val iteratedNewsItem =
+        NewsItem("test-$it", newsItem1.link, newsItem1.publishedDate, newsItem1.source)
+      if(it == 0) firstNewsItem = iteratedNewsItem
+      recentNewsManager.add(iteratedNewsItem)
     }
-    assertEquals(recentNewsManager.items[0], newsItem2)
+    assertEquals(recentNewsManager.items[0], firstNewsItem)
   }
 }
