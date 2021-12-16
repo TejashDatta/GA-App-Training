@@ -8,10 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.calculator.util.replaceFragmentInActivity
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
-import com.example.newsreader.data.source.FollowedNewsManager
-import com.example.newsreader.data.source.NewsItemsRepositoryLocator
-import com.example.newsreader.data.source.RecentNewsManager
-import com.example.newsreader.data.source.SharedPreferencesRetriever
+import com.example.newsreader.data.source.NewsItemsRepositoryFactory
 import com.example.newsreader.followed_news.FollowedNewsActivity
 import com.example.newsreader.recent_news.RecentNewsActivity
 
@@ -23,14 +20,6 @@ class NewsIndexActivity : AppCompatActivity() {
     setContentView(R.layout.activity_content_frame)
     setSupportActionBar(findViewById(R.id.toolbar))
 
-    val followedNewsSharedPreferences =
-      SharedPreferencesRetriever(applicationContext).retrieveFollowedNews()
-    val followedNewsManager = FollowedNewsManager(followedNewsSharedPreferences)
-
-    val recentNewsSharedPreferences =
-      SharedPreferencesRetriever(applicationContext).retrieveRecentNews()
-    val recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
-
     val newsIndexFragment =
       supportFragmentManager.findFragmentById(R.id.contentFrame) as? NewsIndexFragment
         ?: NewsIndexFragment.newInstance().also {
@@ -40,9 +29,7 @@ class NewsIndexActivity : AppCompatActivity() {
     newsIndexPresenter =
       NewsIndexPresenter(
         newsIndexFragment,
-        NewsItemsRepositoryLocator.repository,
-        followedNewsManager,
-        recentNewsManager,
+        NewsItemsRepositoryFactory.getInstance(applicationContext),
         SchedulerProvider()
       )
   }

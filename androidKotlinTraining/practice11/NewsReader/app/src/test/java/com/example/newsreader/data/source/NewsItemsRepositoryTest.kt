@@ -1,5 +1,6 @@
 package com.example.newsreader.data.source
 
+import android.content.SharedPreferences
 import com.example.newsreader.network.GoogleNewsApi
 import com.example.newsreader.network.GoogleNewsApiService
 import com.example.newsreader.network.ToyokeizaiNewsApi
@@ -30,10 +31,18 @@ class NewsItemsRepositoryTest {
   @Mock private lateinit var toyokeizaiNewsRetrofitService: ToyokeizaiNewsApiService
   @Mock private lateinit var toyokeizaiNewsChannel: NetworkToyokeizaiNewsChannel
 
+  @Mock private lateinit var followedNewsSharedPreferences: SharedPreferences
+  @Mock private lateinit var recentNewsSharedPreferences: SharedPreferences
+
   private lateinit var newsItemsRepository: NewsItemsRepository
 
   @Before fun setupNewsItemsRepository() {
-    newsItemsRepository = NewsItemsRepository(googleNewsApi, toyokeizaiNewsApi)
+    newsItemsRepository = NewsItemsRepository(
+      googleNewsApi,
+      toyokeizaiNewsApi,
+      followedNewsSharedPreferences,
+      recentNewsSharedPreferences
+    )
   }
 
   @Test fun getNewsItems_returnsNewsItems() {

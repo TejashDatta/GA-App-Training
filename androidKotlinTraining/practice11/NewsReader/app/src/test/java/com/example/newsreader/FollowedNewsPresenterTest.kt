@@ -1,8 +1,7 @@
 package com.example.newsreader
 
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.data.source.FollowedNewsManager
-import com.example.newsreader.data.source.RecentNewsManager
+import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.followed_news.FollowedNewsContract
 import com.example.newsreader.followed_news.FollowedNewsPresenter
 import com.example.newsreader.news_index.OptionsModalBottomSheet
@@ -19,8 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class FollowedNewsPresenterTest {
   @Mock private lateinit var followedNewsView: FollowedNewsContract.View
 
-  @Mock private lateinit var followedNewsManager: FollowedNewsManager
-  @Mock private lateinit var recentNewsManager: RecentNewsManager
+  @Mock private lateinit var newsItemsRepository: NewsItemsRepository
 
   @Mock private lateinit var newsItem: NewsItem
 
@@ -30,7 +28,7 @@ class FollowedNewsPresenterTest {
 
   @Before fun setupFollowedNewsPresenter() {
     followedNewsPresenter =
-      FollowedNewsPresenter(followedNewsView, followedNewsManager, recentNewsManager, TestSchedulerProvider())
+      FollowedNewsPresenter(followedNewsView, newsItemsRepository, TestSchedulerProvider())
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -42,7 +40,7 @@ class FollowedNewsPresenterTest {
     val newsItemList = listOf(newsItem)
     itemsSubject.onNext(newsItemList)
 
-    `when`(followedNewsManager.itemsSubject).thenReturn(itemsSubject)
+    `when`(newsItemsRepository.followedNewsItemsSubject).thenReturn(itemsSubject)
 
     followedNewsPresenter.start()
 
@@ -53,7 +51,7 @@ class FollowedNewsPresenterTest {
     val itemsSubject: BehaviorSubject<List<NewsItem>> = BehaviorSubject.create()
     itemsSubject.onNext(emptyList())
 
-    `when`(followedNewsManager.itemsSubject).thenReturn(itemsSubject)
+    `when`(newsItemsRepository.followedNewsItemsSubject).thenReturn(itemsSubject)
 
     followedNewsPresenter.start()
 
@@ -69,11 +67,11 @@ class FollowedNewsPresenterTest {
   @Test fun onClickNewsItem_savesToRecentNews() {
     followedNewsPresenter.onClickNewsItem(newsItem)
 
-    verify(recentNewsManager).add(newsItem)
+    verify(newsItemsRepository).addRecentNews(newsItem)
   }
 
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
-    `when`(followedNewsManager.isSaved(newsItem)).thenReturn(isNewsItemSaved)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(isNewsItemSaved)
 
     followedNewsPresenter.onClickNewsItemOptionsMenu(newsItem)
 
@@ -81,23 +79,23 @@ class FollowedNewsPresenterTest {
   }
 
   @Test fun onClickNewsItemOption_savesNewsItemWhenOptionIsSaveAndItemIsUnsaved() {
-    `when`(followedNewsManager.isSaved(newsItem)).thenReturn(false)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(false)
 
     followedNewsPresenter.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 
-    verify(followedNewsManager).add(newsItem)
+    verify(newsItemsRepository).addFollowedNews(newsItem)
   }
 
   @Test fun onClickNewsItemOption_unsavesNewsItemWhenOptionIsSaveAndItemIsSaved() {
-    `when`(followedNewsManager.isSaved(newsItem)).thenReturn(true)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(true)
 
     followedNewsPresenter.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 
-    verify(followedNewsManager).remove(newsItem)
+    verify(newsItemsRepository).removeFollowedNews(newsItem)
   }
 
   @Test fun onClickNewsItemOption_showsToastWhenOptionIsSave() {
-    `when`(followedNewsManager.isSaved(newsItem)).thenReturn(isNewsItemSaved)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(isNewsItemSaved)
 
     followedNewsPresenter.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 
