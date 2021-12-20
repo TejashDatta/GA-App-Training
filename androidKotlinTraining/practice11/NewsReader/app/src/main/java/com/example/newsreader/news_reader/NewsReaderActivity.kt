@@ -2,11 +2,12 @@ package com.example.newsreader.news_reader
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.calculator.util.replaceFragmentInActivity
+import androidx.fragment.app.Fragment
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
 import com.example.newsreader.data.source.NewsItemsRepositoryFactory
@@ -24,14 +25,13 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   private lateinit var drawerLayout: DrawerLayout
   private lateinit var navigationView: NavigationView
 
+  @IdRes private val contentFrameId = R.id.contentFrame
+
   private var newsIndexFragment: NewsIndexFragment? = null
-  private var newsIndexPresenter: NewsIndexPresenter? = null
 
   private var followedNewsFragment: FollowedNewsFragment? = null
-  private var followedNewsPresenter: FollowedNewsPresenter? = null
 
   private var recentNewsFragment: RecentNewsFragment? = null
-  private var recentNewsPresenter: RecentNewsPresenter? = null
 
   override fun onResume() {
     super.onResume()
@@ -65,19 +65,21 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   override fun showAllNews() {
-    if(supportFragmentManager.findFragmentById(R.id.contentFrame) as? NewsIndexFragment != null)  return
+    if (currentFragment() is NewsIndexFragment) return
 
-    val currentFragment = newsIndexFragment ?: NewsIndexFragment.newInstance()
-    newsIndexFragment = currentFragment
-    replaceFragmentInActivity(R.id.contentFrame, currentFragment)
+    val nextFragment = newsIndexFragment ?: NewsIndexFragment.newInstance()
+    val isNewInstance = newsIndexFragment == null
+    newsIndexFragment = nextFragment
 
-    if (newsIndexPresenter == null) {
-      newsIndexPresenter = NewsIndexPresenter(
-        currentFragment,
+    if (isNewInstance) {
+      NewsIndexPresenter(
+        nextFragment,
         NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext),
         SchedulerProvider()
       )
     }
+
+    changeFragment(nextFragment, isNewInstance)
   }
 
   override fun showGoogleNews() {
@@ -89,34 +91,52 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   override fun showFollowedNews() {
-    if(supportFragmentManager.findFragmentById(R.id.contentFrame) as? FollowedNewsFragment != null)  return
+    if (currentFragment() is FollowedNewsFragment) return
 
-    val currentFragment = followedNewsFragment ?: FollowedNewsFragment.newInstance()
-    followedNewsFragment = currentFragment
-    replaceFragmentInActivity(R.id.contentFrame, currentFragment)
+    val nextFragment = followedNewsFragment ?: FollowedNewsFragment.newInstance()
+    val isNewInstance = followedNewsFragment == null
+    followedNewsFragment = nextFragment
 
-    if (followedNewsPresenter == null) {
-      followedNewsPresenter = FollowedNewsPresenter(
-        currentFragment,
+    if (isNewInstance) {
+      FollowedNewsPresenter(
+        nextFragment,
         NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext),
         SchedulerProvider()
       )
     }
+
+    changeFragment(nextFragment, isNewInstance)
   }
 
   override fun showRecentNews() {
-    if(supportFragmentManager.findFragmentById(R.id.contentFrame) as? RecentNewsFragment != null)  return
+    if (currentFragment() is RecentNewsFragment) return
 
-    val currentFragment = recentNewsFragment ?: RecentNewsFragment.newInstance()
-    recentNewsFragment = currentFragment
-    replaceFragmentInActivity(R.id.contentFrame, currentFragment)
+    val nextFragment = recentNewsFragment ?: RecentNewsFragment.newInstance()
+    val isNewInstance = recentNewsFragment == null
+    recentNewsFragment = nextFragment
 
-    if (recentNewsPresenter == null) {
-      recentNewsPresenter = RecentNewsPresenter(
-        currentFragment,
+    if (isNewInstance) {
+      RecentNewsPresenter(
+        nextFragment,
         NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext)
       )
     }
+
+    changeFragment(nextFragment, isNewInstance)
+  }
+
+  private fun currentFragment() = supportFragmentManager.findFragmentById(contentFrameId)
+
+  private fun changeFragment(nextFragment: Fragment, isNewInstance: Boolean) {
+    supportFragmentManager.beginTransaction().apply {
+      currentFragment()?.let { detach(it) }
+
+      if (isNewInstance) {
+        add(contentFrameId, nextFragment)
+      } else {
+        attach(nextFragment)
+      }
+    }.commit()
   }
 
   private fun setupDrawerContent() {
