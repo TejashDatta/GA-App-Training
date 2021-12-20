@@ -19,7 +19,7 @@ class RecentNewsActivity : AppCompatActivity() {
     }
 
     val recentNewsFragment =
-      supportFragmentManager.findFragmentById(R.id.contentFrame) as RecentNewsFragment?
+      supportFragmentManager.findFragmentById(R.id.contentFrame) as? RecentNewsFragment
         ?: RecentNewsFragment.newInstance().also {
           replaceFragmentInActivity(R.id.contentFrame, it)
         }
@@ -27,7 +27,7 @@ class RecentNewsActivity : AppCompatActivity() {
     recentNewsPresenter =
       RecentNewsPresenter(
         recentNewsFragment,
-        NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext)
+        NewsItemsRepositoryFactory.getInstance(applicationContext)
       )
   }
 

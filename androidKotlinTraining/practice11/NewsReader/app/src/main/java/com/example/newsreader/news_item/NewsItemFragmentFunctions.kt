@@ -13,7 +13,7 @@ class NewsItemFragmentFunctions: NewsItemFunctionsContract.View {
   lateinit var presenter: NewsItemFunctionsContract.Presenter
   lateinit var fragment: Fragment
 
-  override fun openInTab(url: String) {
+  override fun openInCustomTab(url: String) {
     CustomTabsIntent.Builder().build().launchUrl(fragment.requireContext(), Uri.parse(url))
   }
 
