@@ -20,18 +20,18 @@ import com.example.newsreader.recent_news.RecentNewsPresenter
 import com.google.android.material.navigation.NavigationView
 
 class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
+  companion object {
+    private const val NEWS_INDEX_FRAGMENT_TAG = "NEWS_INDEX_FRAGMENT"
+    private const val FOLLOWED_NEWS_FRAGMENT_TAG = "FOLLOWED_NEWS_FRAGMENT"
+    private const val RECENT_NEWS_FRAGMENT_TAG = "RECENT_NEWS_FRAGMENT"
+  }
+
   override lateinit var presenter: NewsReaderContract.Presenter
 
   private lateinit var drawerLayout: DrawerLayout
   private lateinit var navigationView: NavigationView
 
   @IdRes private val contentFrameId = R.id.contentFrame
-
-  private var newsIndexFragment: NewsIndexFragment? = null
-
-  private var followedNewsFragment: FollowedNewsFragment? = null
-
-  private var recentNewsFragment: RecentNewsFragment? = null
 
   override fun onResume() {
     super.onResume()
@@ -67,9 +67,10 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   override fun showAllNews() {
     if (currentFragment() is NewsIndexFragment) return
 
-    val nextFragment = newsIndexFragment ?: NewsIndexFragment.newInstance()
-    val isNewInstance = newsIndexFragment == null
-    newsIndexFragment = nextFragment
+    val cachedFragment =
+      supportFragmentManager.findFragmentByTag(NEWS_INDEX_FRAGMENT_TAG) as? NewsIndexFragment
+    val nextFragment = cachedFragment ?: NewsIndexFragment.newInstance()
+    val isNewInstance = cachedFragment == null
 
     if (isNewInstance) {
       NewsIndexPresenter(
@@ -79,7 +80,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       )
     }
 
-    changeFragment(nextFragment, isNewInstance)
+    changeFragment(nextFragment, NEWS_INDEX_FRAGMENT_TAG, isNewInstance)
   }
 
   override fun showGoogleNews() {
@@ -93,9 +94,10 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   override fun showFollowedNews() {
     if (currentFragment() is FollowedNewsFragment) return
 
-    val nextFragment = followedNewsFragment ?: FollowedNewsFragment.newInstance()
-    val isNewInstance = followedNewsFragment == null
-    followedNewsFragment = nextFragment
+    val cachedFragment =
+      supportFragmentManager.findFragmentByTag(FOLLOWED_NEWS_FRAGMENT_TAG) as? FollowedNewsFragment
+    val nextFragment = cachedFragment ?: FollowedNewsFragment.newInstance()
+    val isNewInstance = cachedFragment == null
 
     if (isNewInstance) {
       FollowedNewsPresenter(
@@ -105,15 +107,16 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       )
     }
 
-    changeFragment(nextFragment, isNewInstance)
+    changeFragment(nextFragment, FOLLOWED_NEWS_FRAGMENT_TAG, isNewInstance)
   }
 
   override fun showRecentNews() {
     if (currentFragment() is RecentNewsFragment) return
 
-    val nextFragment = recentNewsFragment ?: RecentNewsFragment.newInstance()
-    val isNewInstance = recentNewsFragment == null
-    recentNewsFragment = nextFragment
+    val cachedFragment =
+      supportFragmentManager.findFragmentByTag(RECENT_NEWS_FRAGMENT_TAG) as? RecentNewsFragment
+    val nextFragment = cachedFragment ?: RecentNewsFragment.newInstance()
+    val isNewInstance = cachedFragment == null
 
     if (isNewInstance) {
       RecentNewsPresenter(
@@ -122,17 +125,17 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       )
     }
 
-    changeFragment(nextFragment, isNewInstance)
+    changeFragment(nextFragment, RECENT_NEWS_FRAGMENT_TAG, isNewInstance)
   }
 
   private fun currentFragment() = supportFragmentManager.findFragmentById(contentFrameId)
 
-  private fun changeFragment(nextFragment: Fragment, isNewInstance: Boolean) {
+  private fun changeFragment(nextFragment: Fragment, tag: String, isNewInstance: Boolean) {
     supportFragmentManager.beginTransaction().apply {
       currentFragment()?.let { detach(it) }
 
       if (isNewInstance) {
-        add(contentFrameId, nextFragment)
+        add(contentFrameId, nextFragment, tag)
       } else {
         attach(nextFragment)
       }
