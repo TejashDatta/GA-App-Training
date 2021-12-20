@@ -58,10 +58,10 @@ class FollowedNewsPresenterTest {
     verify(followedNewsView).showNoFollowedItems()
   }
 
-  @Test fun onClickNewsItem_opensTabInView() {
+  @Test fun onClickNewsItem_opensCustomTabInView() {
     followedNewsPresenter.onClickNewsItem(newsItem)
 
-    verify(followedNewsView).openInTab(newsItem.link)
+    verify(followedNewsView).openInCustomTab(newsItem.link)
   }
 
   @Test fun onClickNewsItem_savesToRecentNews() {
@@ -71,7 +71,7 @@ class FollowedNewsPresenterTest {
   }
 
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
-    `when`(newsItemsRepository.newsIsFollowed(newsItem)).thenReturn(isNewsItemSaved)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(isNewsItemSaved)
 
     followedNewsPresenter.onClickNewsItemOptionsMenu(newsItem)
 
@@ -79,7 +79,7 @@ class FollowedNewsPresenterTest {
   }
 
   @Test fun onClickNewsItemOption_savesNewsItemWhenOptionIsSaveAndItemIsUnsaved() {
-    `when`(newsItemsRepository.newsIsFollowed(newsItem)).thenReturn(false)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(false)
 
     followedNewsPresenter.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 
@@ -87,7 +87,7 @@ class FollowedNewsPresenterTest {
   }
 
   @Test fun onClickNewsItemOption_unsavesNewsItemWhenOptionIsSaveAndItemIsSaved() {
-    `when`(newsItemsRepository.newsIsFollowed(newsItem)).thenReturn(true)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(true)
 
     followedNewsPresenter.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 
@@ -95,7 +95,7 @@ class FollowedNewsPresenterTest {
   }
 
   @Test fun onClickNewsItemOption_showsToastWhenOptionIsSave() {
-    `when`(newsItemsRepository.newsIsFollowed(newsItem)).thenReturn(isNewsItemSaved)
+    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(isNewsItemSaved)
 
     followedNewsPresenter.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 

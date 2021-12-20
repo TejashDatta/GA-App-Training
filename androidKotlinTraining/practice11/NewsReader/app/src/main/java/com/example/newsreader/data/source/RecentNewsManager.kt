@@ -54,8 +54,8 @@ class RecentNewsManager(private val sharedPreferences: SharedPreferences) {
   }
 
   fun add(newsItem: NewsItem) {
-    if (isFull()) _items.removeFirst()
     _items.remove(newsItem)
+    if (isFull()) _items.removeFirst()
     _items.add(newsItem)
     saveItems()
     logOutput()
