@@ -10,23 +10,23 @@ class NewsItemPresenterFunctions(
 ): NewsItemFunctionsContract.Presenter {
 
   override fun onClickNewsItem(newsItem: NewsItem) {
-    newsItemFunctionsView.openInTab(newsItem.link)
+    newsItemFunctionsView.openInCustomTab(newsItem.link)
     newsItemsRepository.addRecentNews(newsItem)
   }
 
   override fun onClickNewsItemOptionsMenu(newsItem: NewsItem) {
-    newsItemFunctionsView.openOptionsMenu(newsItem, newsItemsRepository.newsIsFollowed(newsItem))
+    newsItemFunctionsView.openOptionsMenu(newsItem, newsItemsRepository.isNewsFollowed(newsItem))
   }
 
   override fun onClickNewsItemOption(newsItem: NewsItem, option: OptionsModalBottomSheet.Option) {
     when(option) {
       OptionsModalBottomSheet.Option.SAVE -> {
-        if(newsItemsRepository.newsIsFollowed(newsItem)) {
+        if(newsItemsRepository.isNewsFollowed(newsItem)) {
           newsItemsRepository.removeFollowedNews(newsItem)
         } else {
           newsItemsRepository.addFollowedNews(newsItem)
         }
-        newsItemFunctionsView.showToastForSaveClicked(newsItemsRepository.newsIsFollowed(newsItem))
+        newsItemFunctionsView.showToastForSaveClicked(newsItemsRepository.isNewsFollowed(newsItem))
       }
 
       OptionsModalBottomSheet.Option.SHARE -> newsItemFunctionsView.shareNews(newsItem)

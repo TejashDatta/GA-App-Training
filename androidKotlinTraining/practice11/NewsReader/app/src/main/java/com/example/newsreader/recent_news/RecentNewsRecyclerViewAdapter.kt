@@ -25,7 +25,7 @@ class RecentNewsRecyclerViewAdapter(
 
   var newsItems: List<NewsItem> = emptyList()
     set(value) {
-      field = value.reversed()
+      field = value
       notifyDataSetChanged()
     }
 
