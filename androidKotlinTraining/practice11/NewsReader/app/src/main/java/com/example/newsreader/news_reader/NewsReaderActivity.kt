@@ -21,7 +21,9 @@ import com.google.android.material.navigation.NavigationView
 
 class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   companion object {
-    private const val NEWS_INDEX_FRAGMENT_TAG = "NEWS_INDEX_FRAGMENT"
+    private const val NEWS_INDEX_ALL_FRAGMENT_TAG = "NEWS_INDEX_ALL_FRAGMENT"
+    private const val NEWS_INDEX_GOOGLE_FRAGMENT_TAG = "NEWS_INDEX_GOOGLE_FRAGMENT"
+    private const val NEWS_INDEX_TOYOKEIZAI_FRAGMENT_TAG = "NEWS_INDEX_TOYOKEIZAI_FRAGMENT"
     private const val FOLLOWED_NEWS_FRAGMENT_TAG = "FOLLOWED_NEWS_FRAGMENT"
     private const val RECENT_NEWS_FRAGMENT_TAG = "RECENT_NEWS_FRAGMENT"
   }
@@ -65,44 +67,81 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   override fun showAllNews() {
-    if (currentFragment() is NewsIndexFragment) return
-
     val cachedFragment =
-      supportFragmentManager.findFragmentByTag(NEWS_INDEX_FRAGMENT_TAG) as? NewsIndexFragment
+      supportFragmentManager.findFragmentByTag(NEWS_INDEX_ALL_FRAGMENT_TAG) as? NewsIndexFragment
+
+    if(cachedFragment?.isVisible == true) return
+
     val nextFragment = cachedFragment ?: NewsIndexFragment.newInstance()
     val isNewInstance = cachedFragment == null
 
     if (isNewInstance) {
       NewsIndexPresenter(
+        NewsIndexPresenter.NewsSource.ALL,
         nextFragment,
-        NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext),
+        NewsItemsRepositoryFactory.getInstance(applicationContext),
         SchedulerProvider()
       )
     }
 
-    changeFragment(nextFragment, NEWS_INDEX_FRAGMENT_TAG, isNewInstance)
+    changeFragment(nextFragment, NEWS_INDEX_ALL_FRAGMENT_TAG, isNewInstance)
   }
 
   override fun showGoogleNews() {
-    TODO("Not yet implemented")
+    val cachedFragment =
+      supportFragmentManager.findFragmentByTag(NEWS_INDEX_GOOGLE_FRAGMENT_TAG) as? NewsIndexFragment
+
+    if(cachedFragment?.isVisible == true) return
+
+    val nextFragment = cachedFragment ?: NewsIndexFragment.newInstance()
+    val isNewInstance = cachedFragment == null
+
+    if (isNewInstance) {
+      NewsIndexPresenter(
+        NewsIndexPresenter.NewsSource.GOOGLE,
+        nextFragment,
+        NewsItemsRepositoryFactory.getInstance(applicationContext),
+        SchedulerProvider()
+      )
+    }
+
+    changeFragment(nextFragment, NEWS_INDEX_GOOGLE_FRAGMENT_TAG, isNewInstance)
   }
 
   override fun showToyokeizaiNews() {
-    TODO("Not yet implemented")
+    val cachedFragment =
+      supportFragmentManager.findFragmentByTag(NEWS_INDEX_TOYOKEIZAI_FRAGMENT_TAG) as? NewsIndexFragment
+
+    if(cachedFragment?.isVisible == true) return
+
+    val nextFragment = cachedFragment ?: NewsIndexFragment.newInstance()
+    val isNewInstance = cachedFragment == null
+
+    if (isNewInstance) {
+      NewsIndexPresenter(
+        NewsIndexPresenter.NewsSource.TOYOKEIZAI,
+        nextFragment,
+        NewsItemsRepositoryFactory.getInstance(applicationContext),
+        SchedulerProvider()
+      )
+    }
+
+    changeFragment(nextFragment, NEWS_INDEX_TOYOKEIZAI_FRAGMENT_TAG, isNewInstance)
   }
 
   override fun showFollowedNews() {
-    if (currentFragment() is FollowedNewsFragment) return
-
     val cachedFragment =
       supportFragmentManager.findFragmentByTag(FOLLOWED_NEWS_FRAGMENT_TAG) as? FollowedNewsFragment
+
+    if(cachedFragment?.isVisible == true) return
+
     val nextFragment = cachedFragment ?: FollowedNewsFragment.newInstance()
     val isNewInstance = cachedFragment == null
 
     if (isNewInstance) {
       FollowedNewsPresenter(
         nextFragment,
-        NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext),
+        NewsItemsRepositoryFactory.getInstance(applicationContext),
         SchedulerProvider()
       )
     }
@@ -111,17 +150,18 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   override fun showRecentNews() {
-    if (currentFragment() is RecentNewsFragment) return
-
     val cachedFragment =
       supportFragmentManager.findFragmentByTag(RECENT_NEWS_FRAGMENT_TAG) as? RecentNewsFragment
+
+    if(cachedFragment?.isVisible == true) return
+
     val nextFragment = cachedFragment ?: RecentNewsFragment.newInstance()
     val isNewInstance = cachedFragment == null
 
     if (isNewInstance) {
       RecentNewsPresenter(
         nextFragment,
-        NewsItemsRepositoryFactory.getOrCreateRepository(applicationContext)
+        NewsItemsRepositoryFactory.getInstance(applicationContext)
       )
     }
 
@@ -148,6 +188,8 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
 
       when(menuItem.itemId) {
         R.id.action_all_news -> presenter.onClickAllNews()
+        R.id.action_google_news -> presenter.onClickGoogleNews()
+        R.id.action_toyokeizai_news -> presenter.onClickToyokeizaiNews()
         R.id.action_followed_news -> presenter.onClickFollowedNews()
         R.id.action_recent_news -> presenter.onClickRecentNews()
       }
