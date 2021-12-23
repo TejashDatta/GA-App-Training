@@ -15,14 +15,18 @@
     <activity
       android:name=".news_reader.NewsReaderActivity"
       android:exported="true">
+    </activity>
+<!--    TODO: change main activity, test up button -->
+    <activity
+      android:name=".add_news_source.AddNewsSourceActivity"
+      android:label="@string/add_news_source_title"
+      android:parentActivityName=".news_reader.NewsReaderActivity"
+      android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity
-      android:name=".add_news_source.AddNewsSourceActivity"
-      android:label="@string/add_news_source_title" />
-  </application>
+</application>
 
 </manifest>
