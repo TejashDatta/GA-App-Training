@@ -12,6 +12,9 @@
   <string name="toolbar_share">ニュースをシェアする</string>
   <string name="item_followed">記事を[フォロー中]に保存しました</string>
   <string name="item_unfollowed">記事を[フォロー中]から削除しました</string>
-  <string name="followed_news_title">フォロー中</string>
-  <string name="recent_news_title">最近閲覧した記事</string>
+  <string name="drawer_all_news">すべての記事一覧</string>
+  <string name="drawer_google_news">Google News</string>
+  <string name="drawer_toyokeizai_news">東洋経済オンライン</string>
+  <string name="drawer_followed_news">フォロー中</string>
+  <string name="drawer_recent_news">最近閲覧した記事</string>
 </resources>
