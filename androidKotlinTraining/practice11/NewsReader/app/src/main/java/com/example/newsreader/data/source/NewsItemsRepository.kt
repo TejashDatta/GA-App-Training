@@ -44,16 +44,44 @@ class NewsItemsRepository(
   followedNewsSharedPreferences: SharedPreferences,
   recentNewsSharedPreferences: SharedPreferences
 ) {
-  private var cachedNewsItems: List<NewsItem>? = null
   private var followedNewsManager = FollowedNewsManager(followedNewsSharedPreferences)
   private var recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
 
-  fun getNewsItems(): Observable<List<NewsItem>> {
-    return if (cachedNewsItems == null) {
-      requestNewsItems().doOnNext { newsItems -> cachedNewsItems = newsItems }
+  private var cachedGoogleNews: List<NewsItem>? = null
+  private var cachedToyokeizaiNews: List<NewsItem>? = null
+
+  private fun requestGoogleNews(): Observable<List<NewsItem>> {
+    return googleNewsApi.retrofitService.getNewsChannel().map { it.toDomainModel() }
+  }
+
+  private fun requestToyokeizaiNews(): Observable<List<NewsItem>> {
+    return toyokeizaiNewsApi.retrofitService.getNewsChannel().map { it.toDomainModel() }
+  }
+
+  fun getGoogleNews(refresh: Boolean): Observable<List<NewsItem>> {
+    return if (refresh || cachedGoogleNews == null) {
+      requestGoogleNews().doOnNext { cachedGoogleNews = it }
     } else {
-      Observable.just(cachedNewsItems!!)
+      Observable.just(cachedGoogleNews!!)
     }
+  }
+
+  fun getToyokeizaiNews(refresh: Boolean): Observable<List<NewsItem>> {
+    return if (refresh || cachedToyokeizaiNews == null) {
+      requestToyokeizaiNews().doOnNext { cachedToyokeizaiNews = it }
+    } else {
+      Observable.just(cachedToyokeizaiNews!!)
+    }
+  }
+
+  fun getAllNews(refresh: Boolean): Observable<List<NewsItem>> {
+    return Observable.zip(
+      getGoogleNews(refresh),
+      getToyokeizaiNews(refresh),
+      { googleNews, toyokeizaiNews ->
+        (googleNews + toyokeizaiNews).sortedByDescending { it.publishedDate }
+      }
+    )
   }
 
   val followedNewsItemsSubject: BehaviorSubject<List<NewsItem>>
@@ -69,15 +97,4 @@ class NewsItemsRepository(
     get() = recentNewsManager.items
 
   fun addRecentNews(newsItem: NewsItem) = recentNewsManager.add(newsItem)
-
-  private fun requestNewsItems(): Observable<List<NewsItem>> {
-    return Observable.zip(
-      googleNewsApi.retrofitService.getNewsChannel(),
-      toyokeizaiNewsApi.retrofitService.getNewsChannel(),
-      { networkGoogleNewsChannel, networkToyokeizaiNewsChannel ->
-        (networkGoogleNewsChannel.toDomainModel() + networkToyokeizaiNewsChannel.toDomainModel())
-          .sortedByDescending { it.publishedDate }
-      }
-    )
-  }
 }
