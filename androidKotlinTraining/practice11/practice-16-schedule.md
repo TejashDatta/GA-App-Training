@@ -25,7 +25,7 @@
 基本的に activity, fragment, layout, presenter, contract を実装する
 見積もり：2時間
 
-タスク： edit text の使い方とバリデーションがある実装例を勉強します
+タスク：edit text の使い方とバリデーションがある実装例を勉強します
 見積もり：2時間
 
 タスク：add source 画面で edit text とそのバリデーションを導入する
@@ -36,25 +36,25 @@
 れを news repository から使えるようにする
 見積もり：5時間
 
-タスク： add source 画面が source を保存するようにする
+タスク：add source 画面が source を保存するようにする
 見積もり：2時間
 
-タスク： 任意のURLへリクエストできる retrofit api object を作る
+タスク：任意のURLへリクエストできる retrofit api object を作る
 見積もり：4時間
 
-タスク： news repository から news source によってニュース取得できるようにする
+タスク：news repository から news source によってニュース取得できるようにする
 見積もり：5時間
 
-タスク： news index presenter は初期化したときで記述した news source から取得するようにする
+タスク：news index presenter は初期化したときで記述した news source から取得するようにする
 見積もり：3時間
 
-タスク： navigation drawer で recycler view の使い方について勉強する
+タスク：navigation drawer で recycler view の使い方について勉強する
 見積もり：4時間
 
-タスク： navigation drawer で recycler view を使って news source ごとの項目を表示する
+タスク：navigation drawer で recycler view を使って news source ごとの項目を表示する
 見積もり：5時間
 
-タスク： navigation drawer の news source 項目をタップしたら該当の画面へ遷移するようにする
+タスク：navigation drawer の news source 項目をタップしたら該当の画面へ遷移するようにする
 見積もり：5時間
 
 バッファ：3日
