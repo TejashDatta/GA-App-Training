@@ -25,37 +25,42 @@
 基本的に activity, fragment, layout, presenter, contract を実装する
 見積もり：2時間
 
-タスク： edit text の使い方とバリデーションがある実装例を勉強します
-見積もり：2時間
-
-タスク：add source 画面で edit text とそのバリデーションを導入する
-保存ボタンがバリデーション状態によって有効
-見積もり：5時間
-
-タスク：news source を shared preferences で保存するオブジェクトを作る、
-れを news repository から使えるようにする
-見積もり：5時間
-
-タスク： add source 画面が source を保存するようにする
-見積もり：2時間
-
-タスク： 任意のURLへリクエストできる retrofit api object を作る
-見積もり：4時間
-
-タスク： news repository から news source によってニュース取得できるようにする
-見積もり：5時間
-
-タスク： news index presenter は初期化したときで記述した news source から取得するようにする
+タスク：edit text の使い方とバリデーションがある実装例を勉強します
 見積もり：3時間
 
-タスク： navigation drawer で recycler view の使い方について勉強する
-見積もり：4時間
-
-タスク： navigation drawer で recycler view を使って news source ごとの項目を表示する
+タスク：add source 画面で edit text とそのバリデーションを導入する
 見積もり：5時間
 
-タスク： navigation drawer の news source 項目をタップしたら該当の画面へ遷移するようにする
+タスク：保存ボタンを実装する
+バリデーション状態によって有効状態を設定する
+見積もり：3時間
+
+タスク：news source を shared preferences に保存するオブジェクトを作る
+見積もり：3時間
+
+タスク：news sources manager を news repository から使えるようにする
+見積もり：3時間
+
+タスク：add source 画面が source を保存するようにする
+見積もり：5時間
+
+タスク：任意のURLへリクエストできる retrofit api object を作る
+見積もり：6時間
+
+タスク：news repository から news source によってニュース取得できるようにする
+見積もり：6時間
+
+タスク：news index presenter は初期化したときで記述した news source から取得するようにする
+見積もり：5時間
+
+タスク：navigation drawer で recycler view の使い方について勉強する
+見積もり：4時間
+
+タスク：navigation drawer で recycler view を使って news source ごとの項目を表示する
+見積もり：5時間
+
+タスク：navigation drawer の news source 項目をタップしたら該当の画面へ遷移するようにする
 見積もり：5時間
 
 バッファ：3日
-終了日：1月13日
+終了日：1月18日
