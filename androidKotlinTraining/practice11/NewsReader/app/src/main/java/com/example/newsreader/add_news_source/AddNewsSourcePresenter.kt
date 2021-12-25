@@ -1,6 +1,5 @@
 package com.example.newsreader.add_news_source
 
-import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsItemsRepository
 
 class AddNewsSourcePresenter(
@@ -12,19 +11,19 @@ class AddNewsSourcePresenter(
     addNewsSourceView.presenter = this
   }
 
+  override fun start() {
+    TODO("Not yet implemented")
+  }
+
   override fun validateName(name: String) {
     TODO("Not yet implemented")
   }
 
-  override fun validateLink(link: String) {
+  override fun validateUrl(url: String) {
     TODO("Not yet implemented")
   }
 
-  override fun addNewsSource(newsSource: NewsSource) {
-    TODO("Not yet implemented")
-  }
-
-  override fun start() {
+  override fun onSaveClick(name: String, url: String) {
     TODO("Not yet implemented")
   }
 }
