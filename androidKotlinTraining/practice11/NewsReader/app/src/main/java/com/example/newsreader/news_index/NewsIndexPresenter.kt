@@ -27,17 +27,17 @@ class NewsIndexPresenter(
   }
 
   override fun start() {
-    getNews(refresh = false)
+    requestNews(refresh = false)
   }
 
   override fun end() {
     clearObservers()
   }
 
-  override fun refreshNews() = getNews(refresh = true)
+  override fun refreshNews() = requestNews(refresh = true)
 
-  private fun getNews(refresh: Boolean) {
-    compositeDisposable.add(getNewsItemsFromRepository(refresh)
+  private fun requestNews(refresh: Boolean) {
+    compositeDisposable.add(getNewsItemsObservable(refresh)
       .subscribeOn(schedulerProvider.io())
       .observeOn(schedulerProvider.ui())
       .doOnSubscribe { newsIndexView.showLoading() }
@@ -56,7 +56,7 @@ class NewsIndexPresenter(
     )
   }
 
-  private fun getNewsItemsFromRepository(refresh: Boolean): Observable<List<NewsItem>> {
+  private fun getNewsItemsObservable(refresh: Boolean): Observable<List<NewsItem>> {
     return when(newsSource) {
       NewsSource.ALL -> newsItemsRepository.getAllNews(refresh)
       NewsSource.GOOGLE -> newsItemsRepository.getGoogleNews(refresh)
