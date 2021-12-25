@@ -3,12 +3,12 @@ package com.example.newsreader.add_news_source
 import com.example.newsreader.data.source.NewsItemsRepository
 
 class AddNewsSourcePresenter(
-  private val addNewsSourceView: AddNewsSourceContract.View,
+  private val view: AddNewsSourceContract.View,
   private val newsItemsRepository: NewsItemsRepository
 ): AddNewsSourceContract.Presenter {
 
   init {
-    addNewsSourceView.presenter = this
+    view.presenter = this
   }
 
   override fun start() {
