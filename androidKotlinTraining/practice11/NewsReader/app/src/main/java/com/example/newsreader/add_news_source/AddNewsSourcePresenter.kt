@@ -12,6 +12,10 @@ class AddNewsSourcePresenter(
     addNewsSourceView.presenter = this
   }
 
+  override fun start() {
+    TODO("Not yet implemented")
+  }
+
   override fun validateName(name: String) {
     TODO("Not yet implemented")
   }
@@ -21,10 +25,6 @@ class AddNewsSourcePresenter(
   }
 
   override fun addNewsSource(newsSource: NewsSource) {
-    TODO("Not yet implemented")
-  }
-
-  override fun start() {
     TODO("Not yet implemented")
   }
 }
