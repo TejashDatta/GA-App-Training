@@ -5,9 +5,12 @@ import com.example.newsreader.BaseView
 
 class AddNewsSourceContract {
   interface View: BaseView<Presenter> {
-    fun setNameError(error: String)
+    fun setNameIsRequiredError()
+    fun setNameIsTooLongError(maxLength: Int)
     fun disableNameError()
-    fun setUrlError(error: String)
+    fun setUrlIsRequiredError()
+    fun setUrlIsTooLongError(maxLength: Int)
+    fun setUrlFormatError()
     fun disableUrlError()
     fun goBack()
   }
