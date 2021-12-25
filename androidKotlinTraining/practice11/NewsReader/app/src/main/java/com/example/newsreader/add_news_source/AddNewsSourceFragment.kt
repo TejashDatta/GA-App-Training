@@ -27,11 +27,15 @@ class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View {
     TODO("Not yet implemented")
   }
 
-  override fun setLinkError(error: String) {
+  override fun setUrlError(error: String) {
     TODO("Not yet implemented")
   }
 
-  override fun disableLinkError() {
+  override fun disableUrlError() {
+    TODO("Not yet implemented")
+  }
+
+  override fun goBack() {
     TODO("Not yet implemented")
   }
 }
