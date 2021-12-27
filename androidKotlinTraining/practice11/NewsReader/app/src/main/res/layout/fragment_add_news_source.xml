@@ -6,7 +6,6 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-<!--  TODO: learn about autofill hints -->
 <!--  TODO: improve appearance (color, theme, layout) -->
   <EditText
     android:id="@+id/nameEditText"
