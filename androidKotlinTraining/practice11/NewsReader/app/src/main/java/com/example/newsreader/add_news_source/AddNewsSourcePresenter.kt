@@ -1,5 +1,6 @@
 package com.example.newsreader.add_news_source
 
+import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsItemsRepository
 
 class AddNewsSourcePresenter(
@@ -40,6 +41,6 @@ class AddNewsSourcePresenter(
   }
 
   override fun onSaveClick(name: String, url: String) {
-    TODO("Not yet implemented")
+    newsItemsRepository.addNewsSource(NewsSource(name, url))
   }
 }

@@ -2,6 +2,7 @@ package com.example.newsreader
 
 import com.example.newsreader.add_news_source.AddNewsSourceContract
 import com.example.newsreader.add_news_source.AddNewsSourcePresenter
+import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsItemsRepository
 import org.junit.Before
 import org.junit.Test
@@ -67,5 +68,12 @@ class AddNewsSourcePresenterTest {
     val url = "https://www.gizmodo.jp/index.xml/"
     addNewsSourcePresenter.validateUrl(url)
     verify(view).disableUrlError()
+  }
+
+  @Test fun onSaveClick_addsNewsSourceInNewsRepository() {
+    val name = "example"
+    val url = "https://www.example.com"
+    addNewsSourcePresenter.onSaveClick(name, url)
+    verify(newsItemsRepository).addNewsSource(NewsSource(name, url))
   }
 }
