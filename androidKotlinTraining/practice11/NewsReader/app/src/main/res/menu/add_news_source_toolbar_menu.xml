@@ -3,9 +3,10 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
+<!--  TODO: change enabled to false -->
   <item
     android:id="@+id/action_save"
     android:title="@string/save"
-    android:enabled="false"
+    android:enabled="true"
     app:showAsAction="ifRoom"/>
 </menu>

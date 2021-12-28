@@ -10,7 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.newsreader.R
 
-class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View {
+class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View, SaveClickListener {
   companion object {
     fun newInstance() = AddNewsSourceFragment()
   }
@@ -33,6 +33,10 @@ class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View {
     urlEditTextView.addTextChangedListener { text: Editable? -> presenter.validateUrl(text.toString()) }
 
     return root
+  }
+
+  override fun onSaveClick() {
+    presenter.onSaveClick(nameEditTextView.text.toString(), urlEditTextView.text.toString())
   }
 
   override fun setNameIsRequiredError() {
