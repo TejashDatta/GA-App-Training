@@ -52,7 +52,7 @@ class NewsIndexFragment(
     messageTextView = root.findViewById(R.id.messageTextView)
 
     swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout)
-    swipeRefreshLayout.setOnRefreshListener { presenter.refreshNewsItems() }
+    swipeRefreshLayout.setOnRefreshListener { presenter.refreshNews() }
 
     newsItemFragmentFunctions.presenter = presenter
     newsItemFragmentFunctions.fragment = this
