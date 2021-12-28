@@ -23,4 +23,19 @@ class AddNewsSourceActivity : AppCompatActivity() {
       NewsItemsRepositoryFactory.getInstance(applicationContext)
     )
   }
+
+  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.add_news_source_toolbar_menu, menu)
+    return true
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
+      R.id.action_save -> {
+        //TODO: implement click listener in fragment 
+        true
+      }
+      else -> super.onOptionsItemSelected(item)
+    }
+  }
 }
