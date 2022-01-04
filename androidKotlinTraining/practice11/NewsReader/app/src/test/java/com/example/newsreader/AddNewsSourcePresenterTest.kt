@@ -27,44 +27,44 @@ class AddNewsSourcePresenterTest {
     verify(view).presenter = addNewsSourcePresenter
   }
 
-  @Test fun validateName_errorWhenInputIsEmpty() {
+  @Test fun onNameInput_errorWhenInputIsEmpty() {
     val name = ""
     addNewsSourcePresenter.onNameInput(name)
     verify(view).setNameIsRequiredError()
   }
 
-  @Test fun validateName_errorWhenInputIsLongerThanMaxLength() {
+  @Test fun onNameInput_errorWhenInputIsLongerThanMaxLength() {
     val name = "a".repeat(AddNewsSourcePresenter.Companion.NAME_MAX_LENGTH + 1)
     addNewsSourcePresenter.onNameInput(name)
     verify(view).setNameIsTooLongError(AddNewsSourcePresenter.Companion.NAME_MAX_LENGTH)
   }
 
-  @Test fun validateName_disablesErrorForValidInput() {
+  @Test fun onNameInput_disablesErrorForValidInput() {
     val name = "abc"
     addNewsSourcePresenter.onNameInput(name)
     verify(view).disableNameError()
   }
 
-  @Test fun validateUrl_errorWhenInputIsEmpty() {
+  @Test fun onUrlInput_errorWhenInputIsEmpty() {
     val url = ""
     addNewsSourcePresenter.onUrlInput(url)
     verify(view).setUrlIsRequiredError()
   }
 
-  @Test fun validateUrl_errorWhenInputIsLongerThanMaxLength() {
+  @Test fun onUrlInput_errorWhenInputIsLongerThanMaxLength() {
     val url = "https://www.gizmodo.jp/index.xml/" +
         "a".repeat(AddNewsSourcePresenter.Companion.URL_MAX_LENGTH + 1)
     addNewsSourcePresenter.onUrlInput(url)
     verify(view).setUrlIsTooLongError(AddNewsSourcePresenter.Companion.URL_MAX_LENGTH)
   }
 
-  @Test fun validateUrl_errorWhenInputIsNotUrlFormat() {
+  @Test fun onUrlInput_errorWhenInputIsNotUrlFormat() {
     val url = "not a url"
     addNewsSourcePresenter.onUrlInput(url)
     verify(view).setUrlFormatError()
   }
 
-  @Test fun validateUrl_disablesErrorForValidInput() {
+  @Test fun onUrlInput_disablesErrorForValidInput() {
     val url = "https://www.gizmodo.jp/index.xml/"
     addNewsSourcePresenter.onUrlInput(url)
     verify(view).disableUrlError()
