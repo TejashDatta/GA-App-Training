@@ -29,7 +29,7 @@ class AddNewsSourcePresenter(
     updateFormValidity()
   }
 
-  override fun validateName(name: String) {
+  override fun onNameInput(name: String) {
     isNameValid = false
     when {
       name.isEmpty() -> view.setNameIsRequiredError()
@@ -42,7 +42,7 @@ class AddNewsSourcePresenter(
     updateFormValidity()
   }
 
-  override fun validateUrl(url: String) {
+  override fun onUrlInput(url: String) {
     isUrlValid = false
     when {
       url.isEmpty() -> view.setUrlIsRequiredError()

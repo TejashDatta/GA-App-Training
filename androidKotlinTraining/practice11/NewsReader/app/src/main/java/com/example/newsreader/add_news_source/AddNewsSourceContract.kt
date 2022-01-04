@@ -18,8 +18,8 @@ class AddNewsSourceContract {
 
   interface Presenter: BasePresenter {
     val isFormValid: BehaviorSubject<Boolean>
-    fun validateName(name: String)
-    fun validateUrl(url: String)
+    fun onNameInput(name: String)
+    fun onUrlInput(url: String)
     fun onSaveClick(name: String, url: String)
   }
 }
