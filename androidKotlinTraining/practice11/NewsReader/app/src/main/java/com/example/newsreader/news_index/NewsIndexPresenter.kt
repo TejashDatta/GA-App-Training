@@ -3,7 +3,7 @@ package com.example.newsreader.news_index
 import android.util.Log
 import com.example.newsreader.BaseSchedulerProvider
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.NewsRepository
 import com.example.newsreader.news_item.NewsItemFunctionsContract
 import com.example.newsreader.news_item.NewsItemPresenterFunctions
 import io.reactivex.rxjava3.core.Observable
@@ -13,10 +13,10 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 class NewsIndexPresenter(
   private val newsSource: NewsSource,
   private val newsIndexView: NewsIndexContract.View,
-  private val newsItemsRepository: NewsItemsRepository,
+  private val newsRepository: NewsRepository,
   private val schedulerProvider: BaseSchedulerProvider
 ): NewsIndexContract.Presenter,
-  NewsItemFunctionsContract.Presenter by NewsItemPresenterFunctions(newsIndexView, newsItemsRepository)
+  NewsItemFunctionsContract.Presenter by NewsItemPresenterFunctions(newsIndexView, newsRepository)
 {
   enum class NewsSource { ALL, GOOGLE, TOYOKEIZAI }
 
@@ -58,9 +58,9 @@ class NewsIndexPresenter(
 
   private fun getNewsItemsFromRepository(refresh: Boolean): Observable<List<NewsItem>> {
     return when(newsSource) {
-      NewsSource.ALL -> newsItemsRepository.getAllNews(refresh)
-      NewsSource.GOOGLE -> newsItemsRepository.getGoogleNews(refresh)
-      NewsSource.TOYOKEIZAI -> newsItemsRepository.getToyokeizaiNews(refresh)
+      NewsSource.ALL -> newsRepository.getAllNews(refresh)
+      NewsSource.GOOGLE -> newsRepository.getGoogleNews(refresh)
+      NewsSource.TOYOKEIZAI -> newsRepository.getToyokeizaiNews(refresh)
     }
   }
 

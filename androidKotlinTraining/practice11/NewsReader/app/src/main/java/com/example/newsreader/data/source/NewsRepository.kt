@@ -12,16 +12,16 @@ import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.toDo
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
-object NewsItemsRepositoryFactory: Application() {
+object NewsRepositoryFactory: Application() {
   private const val FOLLOWED_NEWS_SHARED_PREFERENCES_KEY = "FOLLOWED_NEWS_SHARED_PREFERENCES"
   private const val RECENT_NEWS_SHARED_PREFERENCES_KEY = "RECENT_NEWS_SHARED_PREFERENCES"
   private const val NEWS_SOURCES_SHARED_PREFERENCES_KEY = "NEWS_SOURCES_SHARED_PREFERENCES"
 
-  private var repository : NewsItemsRepository? = null
+  private var repository : NewsRepository? = null
 
   fun getInstance(context: Context) = repository ?: initRepository(context)
 
-  private fun initRepository(context: Context): NewsItemsRepository  {
+  private fun initRepository(context: Context): NewsRepository  {
     val followedNewsSharedPreferences =
       context.getSharedPreferences(FOLLOWED_NEWS_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
 
@@ -31,7 +31,7 @@ object NewsItemsRepositoryFactory: Application() {
     val newsSourcesSharedPreferences =
       context.getSharedPreferences(NEWS_SOURCES_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
 
-    val newRepository = NewsItemsRepository(
+    val newRepository = NewsRepository(
         GoogleNewsApi,
         ToyokeizaiNewsApi,
         followedNewsSharedPreferences,
@@ -44,7 +44,7 @@ object NewsItemsRepositoryFactory: Application() {
   }
 }
 
-class NewsItemsRepository(
+class NewsRepository(
   private val googleNewsApi: GoogleNewsApi,
   private val toyokeizaiNewsApi: ToyokeizaiNewsApi,
   followedNewsSharedPreferences: SharedPreferences,

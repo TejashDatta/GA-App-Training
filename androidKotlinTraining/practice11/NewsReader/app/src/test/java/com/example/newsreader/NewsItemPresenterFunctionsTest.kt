@@ -1,7 +1,7 @@
 package com.example.newsreader
 
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.NewsRepository
 import com.example.newsreader.news_index.OptionsModalBottomSheet
 import com.example.newsreader.news_item.NewsItemFunctionsContract
 import com.example.newsreader.news_item.NewsItemPresenterFunctions
@@ -17,7 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class NewsItemPresenterFunctionsTest {
   @Mock private lateinit var newsItemFunctionsView: NewsItemFunctionsContract.View
 
-  @Mock private lateinit var newsItemsRepository: NewsItemsRepository
+  @Mock private lateinit var newsRepository: NewsRepository
 
   @Mock private lateinit var newsItem: NewsItem
 
@@ -27,7 +27,7 @@ class NewsItemPresenterFunctionsTest {
 
   @Before fun setupNewsItemPresenterFunctions() {
     newsItemPresenterFunctions =
-      NewsItemPresenterFunctions(newsItemFunctionsView, newsItemsRepository)
+      NewsItemPresenterFunctions(newsItemFunctionsView, newsRepository)
   }
 
   @Test fun onClickNewsItem_opensCustomTabInView() {
@@ -39,11 +39,11 @@ class NewsItemPresenterFunctionsTest {
   @Test fun onClickNewsItem_savesToRecentNews() {
     newsItemPresenterFunctions.onClickNewsItem(newsItem)
 
-    verify(newsItemsRepository).addRecentNews(newsItem)
+    verify(newsRepository).addRecentNews(newsItem)
   }
 
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
-    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(isNewsItemSaved)
+    `when`(newsRepository.isNewsFollowed(newsItem)).thenReturn(isNewsItemSaved)
 
     newsItemPresenterFunctions.onClickNewsItemOptionsMenu(newsItem)
 
@@ -51,23 +51,23 @@ class NewsItemPresenterFunctionsTest {
   }
 
   @Test fun onClickNewsItemOption_savesNewsItemWhenOptionIsSaveAndItemIsUnsaved() {
-    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(false)
+    `when`(newsRepository.isNewsFollowed(newsItem)).thenReturn(false)
 
     newsItemPresenterFunctions.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 
-    verify(newsItemsRepository).addFollowedNews(newsItem)
+    verify(newsRepository).addFollowedNews(newsItem)
   }
 
   @Test fun onClickNewsItemOption_unsavesNewsItemWhenOptionIsSaveAndItemIsSaved() {
-    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(true)
+    `when`(newsRepository.isNewsFollowed(newsItem)).thenReturn(true)
 
     newsItemPresenterFunctions.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 
-    verify(newsItemsRepository).removeFollowedNews(newsItem)
+    verify(newsRepository).removeFollowedNews(newsItem)
   }
 
   @Test fun onClickNewsItemOption_showsToastWhenOptionIsSave() {
-    `when`(newsItemsRepository.isNewsFollowed(newsItem)).thenReturn(isNewsItemSaved)
+    `when`(newsRepository.isNewsFollowed(newsItem)).thenReturn(isNewsItemSaved)
 
     newsItemPresenterFunctions.onClickNewsItemOption(newsItem, OptionsModalBottomSheet.Option.SAVE)
 

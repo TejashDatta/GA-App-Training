@@ -3,7 +3,7 @@ package com.example.newsreader
 import com.example.newsreader.add_news_source.AddNewsSourceContract
 import com.example.newsreader.add_news_source.AddNewsSourcePresenter
 import com.example.newsreader.data.models.NewsSource
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.NewsRepository
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,12 +15,12 @@ import org.mockito.junit.MockitoJUnitRunner
 class AddNewsSourcePresenterTest {
   @Mock private lateinit var view: AddNewsSourceContract.View
 
-  @Mock private lateinit var newsItemsRepository: NewsItemsRepository
+  @Mock private lateinit var newsRepository: NewsRepository
 
   private lateinit var addNewsSourcePresenter: AddNewsSourcePresenter
 
   @Before fun createPresenter() {
-    addNewsSourcePresenter = AddNewsSourcePresenter(view, newsItemsRepository)
+    addNewsSourcePresenter = AddNewsSourcePresenter(view, newsRepository)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -74,6 +74,6 @@ class AddNewsSourcePresenterTest {
     val name = "example"
     val url = "https://www.example.com"
     addNewsSourcePresenter.onSaveClick(name, url)
-    verify(newsItemsRepository).addNewsSource(NewsSource(name, url))
+    verify(newsRepository).addNewsSource(NewsSource(name, url))
   }
 }

@@ -10,7 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
-import com.example.newsreader.data.source.NewsItemsRepositoryFactory
+import com.example.newsreader.data.source.NewsRepositoryFactory
 import com.example.newsreader.followed_news.FollowedNewsFragment
 import com.example.newsreader.followed_news.FollowedNewsPresenter
 import com.example.newsreader.news_index.NewsIndexFragment
@@ -79,7 +79,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       NewsIndexPresenter(
         NewsIndexPresenter.NewsSource.ALL,
         nextFragment,
-        NewsItemsRepositoryFactory.getInstance(applicationContext),
+        NewsRepositoryFactory.getInstance(applicationContext),
         SchedulerProvider()
       )
     }
@@ -100,7 +100,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       NewsIndexPresenter(
         NewsIndexPresenter.NewsSource.GOOGLE,
         nextFragment,
-        NewsItemsRepositoryFactory.getInstance(applicationContext),
+        NewsRepositoryFactory.getInstance(applicationContext),
         SchedulerProvider()
       )
     }
@@ -121,7 +121,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       NewsIndexPresenter(
         NewsIndexPresenter.NewsSource.TOYOKEIZAI,
         nextFragment,
-        NewsItemsRepositoryFactory.getInstance(applicationContext),
+        NewsRepositoryFactory.getInstance(applicationContext),
         SchedulerProvider()
       )
     }
@@ -141,7 +141,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     if (isNewInstance) {
       FollowedNewsPresenter(
         nextFragment,
-        NewsItemsRepositoryFactory.getInstance(applicationContext),
+        NewsRepositoryFactory.getInstance(applicationContext),
         SchedulerProvider()
       )
     }
@@ -161,7 +161,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     if (isNewInstance) {
       RecentNewsPresenter(
         nextFragment,
-        NewsItemsRepositoryFactory.getInstance(applicationContext)
+        NewsRepositoryFactory.getInstance(applicationContext)
       )
     }
 

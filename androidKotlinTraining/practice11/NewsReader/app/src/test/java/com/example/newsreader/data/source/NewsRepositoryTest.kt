@@ -22,7 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.threeten.bp.ZonedDateTime
 
 @RunWith(MockitoJUnitRunner::class)
-class NewsItemsRepositoryTest {
+class NewsRepositoryTest {
   @Mock private lateinit var googleNewsApi: GoogleNewsApi
   @Mock private lateinit var googleNewsRetrofitService: GoogleNewsApiService
   private val googleNewsChannel =
@@ -37,7 +37,7 @@ class NewsItemsRepositoryTest {
   @Mock private lateinit var recentNewsSharedPreferences: SharedPreferences
   @Mock private lateinit var newsSourcesSharedPreferences: SharedPreferences
 
-  private lateinit var newsItemsRepository: NewsItemsRepository
+  private lateinit var newsRepository: NewsRepository
 
   @Before fun setupMocksAndNewsItemsRepository() {
     `when`(googleNewsApi.retrofitService).thenReturn(googleNewsRetrofitService)
@@ -46,7 +46,7 @@ class NewsItemsRepositoryTest {
     `when`(toyokeizaiNewsApi.retrofitService).thenReturn(toyokeizaiNewsRetrofitService)
     `when`(toyokeizaiNewsRetrofitService.getNewsChannel()).thenReturn(Observable.just(toyokeizaiNewsChannel))
 
-    newsItemsRepository = NewsItemsRepository(
+    newsRepository = NewsRepository(
       googleNewsApi,
       toyokeizaiNewsApi,
       followedNewsSharedPreferences,
@@ -56,19 +56,19 @@ class NewsItemsRepositoryTest {
   }
 
   @Test fun getGoogleNews_returnsGoogleNewsItems() {
-    val actual = newsItemsRepository.getGoogleNews(refresh = true).blockingFirst()
+    val actual = newsRepository.getGoogleNews(refresh = true).blockingFirst()
     val expected = googleNewsChannel.toDomainModel()
     assertEquals(actual, expected)
   }
 
   @Test fun getToyokeizaiNews_returnsToyokeizaiNewsItems() {
-    val actual = newsItemsRepository.getToyokeizaiNews(refresh = true).blockingFirst()
+    val actual = newsRepository.getToyokeizaiNews(refresh = true).blockingFirst()
     val expected = toyokeizaiNewsChannel.toDomainModel()
     assertEquals(actual, expected)
   }
 
   @Test fun getAllNews_returnsAllNewsItemsByDescendingOrderOfPublishedDate() {
-    val actual = newsItemsRepository.getAllNews(refresh = true).blockingFirst()
+    val actual = newsRepository.getAllNews(refresh = true).blockingFirst()
     val expected = googleNewsChannel.toDomainModel() + toyokeizaiNewsChannel.toDomainModel()
     assertEquals(actual, expected)
   }

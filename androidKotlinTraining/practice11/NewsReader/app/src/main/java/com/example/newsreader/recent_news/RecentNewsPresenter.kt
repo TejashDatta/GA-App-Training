@@ -1,11 +1,11 @@
 package com.example.newsreader.recent_news
 
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.NewsRepository
 
 class RecentNewsPresenter(
   private val recentNewsView: RecentNewsContract.View,
-  private val newsItemsRepository: NewsItemsRepository
+  private val newsRepository: NewsRepository
 ): RecentNewsContract.Presenter {
   init {
     recentNewsView.presenter = this
@@ -16,10 +16,10 @@ class RecentNewsPresenter(
   }
 
   private fun setupView() {
-    if (newsItemsRepository.recentNewsItems.isEmpty()) {
+    if (newsRepository.recentNewsItems.isEmpty()) {
       recentNewsView.showNoRecentItems()
     } else {
-      recentNewsView.showItemsInRecyclerView(newsItemsRepository.recentNewsItems)
+      recentNewsView.showItemsInRecyclerView(newsRepository.recentNewsItems)
     }
   }
 

@@ -5,7 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.newsreader.R
-import com.example.newsreader.data.source.NewsItemsRepositoryFactory
+import com.example.newsreader.data.source.NewsRepositoryFactory
 
 class AddNewsSourceActivity : AppCompatActivity() {
   private lateinit var addNewsSourceFragment: AddNewsSourceFragment
@@ -25,7 +25,7 @@ class AddNewsSourceActivity : AppCompatActivity() {
 
     addNewsSourcePresenter = AddNewsSourcePresenter(
       addNewsSourceFragment,
-      NewsItemsRepositoryFactory.getInstance(applicationContext)
+      NewsRepositoryFactory.getInstance(applicationContext)
     )
   }
 

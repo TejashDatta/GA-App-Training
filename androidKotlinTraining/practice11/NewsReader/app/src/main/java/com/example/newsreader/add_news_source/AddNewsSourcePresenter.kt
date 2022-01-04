@@ -1,12 +1,12 @@
 package com.example.newsreader.add_news_source
 
 import com.example.newsreader.data.models.NewsSource
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.NewsRepository
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class AddNewsSourcePresenter(
   private val view: AddNewsSourceContract.View,
-  private val newsItemsRepository: NewsItemsRepository
+  private val newsRepository: NewsRepository
 ): AddNewsSourceContract.Presenter {
   companion object {
     const val NAME_MAX_LENGTH = 30
@@ -57,7 +57,7 @@ class AddNewsSourcePresenter(
   }
 
   override fun onSaveClick(name: String, url: String) {
-    newsItemsRepository.addNewsSource(NewsSource(name, url))
+    newsRepository.addNewsSource(NewsSource(name, url))
   }
 
   private fun updateFormValidity() {
