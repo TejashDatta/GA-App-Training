@@ -31,16 +31,15 @@ object NewsRepositoryFactory: Application() {
     val newsSourcesSharedPreferences =
       context.getSharedPreferences(NEWS_SOURCES_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
 
-    val newRepository = NewsRepository(
-        GoogleNewsApi,
-        ToyokeizaiNewsApi,
-        followedNewsSharedPreferences,
-        recentNewsSharedPreferences,
-        newsSourcesSharedPreferences
-      )
-
-    repository = newRepository
-    return newRepository
+    return NewsRepository(
+      GoogleNewsApi,
+      ToyokeizaiNewsApi,
+      followedNewsSharedPreferences,
+      recentNewsSharedPreferences,
+      newsSourcesSharedPreferences
+    ).also {
+      repository = it
+    }
   }
 }
 
