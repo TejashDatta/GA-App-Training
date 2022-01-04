@@ -18,8 +18,7 @@ class NewsSourcesManagerTest {
   private lateinit var newsSourcesManager: NewsSourcesManager
 
   private var newsSource = NewsSource("example", "https://example.com")
-  private var newsSourceListJson =
-    "[{\"name\":\"example\",\"url\":\"https://example.com\"}]"
+  private var newsSourceListJson = "[{\"name\":\"example\",\"url\":\"https://example.com\"}]"
 
   private val NEWS_SOURCES_KEY = "news_sources"
 
