@@ -22,7 +22,7 @@ class AddNewsSourcePresenter(
     TODO("Not yet implemented")
   }
 
-  override fun validateName(name: String) {
+  override fun onNameInput(name: String) {
     when {
       name.isEmpty() -> view.setNameIsRequiredError()
       name.length > NAME_MAX_LENGTH -> view.setNameIsTooLongError(NAME_MAX_LENGTH)
@@ -30,7 +30,7 @@ class AddNewsSourcePresenter(
     }
   }
 
-  override fun validateUrl(url: String) {
+  override fun onUrlInput(url: String) {
     when {
       url.isEmpty() -> view.setUrlIsRequiredError()
       url.length > URL_MAX_LENGTH -> view.setUrlIsTooLongError(URL_MAX_LENGTH)

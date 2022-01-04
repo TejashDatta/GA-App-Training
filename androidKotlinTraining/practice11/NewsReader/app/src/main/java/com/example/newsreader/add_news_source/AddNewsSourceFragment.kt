@@ -29,8 +29,8 @@ class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View {
       urlEditTextView = findViewById(R.id.urlEditText)
     }
 
-    nameEditTextView.addTextChangedListener { text: Editable? -> presenter.validateName(text.toString()) }
-    urlEditTextView.addTextChangedListener { text: Editable? -> presenter.validateUrl(text.toString()) }
+    nameEditTextView.addTextChangedListener { text: Editable? -> presenter.onNameInput(text.toString()) }
+    urlEditTextView.addTextChangedListener { text: Editable? -> presenter.onUrlInput(text.toString()) }
 
     return root
   }
