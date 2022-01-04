@@ -35,6 +35,7 @@ class NewsItemsRepositoryTest {
 
   @Mock private lateinit var followedNewsSharedPreferences: SharedPreferences
   @Mock private lateinit var recentNewsSharedPreferences: SharedPreferences
+  @Mock private lateinit var newsSourcesSharedPreferences: SharedPreferences
 
   private lateinit var newsItemsRepository: NewsItemsRepository
 
@@ -49,7 +50,8 @@ class NewsItemsRepositoryTest {
       googleNewsApi,
       toyokeizaiNewsApi,
       followedNewsSharedPreferences,
-      recentNewsSharedPreferences
+      recentNewsSharedPreferences,
+      newsSourcesSharedPreferences
     )
   }
 
