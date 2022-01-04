@@ -67,8 +67,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   override fun showAllNews() {
-    val cachedFragment =
-      supportFragmentManager.findFragmentByTag(NEWS_INDEX_ALL_FRAGMENT_TAG) as? NewsIndexFragment
+    val cachedFragment = findNewsIndexFragmentByTag(NEWS_INDEX_ALL_FRAGMENT_TAG)
 
     if(cachedFragment?.isVisible == true) return
 
@@ -88,8 +87,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   override fun showGoogleNews() {
-    val cachedFragment =
-      supportFragmentManager.findFragmentByTag(NEWS_INDEX_GOOGLE_FRAGMENT_TAG) as? NewsIndexFragment
+    val cachedFragment = findNewsIndexFragmentByTag(NEWS_INDEX_GOOGLE_FRAGMENT_TAG)
 
     if(cachedFragment?.isVisible == true) return
 
@@ -109,8 +107,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   override fun showToyokeizaiNews() {
-    val cachedFragment =
-      supportFragmentManager.findFragmentByTag(NEWS_INDEX_TOYOKEIZAI_FRAGMENT_TAG) as? NewsIndexFragment
+    val cachedFragment = findNewsIndexFragmentByTag(NEWS_INDEX_TOYOKEIZAI_FRAGMENT_TAG)
 
     if(cachedFragment?.isVisible == true) return
 
@@ -166,6 +163,10 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     }
 
     changeFragment(nextFragment, RECENT_NEWS_FRAGMENT_TAG, isNewInstance)
+  }
+
+  private fun findNewsIndexFragmentByTag(tag: String): NewsIndexFragment? {
+    return supportFragmentManager.findFragmentByTag(tag) as? NewsIndexFragment
   }
 
   private fun currentFragment() = supportFragmentManager.findFragmentById(contentFrameId)
