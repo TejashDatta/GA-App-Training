@@ -9,6 +9,7 @@ import com.example.newsreader.data.source.NewsItemsRepositoryFactory
 
 class AddNewsSourceActivity : AppCompatActivity() {
   private lateinit var addNewsSourceFragment: AddNewsSourceFragment
+  private lateinit var addNewsSourcePresenter: AddNewsSourcePresenter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -22,7 +23,7 @@ class AddNewsSourceActivity : AppCompatActivity() {
       add(R.id.contentFrame, addNewsSourceFragment)
     }.commit()
 
-    AddNewsSourcePresenter(
+    addNewsSourcePresenter = AddNewsSourcePresenter(
       addNewsSourceFragment,
       NewsItemsRepositoryFactory.getInstance(applicationContext)
     )
@@ -30,6 +31,9 @@ class AddNewsSourceActivity : AppCompatActivity() {
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
     menuInflater.inflate(R.menu.add_news_source_toolbar_menu, menu)
+    addNewsSourcePresenter.isFormValid.subscribe {
+      menu?.apply { findItem(R.id.action_save).isEnabled = it }
+    }
     return true
   }
 
