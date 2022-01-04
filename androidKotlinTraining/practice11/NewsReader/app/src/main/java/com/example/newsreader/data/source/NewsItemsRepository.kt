@@ -3,7 +3,6 @@ package com.example.newsreader.data.source
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.network.GoogleNewsApi
@@ -16,6 +15,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 object NewsItemsRepositoryFactory: Application() {
   private const val FOLLOWED_NEWS_SHARED_PREFERENCES_KEY = "FOLLOWED_NEWS_SHARED_PREFERENCES"
   private const val RECENT_NEWS_SHARED_PREFERENCES_KEY = "RECENT_NEWS_SHARED_PREFERENCES"
+  private const val NEWS_SOURCES_SHARED_PREFERENCES_KEY = "NEWS_SOURCES_SHARED_PREFERENCES"
 
   private var repository : NewsItemsRepository? = null
 
@@ -28,11 +28,15 @@ object NewsItemsRepositoryFactory: Application() {
     val recentNewsSharedPreferences =
       context.getSharedPreferences(RECENT_NEWS_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
 
+    val newsSourcesSharedPreferences =
+      context.getSharedPreferences(NEWS_SOURCES_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+
     val newRepository = NewsItemsRepository(
         GoogleNewsApi,
         ToyokeizaiNewsApi,
         followedNewsSharedPreferences,
-        recentNewsSharedPreferences
+        recentNewsSharedPreferences,
+        newsSourcesSharedPreferences
       )
 
     repository = newRepository
@@ -44,10 +48,12 @@ class NewsItemsRepository(
   private val googleNewsApi: GoogleNewsApi,
   private val toyokeizaiNewsApi: ToyokeizaiNewsApi,
   followedNewsSharedPreferences: SharedPreferences,
-  recentNewsSharedPreferences: SharedPreferences
+  recentNewsSharedPreferences: SharedPreferences,
+  newsSourcesSharedPreferences: SharedPreferences
 ) {
   private var followedNewsManager = FollowedNewsManager(followedNewsSharedPreferences)
   private var recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
+  private var newsSourcesManager = NewsSourcesManager(newsSourcesSharedPreferences)
 
   private var cachedGoogleNews: List<NewsItem>? = null
   private var cachedToyokeizaiNews: List<NewsItem>? = null
@@ -100,8 +106,10 @@ class NewsItemsRepository(
 
   fun addRecentNews(newsItem: NewsItem) = recentNewsManager.add(newsItem)
 
+  val newsSourcesSubject: BehaviorSubject<List<NewsSource>>
+    get() = newsSourcesManager.newsSourcesSubject
+
   fun addNewsSource(newsSource: NewsSource) {
-    Log.d("NewsItemsRepository", newsSource.toString())
-//    TODO: create news source manager
+    newsSourcesManager.add(newsSource)
   }
 }
