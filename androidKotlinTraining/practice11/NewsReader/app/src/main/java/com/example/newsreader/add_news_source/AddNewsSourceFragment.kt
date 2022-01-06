@@ -2,6 +2,7 @@ package com.example.newsreader.add_news_source
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.newsreader.R
+import com.example.newsreader.data.validators.NewsSourceValidator
 
 class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View {
   companion object {
@@ -28,6 +30,9 @@ class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View {
       nameEditTextView = findViewById(R.id.nameEditText)
       urlEditTextView = findViewById(R.id.urlEditText)
     }
+
+    nameEditTextView.filters = arrayOf(InputFilter.LengthFilter(NewsSourceValidator.NAME_MAX_LENGTH))
+    urlEditTextView.filters = arrayOf(InputFilter.LengthFilter(NewsSourceValidator.URL_MAX_LENGTH))
 
     nameEditTextView.addTextChangedListener { text: Editable? -> presenter.onNameInput(text.toString()) }
     urlEditTextView.addTextChangedListener { text: Editable? -> presenter.onUrlInput(text.toString()) }
