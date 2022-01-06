@@ -1,19 +1,13 @@
 package com.example.newsreader.add_news_source
 
 import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.validators.NewsSourceValidator
 
 class AddNewsSourcePresenter(
   private val view: AddNewsSourceContract.View,
+  private val newsSourceValidator: NewsSourceValidator,
   private val newsItemsRepository: NewsItemsRepository
 ): AddNewsSourceContract.Presenter {
-  companion object {
-    const val NAME_MAX_LENGTH = 30
-    const val URL_MAX_LENGTH  = 200
-  }
-
-  private val urlRegex =
-    Regex("https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_+.~#?&/=]*)")
-
   init {
     view.presenter = this
   }
@@ -23,19 +17,17 @@ class AddNewsSourcePresenter(
   }
 
   override fun onNameInput(name: String) {
-    when {
-      name.isEmpty() -> view.setNameIsRequiredError()
-      name.length > NAME_MAX_LENGTH -> view.setNameIsTooLongError(NAME_MAX_LENGTH)
-      else -> view.disableNameError()
+    when (newsSourceValidator.validateName(name)) {
+      NewsSourceValidator.NameError.REQUIRED -> view.setNameIsRequiredError()
+      NewsSourceValidator.NameError.NONE -> view.disableNameError()
     }
   }
 
   override fun onUrlInput(url: String) {
-    when {
-      url.isEmpty() -> view.setUrlIsRequiredError()
-      url.length > URL_MAX_LENGTH -> view.setUrlIsTooLongError(URL_MAX_LENGTH)
-      !url.matches(urlRegex) -> view.setUrlFormatError()
-      else -> view.disableUrlError()
+    when (newsSourceValidator.validateUrl(url)) {
+      NewsSourceValidator.UrlError.REQUIRED -> view.setUrlIsRequiredError()
+      NewsSourceValidator.UrlError.INCORRECT_FORMAT -> view.setUrlFormatError()
+      NewsSourceValidator.UrlError.NONE -> view.disableUrlError()
     }
   }
 
