@@ -4,7 +4,6 @@ import com.example.newsreader.add_news_source.AddNewsSourceContract
 import com.example.newsreader.add_news_source.AddNewsSourcePresenter
 import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsItemsRepository
-import org.junit.Assert.assertEquals
 import com.example.newsreader.data.validators.NewsSourceValidator
 import org.junit.Before
 import org.junit.Test
@@ -72,21 +71,5 @@ class AddNewsSourcePresenterTest {
     val url = "https://www.example.com"
     addNewsSourcePresenter.onSaveClick(name, url)
     verify(newsItemsRepository).addNewsSource(NewsSource(name, url))
-  }
-
-  @Test fun isFormValid_isTrueWhenInputsAreValid() {
-    val name = "example"
-    val url = "https://www.example.com"
-    addNewsSourcePresenter.onNameInput(name)
-    addNewsSourcePresenter.onUrlInput(url)
-    assertEquals(addNewsSourcePresenter.isFormValid.blockingFirst(), true)
-  }
-
-  @Test fun isFormValid_isFalseWhenAnInputIsInvalid() {
-    val name = ""
-    val url = "https://www.example.com"
-    addNewsSourcePresenter.onNameInput(name)
-    addNewsSourcePresenter.onUrlInput(url)
-    assertEquals(addNewsSourcePresenter.isFormValid.blockingFirst(), false)
   }
 }

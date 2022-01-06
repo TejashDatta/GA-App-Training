@@ -3,6 +3,7 @@ package com.example.newsreader.add_news_source
 import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.data.validators.NewsSourceValidator
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class AddNewsSourcePresenter(
   private val view: AddNewsSourceContract.View,
@@ -13,8 +14,10 @@ class AddNewsSourcePresenter(
     view.presenter = this
   }
 
+  override val isFormValid: BehaviorSubject<Boolean>
+    get() = newsSourceValidator.isFormValid
+
   override fun start() {
-    updateFormValidity()
   }
 
   override fun onNameInput(name: String) {
@@ -34,9 +37,5 @@ class AddNewsSourcePresenter(
 
   override fun onSaveClick(name: String, url: String) {
     newsItemsRepository.addNewsSource(NewsSource(name, url))
-  }
-
-  private fun updateFormValidity() {
-    isFormValid.onNext(isNameValid && isUrlValid)
   }
 }
