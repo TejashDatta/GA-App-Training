@@ -44,4 +44,22 @@ class NewsSourceValidatorTest {
     `when`(urlRegexMatcher.matches(url)).thenReturn(true)
     assertEquals(newsSourceValidator.validateUrl(url), NewsSourceValidator.UrlError.NONE)
   }
+
+  @Test fun isFormValid_isTrueWhenAllFieldsAreValid() {
+    val name = "example"
+    val url = "https://www.example.com"
+    `when`(urlRegexMatcher.matches(url)).thenReturn(true)
+    newsSourceValidator.validateName(name)
+    newsSourceValidator.validateUrl(url)
+    assertEquals(true, newsSourceValidator.isFormValid.blockingFirst())
+  }
+
+  @Test fun isFormValid_isFalseWhenAFieldIsInvalid() {
+    val name = ""
+    val url = "https://www.example.com"
+    `when`(urlRegexMatcher.matches(url)).thenReturn(true)
+    newsSourceValidator.validateName(name)
+    newsSourceValidator.validateUrl(url)
+    assertEquals(false, newsSourceValidator.isFormValid.blockingFirst())
+  }
 }
