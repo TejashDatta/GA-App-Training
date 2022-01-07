@@ -1,26 +1,34 @@
 package com.example.newsreader.add_news_source
 
 import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.validators.NewsSourceValidator
 
 class AddNewsSourcePresenter(
-  private val addNewsSourceView: AddNewsSourceContract.View,
+  private val view: AddNewsSourceContract.View,
+  private val newsSourceValidator: NewsSourceValidator,
   private val newsItemsRepository: NewsItemsRepository
 ): AddNewsSourceContract.Presenter {
-
   init {
-    addNewsSourceView.presenter = this
+    view.presenter = this
   }
 
   override fun start() {
     TODO("Not yet implemented")
   }
 
-  override fun validateName(name: String) {
-    TODO("Not yet implemented")
+  override fun onNameInput(name: String) {
+    when (newsSourceValidator.validateName(name)) {
+      NewsSourceValidator.NameError.REQUIRED -> view.setNameIsRequiredError()
+      NewsSourceValidator.NameError.NONE -> view.disableNameError()
+    }
   }
 
-  override fun validateUrl(url: String) {
-    TODO("Not yet implemented")
+  override fun onUrlInput(url: String) {
+    when (newsSourceValidator.validateUrl(url)) {
+      NewsSourceValidator.UrlError.REQUIRED -> view.setUrlIsRequiredError()
+      NewsSourceValidator.UrlError.INCORRECT_FORMAT -> view.setUrlFormatError()
+      NewsSourceValidator.UrlError.NONE -> view.disableUrlError()
+    }
   }
 
   override fun onSaveClick(name: String, url: String) {

@@ -5,16 +5,19 @@ import com.example.newsreader.BaseView
 
 class AddNewsSourceContract {
   interface View: BaseView<Presenter> {
-    fun setNameError(error: String)
+    fun setNameIsRequiredError()
+    fun setNameIsTooLongError(maxLength: Int)
     fun disableNameError()
-    fun setUrlError(error: String)
+    fun setUrlIsRequiredError()
+    fun setUrlIsTooLongError(maxLength: Int)
+    fun setUrlFormatError()
     fun disableUrlError()
     fun goBack()
   }
 
   interface Presenter: BasePresenter {
-    fun validateName(name: String)
-    fun validateUrl(url: String)
+    fun onNameInput(name: String)
+    fun onUrlInput(url: String)
     fun onSaveClick(name: String, url: String)
   }
 }

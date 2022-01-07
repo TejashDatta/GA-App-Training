@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.newsreader.R
 import com.example.newsreader.data.source.NewsItemsRepositoryFactory
+import com.example.newsreader.data.validators.AndroidUrlRegexMatcher
+import com.example.newsreader.data.validators.NewsSourceValidator
 
 class AddNewsSourceActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +22,7 @@ class AddNewsSourceActivity : AppCompatActivity() {
 
     AddNewsSourcePresenter(
       addNewsSourceFragment,
+      NewsSourceValidator(AndroidUrlRegexMatcher()),
       NewsItemsRepositoryFactory.getInstance(applicationContext)
     )
   }
