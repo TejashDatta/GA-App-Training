@@ -19,7 +19,7 @@ class NewsSourceValidator(private val urlRegexMatcher: UrlRegexMatcher) {
   fun validateUrl(url: String): UrlError {
     return when {
       url.isEmpty() -> UrlError.REQUIRED
-      !urlRegexMatcher.matches(url) -> UrlError.INCORRECT_FORMAT
+      urlRegexMatcher.matches(url).not() -> UrlError.INCORRECT_FORMAT
       else -> UrlError.NONE
     }
   }
