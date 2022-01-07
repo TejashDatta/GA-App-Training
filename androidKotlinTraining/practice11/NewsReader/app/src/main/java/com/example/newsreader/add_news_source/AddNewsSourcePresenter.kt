@@ -3,7 +3,7 @@ package com.example.newsreader.add_news_source
 import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.data.validators.NewsSourceValidator
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.core.Observable
 
 class AddNewsSourcePresenter(
   private val view: AddNewsSourceContract.View,
@@ -14,7 +14,7 @@ class AddNewsSourcePresenter(
     view.presenter = this
   }
 
-  override val isFormValid: BehaviorSubject<Boolean>
+  override val isFormValid: Observable<Boolean>
     get() = newsSourceValidator.isFormValid
 
   override fun start() {

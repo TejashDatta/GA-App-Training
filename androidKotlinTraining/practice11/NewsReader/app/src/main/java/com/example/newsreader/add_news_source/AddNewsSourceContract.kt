@@ -2,7 +2,7 @@ package com.example.newsreader.add_news_source
 
 import com.example.newsreader.BasePresenter
 import com.example.newsreader.BaseView
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.core.Observable
 
 class AddNewsSourceContract {
   interface View: BaseView<Presenter> {
@@ -17,7 +17,7 @@ class AddNewsSourceContract {
   }
 
   interface Presenter: BasePresenter {
-    val isFormValid: BehaviorSubject<Boolean>
+    val isFormValid: Observable<Boolean>
     fun onNameInput(name: String)
     fun onUrlInput(url: String)
     fun onSaveClick(name: String, url: String)
