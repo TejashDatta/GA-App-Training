@@ -2,7 +2,6 @@ package com.example.newsreader.data.source
 
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.network.GoogleNewsApi
@@ -34,9 +33,9 @@ object NewsRepositoryFactory: Application() {
     return NewsRepository(
       GoogleNewsApi,
       ToyokeizaiNewsApi,
-      followedNewsSharedPreferences,
-      recentNewsSharedPreferences,
-      newsSourcesSharedPreferences
+      FollowedNewsManager(followedNewsSharedPreferences),
+      RecentNewsManager(recentNewsSharedPreferences),
+      NewsSourcesManager(newsSourcesSharedPreferences)
     ).also {
       repository = it
     }
@@ -46,13 +45,10 @@ object NewsRepositoryFactory: Application() {
 class NewsRepository(
   private val googleNewsApi: GoogleNewsApi,
   private val toyokeizaiNewsApi: ToyokeizaiNewsApi,
-  followedNewsSharedPreferences: SharedPreferences,
-  recentNewsSharedPreferences: SharedPreferences,
-  newsSourcesSharedPreferences: SharedPreferences
+  private val followedNewsManager: FollowedNewsManager,
+  private val recentNewsManager: RecentNewsManager,
+  private val newsSourcesManager: NewsSourcesManager
 ) {
-  private var followedNewsManager = FollowedNewsManager(followedNewsSharedPreferences)
-  private var recentNewsManager = RecentNewsManager(recentNewsSharedPreferences)
-  private var newsSourcesManager = NewsSourcesManager(newsSourcesSharedPreferences)
 
   private var cachedGoogleNews: List<NewsItem>? = null
   private var cachedToyokeizaiNews: List<NewsItem>? = null
