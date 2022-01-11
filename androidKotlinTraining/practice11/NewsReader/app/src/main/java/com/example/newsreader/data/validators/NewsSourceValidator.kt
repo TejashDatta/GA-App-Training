@@ -12,8 +12,8 @@ class NewsSourceValidator(private val urlRegexMatcher: UrlRegexMatcher) {
   enum class NameError { NONE, REQUIRED }
   enum class UrlError { NONE, REQUIRED, INCORRECT_FORMAT }
 
-  val isNameValid: BehaviorSubject<Boolean> = BehaviorSubject.create()
-  val isUrlValid: BehaviorSubject<Boolean> = BehaviorSubject.create()
+  private val isNameValid: BehaviorSubject<Boolean> = BehaviorSubject.create()
+  private val isUrlValid: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
   val isFormValid: Observable<Boolean> = Observable.zip(
     isNameValid,
