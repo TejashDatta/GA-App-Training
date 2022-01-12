@@ -2,10 +2,10 @@ package com.example.newsreader.data.source
 
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.models.NewsSource
-import com.example.newsreader.network.GoogleNewsApi
-import com.example.newsreader.network.GoogleNewsApiService
-import com.example.newsreader.network.ToyokeizaiNewsApi
-import com.example.newsreader.network.ToyokeizaiNewsApiService
+import com.example.newsreader.network.*
+import com.example.newsreader.network.data_transfer_objects.general_news.NetworkGeneralNewsChannel
+import com.example.newsreader.network.data_transfer_objects.general_news.NetworkGeneralNewsItem
+import com.example.newsreader.network.data_transfer_objects.general_news.toDomainModel
 import com.example.newsreader.network.data_transfer_objects.google_news.NetworkGoogleNewsChannel
 import com.example.newsreader.network.data_transfer_objects.google_news.NetworkGoogleNewsItem
 import com.example.newsreader.network.data_transfer_objects.google_news.toDomainModel
@@ -13,6 +13,7 @@ import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.Netw
 import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.NetworkToyokeizaiNewsItem
 import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.toDomainModel
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -35,12 +36,17 @@ class NewsRepositoryTest {
   private val toyokeizaiNewsChannel =
     NetworkToyokeizaiNewsChannel(listOf(NetworkToyokeizaiNewsItem("test2", "testUrl2", ZonedDateTime.now().minusHours(1))))
 
+  @Mock private lateinit var generalNewsApi: GeneralNewsApi
+  @Mock private lateinit var generalNewsRetrofitService: GeneralNewsApiService
+  private val generalNewsChannel =
+    NetworkGeneralNewsChannel(listOf(NetworkGeneralNewsItem("test3", "testUrl3", ZonedDateTime.now().minusHours(2))))
+
   @Mock private lateinit var followedNewsManager: FollowedNewsManager
   @Mock private lateinit var recentNewsManager: RecentNewsManager
   @Mock private lateinit var newsSourcesManager: NewsSourcesManager
 
   @Mock private lateinit var newsItem: NewsItem
-  @Mock private lateinit var newsSource: NewsSource
+  private val exampleNewsSource = NewsSource("example", "www.example.com")
 
   private lateinit var newsRepository: NewsRepository
 
@@ -51,9 +57,13 @@ class NewsRepositoryTest {
     `when`(toyokeizaiNewsApi.retrofitService).thenReturn(toyokeizaiNewsRetrofitService)
     `when`(toyokeizaiNewsRetrofitService.getNewsChannel()).thenReturn(Observable.just(toyokeizaiNewsChannel))
 
+    `when`(generalNewsApi.retrofitService).thenReturn(generalNewsRetrofitService)
+    `when`(generalNewsRetrofitService.getNewsChannel(exampleNewsSource.url)).thenReturn(Observable.just(generalNewsChannel))
+
     newsRepository = NewsRepository(
       googleNewsApi,
       toyokeizaiNewsApi,
+      generalNewsApi,
       followedNewsManager,
       recentNewsManager,
       newsSourcesManager
@@ -72,9 +82,21 @@ class NewsRepositoryTest {
     assertEquals(actual, expected)
   }
 
+  @Test fun getGeneralNews_returnsNewsItemsOfNewsSource() {
+    val actual = newsRepository.getGeneralNews(exampleNewsSource, refresh = true).blockingFirst()
+    val expected = generalNewsChannel.toDomainModel(exampleNewsSource.name)
+    assertEquals(actual, expected)
+  }
+
   @Test fun getAllNews_returnsAllNewsItemsByDescendingOrderOfPublishedDate() {
+    val newsSourcesSubject: BehaviorSubject<List<NewsSource>> = BehaviorSubject.create()
+    newsSourcesSubject.onNext(listOf(exampleNewsSource))
+    `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
+
     val actual = newsRepository.getAllNews(refresh = true).blockingFirst()
-    val expected = googleNewsChannel.toDomainModel() + toyokeizaiNewsChannel.toDomainModel()
+    val expected = googleNewsChannel.toDomainModel() +
+                    toyokeizaiNewsChannel.toDomainModel() +
+                    generalNewsChannel.toDomainModel(exampleNewsSource.name)
     assertEquals(actual, expected)
   }
 
@@ -114,7 +136,7 @@ class NewsRepositoryTest {
   }
 
   @Test fun addNewsSource_callsAddFromNewsSourcesManager() {
-    newsRepository.addNewsSource(newsSource)
-    verify(newsSourcesManager).add(newsSource)
+    newsRepository.addNewsSource(exampleNewsSource)
+    verify(newsSourcesManager).add(exampleNewsSource)
   }
 }
