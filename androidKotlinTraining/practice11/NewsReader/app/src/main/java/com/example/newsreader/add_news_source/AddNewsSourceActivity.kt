@@ -12,7 +12,6 @@ import com.example.newsreader.data.validators.NewsSourceValidator
 class AddNewsSourceActivity : AppCompatActivity() {
   private lateinit var addNewsSourceFragment: AddNewsSourceFragment
   private lateinit var addNewsSourcePresenter: AddNewsSourcePresenter
-  private lateinit var saveClickListener: SaveClickListener
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -21,7 +20,6 @@ class AddNewsSourceActivity : AppCompatActivity() {
     setSupportActionBar(findViewById(R.id.toolbar))
 
     addNewsSourceFragment = AddNewsSourceFragment.newInstance()
-    saveClickListener = addNewsSourceFragment
 
     supportFragmentManager.beginTransaction().apply {
       add(R.id.contentFrame, addNewsSourceFragment)
@@ -45,7 +43,7 @@ class AddNewsSourceActivity : AppCompatActivity() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return when (item.itemId) {
       R.id.action_save -> {
-        saveClickListener.onSaveClick()
+        (addNewsSourceFragment as? SaveClickListener)?.onSaveClick()
         true
       }
       else -> super.onOptionsItemSelected(item)
