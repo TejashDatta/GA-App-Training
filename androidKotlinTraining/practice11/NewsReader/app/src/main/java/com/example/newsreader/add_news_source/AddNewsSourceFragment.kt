@@ -2,6 +2,7 @@ package com.example.newsreader.add_news_source
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.newsreader.R
+import com.example.newsreader.data.validators.NewsSourceValidator
 
 class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View, SaveClickListener {
   companion object {
@@ -20,6 +22,16 @@ class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View, SaveClickLi
   private lateinit var nameEditTextView: EditText
   private lateinit var urlEditTextView: EditText
 
+  override fun onResume() {
+    super.onResume()
+    presenter.start()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    presenter.end()
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val root = inflater.inflate(R.layout.fragment_add_news_source, container, false)
@@ -29,8 +41,11 @@ class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View, SaveClickLi
       urlEditTextView = findViewById(R.id.urlEditText)
     }
 
-    nameEditTextView.addTextChangedListener { text: Editable? -> presenter.validateName(text.toString()) }
-    urlEditTextView.addTextChangedListener { text: Editable? -> presenter.validateUrl(text.toString()) }
+    nameEditTextView.filters = arrayOf(InputFilter.LengthFilter(NewsSourceValidator.NAME_MAX_LENGTH))
+    urlEditTextView.filters = arrayOf(InputFilter.LengthFilter(NewsSourceValidator.URL_MAX_LENGTH))
+
+    nameEditTextView.addTextChangedListener { text: Editable? -> presenter.onNameInput(text.toString()) }
+    urlEditTextView.addTextChangedListener { text: Editable? -> presenter.onUrlInput(text.toString()) }
 
     return root
   }
