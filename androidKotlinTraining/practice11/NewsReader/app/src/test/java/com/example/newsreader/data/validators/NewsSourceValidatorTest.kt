@@ -18,48 +18,48 @@ class NewsSourceValidatorTest {
     newsSourceValidator = NewsSourceValidator(urlRegexMatcher)
   }
 
-  @Test fun validateName_requiredErrorWhenNameIsEmpty() {
-    val name = ""
-    assertEquals(newsSourceValidator.validateName(name), NewsSourceValidator.NameError.REQUIRED)
+  @Test fun nameSetterValidatesName_requiredErrorWhenNameIsEmpty() {
+    newsSourceValidator.name = ""
+    assertEquals(newsSourceValidator.nameError.value, NewsSourceValidator.NameError.REQUIRED)
   }
 
-  @Test fun validateName_noneErrorWhenNameIsValid() {
-    val name = "abc"
-    assertEquals(newsSourceValidator.validateName(name), NewsSourceValidator.NameError.NONE)
+  @Test fun nameSetterValidatesName_noneErrorWhenNameIsValid() {
+    newsSourceValidator.name = "abc"
+    assertEquals(newsSourceValidator.nameError.value, NewsSourceValidator.NameError.NONE)
   }
 
-  @Test fun validateUrl_requiredErrorWhenUrlIsEmpty() {
-    val url = ""
-    assertEquals(newsSourceValidator.validateUrl(url), NewsSourceValidator.UrlError.REQUIRED)
+  @Test fun urlSetterValidatesUrl_requiredErrorWhenUrlIsEmpty() {
+    newsSourceValidator.url = ""
+    assertEquals(newsSourceValidator.urlError.value, NewsSourceValidator.UrlError.REQUIRED)
   }
 
-  @Test fun validateUrl_incorrectFormatErrorWhenUrlIsNotUrlFormat() {
+  @Test fun urlSetterValidatesUrl_incorrectFormatErrorWhenUrlIsNotUrlFormat() {
     val url = "not a url"
     `when`(urlRegexMatcher.matches(url)).thenReturn(false)
-    assertEquals(newsSourceValidator.validateUrl(url), NewsSourceValidator.UrlError.INCORRECT_FORMAT)
+    newsSourceValidator.url = url
+    assertEquals(newsSourceValidator.urlError.value, NewsSourceValidator.UrlError.INCORRECT_FORMAT)
   }
 
-  @Test fun validateUrl_noneErrorWhenUrlIsValid() {
+  @Test fun urlSetterValidatesUrl_noneErrorWhenUrlIsValid() {
     val url = "https://www.gizmodo.jp/index.xml/"
     `when`(urlRegexMatcher.matches(url)).thenReturn(true)
-    assertEquals(newsSourceValidator.validateUrl(url), NewsSourceValidator.UrlError.NONE)
+    newsSourceValidator.url = url
+    assertEquals(newsSourceValidator.urlError.value, NewsSourceValidator.UrlError.NONE)
   }
 
   @Test fun isFormValid_isTrueWhenAllFieldsAreValid() {
-    val name = "example"
     val url = "https://www.example.com"
     `when`(urlRegexMatcher.matches(url)).thenReturn(true)
-    newsSourceValidator.validateName(name)
-    newsSourceValidator.validateUrl(url)
+    newsSourceValidator.name = "example"
+    newsSourceValidator.url = url
     assertEquals(true, newsSourceValidator.isFormValid.blockingFirst())
   }
 
   @Test fun isFormValid_isFalseWhenAFieldIsInvalid() {
-    val name = ""
     val url = "https://www.example.com"
     `when`(urlRegexMatcher.matches(url)).thenReturn(true)
-    newsSourceValidator.validateName(name)
-    newsSourceValidator.validateUrl(url)
+    newsSourceValidator.name = ""
+    newsSourceValidator.url = url
     assertEquals(false, newsSourceValidator.isFormValid.blockingFirst())
   }
 }
