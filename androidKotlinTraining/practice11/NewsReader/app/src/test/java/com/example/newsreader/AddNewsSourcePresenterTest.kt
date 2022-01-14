@@ -2,6 +2,7 @@ package com.example.newsreader
 
 import com.example.newsreader.add_news_source.AddNewsSourceContract
 import com.example.newsreader.add_news_source.AddNewsSourcePresenter
+import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.data.validators.NewsSourceValidator
 import com.example.newsreader.data.validators.UrlRegexMatcher
