@@ -101,8 +101,7 @@ class NewsRepositoryTest {
   }
 
   @Test fun followedNewsItemsSubject_returnsItemsSubjectFromFollowedNewsManager() {
-    newsRepository.followedNewsItemsSubject
-    verify(followedNewsManager).itemsSubject
+    assertEquals(followedNewsManager.itemsSubject, newsRepository.followedNewsItemsSubject)
   }
 
   @Test fun isNewsFollowed_callsIsSavedFromFollowedNewsManager() {
@@ -121,8 +120,7 @@ class NewsRepositoryTest {
   }
 
   @Test fun recentNewsItems_returnsItemsFromRecentNewsManager() {
-    newsRepository.recentNewsItems
-    verify(recentNewsManager).items
+    assertEquals(recentNewsManager.items, newsRepository.recentNewsItems)
   }
 
   @Test fun addRecentNews_callsAddFromRecentNewsManager() {
