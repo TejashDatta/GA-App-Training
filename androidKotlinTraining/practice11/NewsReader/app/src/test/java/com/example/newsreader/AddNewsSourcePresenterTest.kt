@@ -2,6 +2,7 @@ package com.example.newsreader
 
 import com.example.newsreader.add_news_source.AddNewsSourceContract
 import com.example.newsreader.add_news_source.AddNewsSourcePresenter
+import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsItemsRepository
 import com.example.newsreader.data.validators.NewsSourceValidator
 import com.example.newsreader.data.validators.UrlRegexMatcher
@@ -44,6 +45,13 @@ class AddNewsSourcePresenterTest {
     val url = "url"
     addNewsSourcePresenter.onUrlInput(url)
     assertEquals(url, newsSourceValidator.url)
+  }
+
+  @Test fun onSaveClick_addsNewsSourceInNewsRepository() {
+    val name = "example"
+    val url = "https://www.example.com"
+    addNewsSourcePresenter.onSaveClick(name, url)
+    verify(newsItemsRepository).addNewsSource(NewsSource(name, url))
   }
   
 //  TODO: test that presenter sets error display when validator emits error event
