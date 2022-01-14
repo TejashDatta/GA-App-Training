@@ -4,6 +4,9 @@ import com.example.newsreader.add_news_source.AddNewsSourceContract
 import com.example.newsreader.add_news_source.AddNewsSourcePresenter
 import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsRepository
+import com.example.newsreader.data.validators.NewsSourceValidator
+import com.example.newsreader.data.validators.UrlRegexMatcher
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,57 +20,31 @@ class AddNewsSourcePresenterTest {
 
   @Mock private lateinit var newsRepository: NewsRepository
 
+  @Mock private lateinit var urlRegexMatcher: UrlRegexMatcher
+
   private lateinit var addNewsSourcePresenter: AddNewsSourcePresenter
 
-  @Before fun createPresenter() {
-    addNewsSourcePresenter = AddNewsSourcePresenter(view, newsRepository)
+  private lateinit var newsSourceValidator: NewsSourceValidator
+
+  @Before fun setupValidatorAndPresenter() {
+    newsSourceValidator = NewsSourceValidator(urlRegexMatcher)
+    addNewsSourcePresenter = AddNewsSourcePresenter(view, newsSourceValidator, newsRepository)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
     verify(view).presenter = addNewsSourcePresenter
   }
 
-  @Test fun validateName_errorWhenInputIsEmpty() {
-    val name = ""
-    addNewsSourcePresenter.validateName(name)
-    verify(view).setNameIsRequiredError()
+  @Test fun onNameInput_setsNameInValidator() {
+    val name = "name"
+    addNewsSourcePresenter.onNameInput(name)
+    assertEquals(name, newsSourceValidator.name)
   }
 
-  @Test fun validateName_errorWhenInputIsLongerThanMaxLength() {
-    val name = "a".repeat(AddNewsSourcePresenter.Companion.NAME_MAX_LENGTH + 1)
-    addNewsSourcePresenter.validateName(name)
-    verify(view).setNameIsTooLongError(AddNewsSourcePresenter.Companion.NAME_MAX_LENGTH)
-  }
-
-  @Test fun validateName_disablesErrorForValidInput() {
-    val name = "abc"
-    addNewsSourcePresenter.validateName(name)
-    verify(view).disableNameError()
-  }
-
-  @Test fun validateUrl_errorWhenInputIsEmpty() {
-    val url = ""
-    addNewsSourcePresenter.validateUrl(url)
-    verify(view).setUrlIsRequiredError()
-  }
-
-  @Test fun validateUrl_errorWhenInputIsLongerThanMaxLength() {
-    val url = "https://www.gizmodo.jp/index.xml/" +
-        "a".repeat(AddNewsSourcePresenter.Companion.URL_MAX_LENGTH + 1)
-    addNewsSourcePresenter.validateUrl(url)
-    verify(view).setUrlIsTooLongError(AddNewsSourcePresenter.Companion.URL_MAX_LENGTH)
-  }
-
-  @Test fun validateUrl_errorWhenInputIsNotUrlFormat() {
-    val url = "not a url"
-    addNewsSourcePresenter.validateUrl(url)
-    verify(view).setUrlFormatError()
-  }
-
-  @Test fun validateUrl_disablesErrorForValidInput() {
-    val url = "https://www.gizmodo.jp/index.xml/"
-    addNewsSourcePresenter.validateUrl(url)
-    verify(view).disableUrlError()
+  @Test fun onUrlInput_setsUrlInValidator() {
+    val url = "url"
+    addNewsSourcePresenter.onUrlInput(url)
+    assertEquals(url, newsSourceValidator.url)
   }
 
   @Test fun onSaveClick_addsNewsSourceInNewsRepository() {
@@ -76,4 +53,6 @@ class AddNewsSourcePresenterTest {
     addNewsSourcePresenter.onSaveClick(name, url)
     verify(newsRepository).addNewsSource(NewsSource(name, url))
   }
+  
+//  TODO: test that presenter sets error display when validator emits error event
 }

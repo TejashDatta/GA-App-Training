@@ -6,6 +6,8 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.newsreader.R
 import com.example.newsreader.data.source.NewsRepositoryFactory
+import com.example.newsreader.data.validators.AndroidUrlRegexMatcher
+import com.example.newsreader.data.validators.NewsSourceValidator
 
 class AddNewsSourceActivity : AppCompatActivity() {
   private lateinit var addNewsSourceFragment: AddNewsSourceFragment
@@ -25,6 +27,7 @@ class AddNewsSourceActivity : AppCompatActivity() {
 
     addNewsSourcePresenter = AddNewsSourcePresenter(
       addNewsSourceFragment,
+      NewsSourceValidator(AndroidUrlRegexMatcher()),
       NewsRepositoryFactory.getInstance(applicationContext)
     )
   }
@@ -40,7 +43,7 @@ class AddNewsSourceActivity : AppCompatActivity() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return when (item.itemId) {
       R.id.action_save -> {
-        addNewsSourceFragment.onSaveClick()
+        (addNewsSourceFragment as? SaveClickListener)?.onSaveClick()
         true
       }
       else -> super.onOptionsItemSelected(item)
