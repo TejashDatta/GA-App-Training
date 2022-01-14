@@ -18,6 +18,7 @@ class AddNewsSourceContract {
 
   interface Presenter: BasePresenter {
     val isFormValid: Observable<Boolean>
+    fun end()
     fun onNameInput(name: String)
     fun onUrlInput(url: String)
     fun onSaveClick(name: String, url: String)

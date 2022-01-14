@@ -12,39 +12,42 @@ class NewsSourceValidator(private val urlRegexMatcher: UrlRegexMatcher) {
   enum class NameError { NONE, REQUIRED }
   enum class UrlError { NONE, REQUIRED, INCORRECT_FORMAT }
 
-  private val isNameValid: BehaviorSubject<Boolean> = BehaviorSubject.create()
-  private val isUrlValid: BehaviorSubject<Boolean> = BehaviorSubject.create()
+  var name: String = ""
+    set(value) {
+      validateName(value)
+      field = value
+    }
+
+  var url: String = ""
+    set(value) {
+      validateUrl(value)
+      field = value
+    }
+
+  val nameError: BehaviorSubject<NameError> = BehaviorSubject.create()
+  val urlError: BehaviorSubject<UrlError> = BehaviorSubject.create()
 
   val isFormValid: Observable<Boolean> = Observable.zip(
-    isNameValid,
-    isUrlValid,
-    { isNameValid, isUrlValid -> isNameValid && isUrlValid }
+    nameError,
+    urlError,
+    { nameError, urlError -> nameError == NameError.NONE && urlError == UrlError.NONE }
   )
 
-  init {
-    isNameValid.onNext(false)
-    isUrlValid.onNext(false)
-  }
-
-  fun validateName(name: String): NameError {
+  private fun validateName(name: String) {
     val validationResult = when {
       name.isEmpty() -> NameError.REQUIRED
       else -> NameError.NONE
     }
-
-    isNameValid.onNext(validationResult == NameError.NONE)
-    return validationResult
+    nameError.onNext(validationResult)
   }
 
-  fun validateUrl(url: String): UrlError {
+  fun validateUrl(url: String) {
     val validationResult = when {
       url.isEmpty() -> UrlError.REQUIRED
       !urlRegexMatcher.matches(url) -> UrlError.INCORRECT_FORMAT
       else -> UrlError.NONE
     }
-
-    isUrlValid.onNext(validationResult == UrlError.NONE)
-    return validationResult
+    urlError.onNext(validationResult)
   }
 }
 

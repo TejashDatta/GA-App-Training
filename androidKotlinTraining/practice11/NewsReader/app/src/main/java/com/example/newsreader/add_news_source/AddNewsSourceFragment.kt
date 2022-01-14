@@ -22,6 +22,16 @@ class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View, SaveClickLi
   private lateinit var nameEditTextView: EditText
   private lateinit var urlEditTextView: EditText
 
+  override fun onResume() {
+    super.onResume()
+    presenter.start()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    presenter.end()
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val root = inflater.inflate(R.layout.fragment_add_news_source, container, false)
