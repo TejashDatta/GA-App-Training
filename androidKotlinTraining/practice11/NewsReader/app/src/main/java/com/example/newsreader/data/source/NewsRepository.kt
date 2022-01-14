@@ -99,7 +99,9 @@ class NewsRepository(
     val getNewsObservables = mutableListOf<Observable<List<NewsItem>>>()
     getNewsObservables.add(getGoogleNews(refresh))
     getNewsObservables.add(getToyokeizaiNews(refresh))
-    newsSourcesSubject.blockingFirst().forEach { getNewsObservables.add(getGeneralNews(it, refresh)) }
+    newsSourcesSubject.value?.let { newsSources ->
+      newsSources.forEach { getNewsObservables.add(getGeneralNews(it, refresh)) }
+    }
 
     return Observable.zip(
       getNewsObservables
