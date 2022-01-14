@@ -10,15 +10,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 
+@RunWith(MockitoJUnitRunner::class)
 class GeneralNewsApiServiceTest {
   private lateinit var server: MockWebServer
 
-  private lateinit var retrofitService: GeneralNewsApiService
-
-  private val mockWebServerUrl = server.url("/").toString()
+  private val retrofitService = GeneralNewsApi.retrofitService
 
   private val exampleResponseContent = MockResponseFileReader("example-toyokeizai-news-rss-response.xml").content
 
@@ -26,8 +27,6 @@ class GeneralNewsApiServiceTest {
 
   @Before fun setup() {
     server = MockWebServer()
-
-    retrofitService = GeneralNewsApi.retrofitService
   }
 
   private fun setupNormalServerResponse() {
@@ -58,6 +57,7 @@ class GeneralNewsApiServiceTest {
 
   @Test fun getNewsChannel_receivesAndParsesResponseCorrectly() {
     setupNormalServerResponse()
+    val mockWebServerUrl = server.url("/").toString()
 
     val exampleResponseContentSource = exampleResponseContent.toResponseBody().source()
     val expected = tikXml.read(exampleResponseContentSource, NetworkGeneralNewsChannel::class.java)
@@ -68,6 +68,7 @@ class GeneralNewsApiServiceTest {
 
   @Test fun getNewsChannel_throwsNotFoundHttpExceptionWhenSiteNotFound() {
     setupNotFoundErrorServerResponse()
+    val mockWebServerUrl = server.url("/").toString()
 
     assertThrows(HttpException::class.java) {
       retrofitService.getNewsChannel(mockWebServerUrl).blockingFirst()
