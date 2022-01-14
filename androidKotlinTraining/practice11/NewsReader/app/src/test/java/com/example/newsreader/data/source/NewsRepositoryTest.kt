@@ -34,12 +34,15 @@ class NewsRepositoryTest {
   @Mock private lateinit var toyokeizaiNewsApi: ToyokeizaiNewsApi
   @Mock private lateinit var toyokeizaiNewsRetrofitService: ToyokeizaiNewsApiService
   private val toyokeizaiNewsChannel =
-    NetworkToyokeizaiNewsChannel(listOf(NetworkToyokeizaiNewsItem("test2", "testUrl2", ZonedDateTime.now().minusHours(1))))
+    NetworkToyokeizaiNewsChannel(listOf(NetworkToyokeizaiNewsItem("test2", "testUrl2", ZonedDateTime.now().minusHours(2))))
 
   @Mock private lateinit var generalNewsApi: GeneralNewsApi
   @Mock private lateinit var generalNewsRetrofitService: GeneralNewsApiService
   private val generalNewsChannel =
-    NetworkGeneralNewsChannel(listOf(NetworkGeneralNewsItem("test3", "testUrl3", ZonedDateTime.now().minusHours(2))))
+    NetworkGeneralNewsChannel(listOf(
+      NetworkGeneralNewsItem("test3", "testUrl3", ZonedDateTime.now().minusHours(1)),
+      NetworkGeneralNewsItem("test4", "testUrl4", ZonedDateTime.now().minusHours(3))
+    ))
 
   @Mock private lateinit var followedNewsManager: FollowedNewsManager
   @Mock private lateinit var recentNewsManager: RecentNewsManager
@@ -94,9 +97,10 @@ class NewsRepositoryTest {
     `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
 
     val actual = newsRepository.getAllNews(refresh = true).blockingFirst()
-    val expected = googleNewsChannel.toDomainModel() +
+    val expected = (googleNewsChannel.toDomainModel() +
                     toyokeizaiNewsChannel.toDomainModel() +
                     generalNewsChannel.toDomainModel(exampleNewsSource.name)
+                    ).sortedByDescending { it.publishedDate }
     assertEquals(actual, expected)
   }
 
