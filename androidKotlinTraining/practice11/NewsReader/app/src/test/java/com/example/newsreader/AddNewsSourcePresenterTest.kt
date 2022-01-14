@@ -3,7 +3,7 @@ package com.example.newsreader
 import com.example.newsreader.add_news_source.AddNewsSourceContract
 import com.example.newsreader.add_news_source.AddNewsSourcePresenter
 import com.example.newsreader.data.models.NewsSource
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.NewsRepository
 import com.example.newsreader.data.validators.NewsSourceValidator
 import com.example.newsreader.data.validators.UrlRegexMatcher
 import org.junit.Assert.assertEquals
@@ -28,7 +28,7 @@ class AddNewsSourcePresenterTest {
 
   @Before fun setupValidatorAndPresenter() {
     newsSourceValidator = NewsSourceValidator(urlRegexMatcher)
-    addNewsSourcePresenter = AddNewsSourcePresenter(view, newsSourceValidator, newsItemsRepository)
+    addNewsSourcePresenter = AddNewsSourcePresenter(view, newsSourceValidator, newsRepository)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
