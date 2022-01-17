@@ -184,8 +184,6 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
 
   private fun setupDrawerContent() {
     navigationView.setNavigationItemSelectedListener { menuItem ->
-      uncheckMenuItems()
-
       when(menuItem.itemId) {
         R.id.action_all_news -> presenter.onClickAllNews()
         R.id.action_google_news -> presenter.onClickGoogleNews()
@@ -198,9 +196,5 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       drawerLayout.closeDrawers()
       true
     }
-  }
-
-  private fun uncheckMenuItems() {
-    navigationView.menu.forEach { it.isChecked = false }
   }
 }
