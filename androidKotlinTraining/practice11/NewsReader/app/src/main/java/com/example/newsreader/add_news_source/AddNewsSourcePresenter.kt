@@ -39,6 +39,8 @@ class AddNewsSourcePresenter(
 
   override fun onSaveClick(name: String, url: String) {
     newsRepository.addNewsSource(NewsSource(name, url))
+    view.showNewsSourceAddedToast(name)
+    view.goBack()
   }
 
   private fun subscribeToNameError() {
