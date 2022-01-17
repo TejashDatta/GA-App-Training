@@ -19,6 +19,7 @@
   <string name="drawer_followed_news">フォロー中</string>
   <string name="drawer_recent_news">最近閲覧した記事</string>
   <string name="add_news_source_title">記事取得先を登録</string>
+  <string name="add_news_source_button">記事取得先を登録する</string>
   <string name="name">名前</string>
   <string name="url">URL</string>
   <string name="validate_required">%1$sは必須です</string>
