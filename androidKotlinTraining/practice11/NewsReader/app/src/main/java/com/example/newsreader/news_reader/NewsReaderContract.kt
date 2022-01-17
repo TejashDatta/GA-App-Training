@@ -10,6 +10,7 @@ class NewsReaderContract {
     fun showToyokeizaiNews()
     fun showFollowedNews()
     fun showRecentNews()
+    fun showAddNewsSource()
   }
 
   interface Presenter: BasePresenter {
@@ -18,5 +19,6 @@ class NewsReaderContract {
     fun onClickToyokeizaiNews()
     fun onClickFollowedNews()
     fun onClickRecentNews()
+    fun onClickAddNewsSource()
   }
 }

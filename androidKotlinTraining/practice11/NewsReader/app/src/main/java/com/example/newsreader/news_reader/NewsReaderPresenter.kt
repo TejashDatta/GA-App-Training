@@ -26,4 +26,8 @@ class NewsReaderPresenter(
   override fun onClickRecentNews() {
     newsReaderView.showRecentNews()
   }
+
+  override fun onClickAddNewsSource() {
+    newsReaderView.showAddNewsSource()
+  }
 }

@@ -1,7 +1,7 @@
 package com.example.newsreader.news_reader
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
+import com.example.newsreader.add_news_source.AddNewsSourceActivity
 import com.example.newsreader.data.source.NewsRepositoryFactory
 import com.example.newsreader.followed_news.FollowedNewsFragment
 import com.example.newsreader.followed_news.FollowedNewsPresenter
@@ -170,6 +171,12 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     changeFragment(nextFragment, RECENT_NEWS_FRAGMENT_TAG, isNewInstance)
   }
 
+  override fun showAddNewsSource() {
+    startActivity(
+      Intent(applicationContext, AddNewsSourceActivity::class.java)
+    )
+  }
+
   private fun currentFragment() = supportFragmentManager.findFragmentById(contentFrameId)
 
   private fun changeFragment(nextFragment: Fragment, tag: String, isNewInstance: Boolean) {
@@ -208,8 +215,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   private fun setupDrawerFooterContent() {
     navigationViewFooter.setNavigationItemSelectedListener { menuItem ->
       when(menuItem.itemId) {
-//        TODO: start activity
-        R.id.action_add_news_source -> Log.d("NewsReaderActivity", "add news source")
+        R.id.action_add_news_source -> presenter.onClickAddNewsSource()
       }
       true
     }
