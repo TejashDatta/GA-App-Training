@@ -1,11 +1,11 @@
 package com.example.newsreader.news_reader
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.newsreader.R
@@ -31,7 +31,8 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   override lateinit var presenter: NewsReaderContract.Presenter
 
   private lateinit var drawerLayout: DrawerLayout
-  private lateinit var navigationView: NavigationView
+  private lateinit var navigationViewMain: NavigationView
+  private lateinit var navigationViewFooter: NavigationView
 
   @IdRes private val contentFrameId = R.id.contentFrame
 
@@ -52,7 +53,8 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     }
 
     drawerLayout = findViewById(R.id.drawer_layout)
-    navigationView = findViewById(R.id.navigation_view)
+    navigationViewMain = findViewById(R.id.navigation_view_main)
+    navigationViewFooter = findViewById(R.id.navigation_view_footer)
     setupDrawerContent()
 
     presenter = NewsReaderPresenter(this)
@@ -183,7 +185,12 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   private fun setupDrawerContent() {
-    navigationView.setNavigationItemSelectedListener { menuItem ->
+    setupDrawerMainContent()
+    setupDrawerFooterContent()
+  }
+
+  private fun setupDrawerMainContent() {
+    navigationViewMain.setNavigationItemSelectedListener { menuItem ->
       when(menuItem.itemId) {
         R.id.action_all_news -> presenter.onClickAllNews()
         R.id.action_google_news -> presenter.onClickGoogleNews()
@@ -194,6 +201,16 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
 
       menuItem.isChecked = true
       drawerLayout.closeDrawers()
+      true
+    }
+  }
+
+  private fun setupDrawerFooterContent() {
+    navigationViewFooter.setNavigationItemSelectedListener { menuItem ->
+      when(menuItem.itemId) {
+//        TODO: start activity
+        R.id.action_add_news_source -> Log.d("NewsReaderActivity", "add news source")
+      }
       true
     }
   }
