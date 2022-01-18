@@ -1,5 +1,8 @@
 package com.example.newsreader.data.validators
 
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+
 class NewsSourceValidator(private val urlRegexMatcher: UrlRegexMatcher) {
   companion object {
     const val NAME_MAX_LENGTH = 30
@@ -9,19 +12,42 @@ class NewsSourceValidator(private val urlRegexMatcher: UrlRegexMatcher) {
   enum class NameError { NONE, REQUIRED }
   enum class UrlError { NONE, REQUIRED, INCORRECT_FORMAT }
 
-  fun validateName(name: String): NameError {
-    return when {
+  var name: String = ""
+    set(value) {
+      validateName(value)
+      field = value
+    }
+
+  var url: String = ""
+    set(value) {
+      validateUrl(value)
+      field = value
+    }
+
+  val nameError: BehaviorSubject<NameError> = BehaviorSubject.create()
+  val urlError: BehaviorSubject<UrlError> = BehaviorSubject.create()
+
+  val isFormValid: Observable<Boolean> = Observable.zip(
+    nameError,
+    urlError,
+    { nameError, urlError -> nameError == NameError.NONE && urlError == UrlError.NONE }
+  )
+
+  private fun validateName(name: String) {
+    val validationResult = when {
       name.isEmpty() -> NameError.REQUIRED
       else -> NameError.NONE
     }
+    nameError.onNext(validationResult)
   }
 
-  fun validateUrl(url: String): UrlError {
-    return when {
+  private fun validateUrl(url: String) {
+    val validationResult = when {
       url.isEmpty() -> UrlError.REQUIRED
       urlRegexMatcher.matches(url).not() -> UrlError.INCORRECT_FORMAT
       else -> UrlError.NONE
     }
+    urlError.onNext(validationResult)
   }
 }
 

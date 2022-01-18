@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.newsreader.R
 import com.example.newsreader.data.validators.NewsSourceValidator
 
-class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View {
+class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View, SaveClickListener {
   companion object {
     fun newInstance() = AddNewsSourceFragment()
   }
@@ -21,6 +21,16 @@ class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View {
 
   private lateinit var nameEditTextView: EditText
   private lateinit var urlEditTextView: EditText
+
+  override fun onResume() {
+    super.onResume()
+    presenter.start()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    presenter.end()
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -38,6 +48,10 @@ class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View {
     urlEditTextView.addTextChangedListener { text: Editable? -> presenter.onUrlInput(text.toString()) }
 
     return root
+  }
+
+  override fun onSaveClick() {
+    presenter.onSaveClick(nameEditTextView.text.toString(), urlEditTextView.text.toString())
   }
 
   override fun setNameIsRequiredError() {

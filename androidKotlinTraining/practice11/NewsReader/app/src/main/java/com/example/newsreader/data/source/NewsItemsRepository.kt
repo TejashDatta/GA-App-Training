@@ -3,7 +3,9 @@ package com.example.newsreader.data.source
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.newsreader.data.models.NewsItem
+import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.network.GoogleNewsApi
 import com.example.newsreader.network.ToyokeizaiNewsApi
 import com.example.newsreader.network.data_transfer_objects.google_news.toDomainModel
@@ -97,4 +99,9 @@ class NewsItemsRepository(
     get() = recentNewsManager.items
 
   fun addRecentNews(newsItem: NewsItem) = recentNewsManager.add(newsItem)
+
+  fun addNewsSource(newsSource: NewsSource) {
+    Log.d("NewsItemsRepository", newsSource.toString())
+//    TODO: create news source manager
+  }
 }

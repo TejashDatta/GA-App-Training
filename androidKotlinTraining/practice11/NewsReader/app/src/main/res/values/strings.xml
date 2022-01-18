@@ -5,6 +5,7 @@
   <string name="no_results">ニュース項目はありません</string>
   <string name="options_menu">オプションメニュー</string>
   <string name="share">シェア</string>
+  <string name="save">保存</string>
   <string name="save_for_later">後で読むために保存</string>
   <string name="remove_from_followed_items">[保存した記事]から削除</string>
   <string name="no_followed_items">保存した記事はありません。</string>
