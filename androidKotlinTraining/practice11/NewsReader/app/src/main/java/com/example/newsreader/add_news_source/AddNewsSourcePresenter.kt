@@ -1,7 +1,7 @@
 package com.example.newsreader.add_news_source
 
 import com.example.newsreader.data.models.NewsSource
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.NewsRepository
 import com.example.newsreader.data.validators.NewsSourceValidator
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 class AddNewsSourcePresenter(
   private val view: AddNewsSourceContract.View,
   private val newsSourceValidator: NewsSourceValidator,
-  private val newsItemsRepository: NewsItemsRepository
+  private val newsRepository: NewsRepository
 ): AddNewsSourceContract.Presenter {
   init {
     view.presenter = this
@@ -38,7 +38,7 @@ class AddNewsSourcePresenter(
   }
 
   override fun onSaveClick(name: String, url: String) {
-    newsItemsRepository.addNewsSource(NewsSource(name, url))
+    newsRepository.addNewsSource(NewsSource(name, url))
   }
 
   private fun subscribeToNameError() {

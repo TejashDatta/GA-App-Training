@@ -1,32 +1,32 @@
 package com.example.newsreader.news_item
 
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.NewsRepository
 import com.example.newsreader.news_index.OptionsModalBottomSheet
 
 class NewsItemPresenterFunctions(
   private val newsItemFunctionsView: NewsItemFunctionsContract.View,
-  private val newsItemsRepository: NewsItemsRepository
+  private val newsRepository: NewsRepository
 ): NewsItemFunctionsContract.Presenter {
 
   override fun onClickNewsItem(newsItem: NewsItem) {
     newsItemFunctionsView.openInCustomTab(newsItem.link)
-    newsItemsRepository.addRecentNews(newsItem)
+    newsRepository.addRecentNews(newsItem)
   }
 
   override fun onClickNewsItemOptionsMenu(newsItem: NewsItem) {
-    newsItemFunctionsView.openOptionsMenu(newsItem, newsItemsRepository.isNewsFollowed(newsItem))
+    newsItemFunctionsView.openOptionsMenu(newsItem, newsRepository.isNewsFollowed(newsItem))
   }
 
   override fun onClickNewsItemOption(newsItem: NewsItem, option: OptionsModalBottomSheet.Option) {
     when(option) {
       OptionsModalBottomSheet.Option.SAVE -> {
-        if(newsItemsRepository.isNewsFollowed(newsItem)) {
-          newsItemsRepository.removeFollowedNews(newsItem)
+        if(newsRepository.isNewsFollowed(newsItem)) {
+          newsRepository.removeFollowedNews(newsItem)
         } else {
-          newsItemsRepository.addFollowedNews(newsItem)
+          newsRepository.addFollowedNews(newsItem)
         }
-        newsItemFunctionsView.showToastForSaveClicked(newsItemsRepository.isNewsFollowed(newsItem))
+        newsItemFunctionsView.showToastForSaveClicked(newsRepository.isNewsFollowed(newsItem))
       }
 
       OptionsModalBottomSheet.Option.SHARE -> newsItemFunctionsView.shareNews(newsItem)

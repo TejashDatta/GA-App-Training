@@ -1,7 +1,7 @@
 package com.example.newsreader
 
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.NewsRepository
 import com.example.newsreader.recent_news.RecentNewsContract
 import com.example.newsreader.recent_news.RecentNewsPresenter
 import org.junit.Before
@@ -16,14 +16,14 @@ import org.mockito.junit.MockitoJUnitRunner
 class RecentNewsPresenterTest {
   @Mock private lateinit var recentNewsView: RecentNewsContract.View
 
-  @Mock private lateinit var newsItemsRepository: NewsItemsRepository
+  @Mock private lateinit var newsRepository: NewsRepository
 
   @Mock private lateinit var newsItem: NewsItem
 
   private lateinit var recentNewsPresenter: RecentNewsPresenter
 
   @Before fun setupRecentNewsPresenter() {
-    recentNewsPresenter = RecentNewsPresenter(recentNewsView, newsItemsRepository)
+    recentNewsPresenter = RecentNewsPresenter(recentNewsView, newsRepository)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -32,14 +32,14 @@ class RecentNewsPresenterTest {
 
   @Test fun start_showsItemsInRecyclerViewWhenThereAreRecentItems() {
     val newsItemList = listOf(newsItem)
-    `when`(newsItemsRepository.recentNewsItems).thenReturn(newsItemList)
+    `when`(newsRepository.recentNewsItems).thenReturn(newsItemList)
     recentNewsPresenter.start()
 
     verify(recentNewsView).showItemsInRecyclerView(newsItemList)
   }
 
   @Test fun start_showNoRecentItemsWhenThereAreNoRecentItems() {
-    `when`(newsItemsRepository.recentNewsItems).thenReturn(emptyList())
+    `when`(newsRepository.recentNewsItems).thenReturn(emptyList())
     recentNewsPresenter.start()
 
     verify(recentNewsView).showNoRecentItems()

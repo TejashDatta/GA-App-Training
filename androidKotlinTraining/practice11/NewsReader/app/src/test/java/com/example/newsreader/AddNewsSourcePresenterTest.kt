@@ -3,7 +3,7 @@ package com.example.newsreader
 import com.example.newsreader.add_news_source.AddNewsSourceContract
 import com.example.newsreader.add_news_source.AddNewsSourcePresenter
 import com.example.newsreader.data.models.NewsSource
-import com.example.newsreader.data.source.NewsItemsRepository
+import com.example.newsreader.data.source.NewsRepository
 import com.example.newsreader.data.validators.NewsSourceValidator
 import com.example.newsreader.data.validators.UrlRegexMatcher
 import org.junit.Assert.assertEquals
@@ -18,7 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class AddNewsSourcePresenterTest {
   @Mock private lateinit var view: AddNewsSourceContract.View
 
-  @Mock private lateinit var newsItemsRepository: NewsItemsRepository
+  @Mock private lateinit var newsRepository: NewsRepository
 
   @Mock private lateinit var urlRegexMatcher: UrlRegexMatcher
 
@@ -28,7 +28,7 @@ class AddNewsSourcePresenterTest {
 
   @Before fun setupValidatorAndPresenter() {
     newsSourceValidator = NewsSourceValidator(urlRegexMatcher)
-    addNewsSourcePresenter = AddNewsSourcePresenter(view, newsSourceValidator, newsItemsRepository)
+    addNewsSourcePresenter = AddNewsSourcePresenter(view, newsSourceValidator, newsRepository)
   }
 
   @Test fun createPresenter_setsPresenterToView() {
@@ -51,7 +51,7 @@ class AddNewsSourcePresenterTest {
     val name = "example"
     val url = "https://www.example.com"
     addNewsSourcePresenter.onSaveClick(name, url)
-    verify(newsItemsRepository).addNewsSource(NewsSource(name, url))
+    verify(newsRepository).addNewsSource(NewsSource(name, url))
   }
   
 //  TODO: test that presenter sets error display when validator emits error event
