@@ -2,6 +2,7 @@ package com.example.newsreader.news_reader
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
 import com.example.newsreader.add_news_source.AddNewsSourceActivity
+import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsRepository
 import com.example.newsreader.data.source.NewsRepositoryFactory
 import com.example.newsreader.followed_news.FollowedNewsFragment
@@ -61,9 +63,12 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     drawerLayout = findViewById(R.id.drawer_layout)
     navigationViewMain = findViewById(R.id.navigation_view_main)
     navigationViewFooter = findViewById(R.id.navigation_view_footer)
-    setupDrawerContent()
 
     presenter = NewsReaderPresenter(this)
+
+//    TODO: subscribe in presenter
+    newsRepository.newsSourcesSubject.subscribe { newsSources -> setupDrawerMainContent(newsSources) }
+    setupDrawerFooterContent()
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -196,12 +201,21 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     }.commit()
   }
 
-  private fun setupDrawerContent() {
-    setupDrawerMainContent()
-    setupDrawerFooterContent()
+  private fun setupDrawerMainContent(newsSources: List<NewsSource>) {
+    addSourcesToDrawerMain(newsSources)
+    setDrawerMainItemListeners()
   }
 
-  private fun setupDrawerMainContent() {
+  private fun addSourcesToDrawerMain(newsSources: List<NewsSource>) {
+    val menu = navigationViewMain.menu
+    val startIndex = menu.findItem(R.id.action_toyokeizai_news).order + 1
+    newsSources.forEachIndexed { index, newsSource ->
+      menu.removeItem(index)
+      menu.add(R.id.drawer_main_group, index, startIndex + index, newsSource.name)
+    }
+  }
+
+  private fun setDrawerMainItemListeners() {
     navigationViewMain.setNavigationItemSelectedListener { menuItem ->
       when(menuItem.itemId) {
         R.id.action_all_news -> presenter.onClickAllNews()
@@ -209,6 +223,8 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
         R.id.action_toyokeizai_news -> presenter.onClickToyokeizaiNews()
         R.id.action_followed_news -> presenter.onClickFollowedNews()
         R.id.action_recent_news -> presenter.onClickRecentNews()
+//        TODO: call event handler in presenter
+        else -> Log.d("NewsReaderActivity", menuItem.title as String)
       }
 
       menuItem.isChecked = true
@@ -218,6 +234,10 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   private fun setupDrawerFooterContent() {
+    setDrawerFooterItemListeners()
+  }
+
+  private fun setDrawerFooterItemListeners() {
     navigationViewFooter.setNavigationItemSelectedListener { menuItem ->
       when(menuItem.itemId) {
         R.id.action_add_news_source -> presenter.onClickAddNewsSource()
