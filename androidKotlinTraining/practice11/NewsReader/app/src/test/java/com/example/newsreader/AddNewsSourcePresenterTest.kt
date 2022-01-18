@@ -52,6 +52,12 @@ class AddNewsSourcePresenterTest {
     addNewsSourcePresenter.onSaveClick(validName, validUrl)
     verify(newsRepository).addNewsSource(NewsSource(validName, validUrl))
   }
+
+  @Test fun onSaveClick_showsToastThatSourceIsAddedAndGoesBack() {
+    addNewsSourcePresenter.onSaveClick(validName, validUrl)
+    verify(view).showNewsSourceAddedToast(validName)
+    verify(view).goBack()
+  }
   
 //  TODO: test that presenter sets error display when validator emits error event
 }
