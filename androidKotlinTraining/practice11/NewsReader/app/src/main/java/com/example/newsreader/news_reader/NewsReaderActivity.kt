@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.newsreader.R
 import com.example.newsreader.SchedulerProvider
 import com.example.newsreader.add_news_source.AddNewsSourceActivity
+import com.example.newsreader.data.source.NewsRepository
 import com.example.newsreader.data.source.NewsRepositoryFactory
 import com.example.newsreader.followed_news.FollowedNewsFragment
 import com.example.newsreader.followed_news.FollowedNewsPresenter
@@ -30,6 +31,8 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   override lateinit var presenter: NewsReaderContract.Presenter
+
+  lateinit var newsRepository: NewsRepository
 
   private lateinit var drawerLayout: DrawerLayout
   private lateinit var navigationViewMain: NavigationView
@@ -52,6 +55,8 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       setDisplayHomeAsUpEnabled(true)
       setHomeAsUpIndicator(R.drawable.ic_menu)
     }
+
+    newsRepository = NewsRepositoryFactory.getInstance(applicationContext)
 
     drawerLayout = findViewById(R.id.drawer_layout)
     navigationViewMain = findViewById(R.id.navigation_view_main)
@@ -82,7 +87,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       NewsIndexPresenter(
         NewsIndexPresenter.NewsSource.ALL,
         nextFragment,
-        NewsRepositoryFactory.getInstance(applicationContext),
+        newsRepository,
         SchedulerProvider()
       )
     }
@@ -103,7 +108,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       NewsIndexPresenter(
         NewsIndexPresenter.NewsSource.GOOGLE,
         nextFragment,
-        NewsRepositoryFactory.getInstance(applicationContext),
+        newsRepository,
         SchedulerProvider()
       )
     }
@@ -124,7 +129,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
       NewsIndexPresenter(
         NewsIndexPresenter.NewsSource.TOYOKEIZAI,
         nextFragment,
-        NewsRepositoryFactory.getInstance(applicationContext),
+        newsRepository,
         SchedulerProvider()
       )
     }
@@ -144,7 +149,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     if (isNewInstance) {
       FollowedNewsPresenter(
         nextFragment,
-        NewsRepositoryFactory.getInstance(applicationContext),
+        newsRepository,
         SchedulerProvider()
       )
     }
@@ -164,7 +169,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     if (isNewInstance) {
       RecentNewsPresenter(
         nextFragment,
-        NewsRepositoryFactory.getInstance(applicationContext)
+        newsRepository
       )
     }
 
