@@ -32,11 +32,33 @@
   </LinearLayout>
 
   <com.google.android.material.navigation.NavigationView
-    android:id="@+id/navigation_view"
+    android:id="@+id/navigation_view_container"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:fitsSystemWindows="true"
-    app:menu="@menu/drawer_menu" />
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.navigation.NavigationView
+      android:id="@+id/navigation_view_main"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="top"
+      android:layout_marginBottom="@dimen/navigation_footer_height"
+      app:menu="@menu/drawer_main_menu" />
+
+    <com.google.android.material.navigation.NavigationView
+      android:id="@+id/navigation_view_footer"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/navigation_footer_height"
+      android:layout_gravity="bottom"
+      app:menu="@menu/drawer_footer_menu">
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"/>
+    </com.google.android.material.navigation.NavigationView>
+
+  </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
