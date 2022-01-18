@@ -54,4 +54,10 @@ class NewsReaderPresenterTest {
 
     verify(newsReaderView).showRecentNews()
   }
+
+  @Test fun onClickAddNewsSource_showsAddNewsSource() {
+    newsReaderPresenter.onClickAddNewsSource()
+
+    verify(newsReaderView).showAddNewsSource()
+  }
 }
