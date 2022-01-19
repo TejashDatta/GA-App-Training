@@ -39,6 +39,13 @@ class NewsReaderPresenter(
     newsReaderView.showRecentNews()
   }
 
+  override fun onClickGeneralNews(newsSourceName: String) {
+    val newsSource =
+      newsRepository.newsSourcesSubject.value?.find { it.name == newsSourceName } ?: return
+
+    newsReaderView.showGeneralNews(newsSource)
+  }
+
   override fun onClickAddNewsSource() {
     newsReaderView.showAddNewsSource()
   }

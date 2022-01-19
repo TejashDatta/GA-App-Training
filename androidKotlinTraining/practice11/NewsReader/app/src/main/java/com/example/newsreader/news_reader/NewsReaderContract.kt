@@ -11,6 +11,7 @@ class NewsReaderContract {
     fun showToyokeizaiNews()
     fun showFollowedNews()
     fun showRecentNews()
+    fun showGeneralNews(newsSource: NewsSource)
     fun showAddNewsSource()
     fun setupDrawerMainContent(newsSources: List<NewsSource>)
   }
@@ -22,6 +23,7 @@ class NewsReaderContract {
     fun onClickToyokeizaiNews()
     fun onClickFollowedNews()
     fun onClickRecentNews()
+    fun onClickGeneralNews(newsSourceName: String)
     fun onClickAddNewsSource()
   }
 }
