@@ -105,10 +105,10 @@ class NewsRepository(
 
     return Observable.zip(
       getNewsObservables
-    ) { newsItemsLists ->
-        val allNewsItems = mutableListOf<NewsItem>()
-        newsItemsLists.forEach { allNewsItems.addAll(it as Collection<NewsItem>) }
-        allNewsItems.sortedByDescending { it.publishedDate }
+    ) { newsItemsLists -> newsItemsLists
+                            .map { it as List<NewsItem> }
+                            .flatten()
+                            .sortedByDescending { it.publishedDate }
     }
   }
 
