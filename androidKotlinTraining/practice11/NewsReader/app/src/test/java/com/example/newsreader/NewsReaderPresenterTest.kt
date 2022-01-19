@@ -60,4 +60,6 @@ class NewsReaderPresenterTest {
 
     verify(newsReaderView).showAddNewsSource()
   }
+
+//  TODO: test that news sources subscriber calls setup main drawer in view
 }

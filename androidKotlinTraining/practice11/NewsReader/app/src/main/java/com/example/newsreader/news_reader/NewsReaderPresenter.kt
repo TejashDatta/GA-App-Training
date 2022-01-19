@@ -1,10 +1,22 @@
 package com.example.newsreader.news_reader
 
+import com.example.newsreader.data.source.NewsRepository
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+
 class NewsReaderPresenter(
-  private val newsReaderView: NewsReaderContract.View
+  private val newsReaderView: NewsReaderContract.View,
+  private val newsRepository: NewsRepository
 ): NewsReaderContract.Presenter {
+
+  private var compositeDisposable = CompositeDisposable()
+
   override fun start() {
     newsReaderView.showAllNews()
+    setupSubscriberToUpdateMainDrawerContent()
+  }
+
+  override fun end() {
+    clearObservers()
   }
 
   override fun onClickAllNews() {
@@ -29,5 +41,15 @@ class NewsReaderPresenter(
 
   override fun onClickAddNewsSource() {
     newsReaderView.showAddNewsSource()
+  }
+
+  private fun setupSubscriberToUpdateMainDrawerContent() {
+    compositeDisposable.add(newsRepository.newsSourcesSubject
+      .subscribe { newsReaderView.setupDrawerMainContent(it) }
+    )
+  }
+
+  private fun clearObservers() {
+    compositeDisposable.clear()
   }
 }
