@@ -10,6 +10,7 @@ class NewsReaderContract {
     fun showToyokeizaiNews()
     fun showFollowedNews()
     fun showRecentNews()
+    fun showGeneralNews(newsSourceName: String)
     fun showAddNewsSource()
   }
 
@@ -19,6 +20,7 @@ class NewsReaderContract {
     fun onClickToyokeizaiNews()
     fun onClickFollowedNews()
     fun onClickRecentNews()
+    fun onClickGeneralNews(newsSourceName: String)
     fun onClickAddNewsSource()
   }
 }

@@ -55,6 +55,13 @@ class NewsReaderPresenterTest {
     verify(newsReaderView).showRecentNews()
   }
 
+  @Test fun onClickGeneralNews_showsGeneralNews() {
+    val newsSourceName = "example"
+    newsReaderPresenter.onClickGeneralNews(newsSourceName)
+
+    verify(newsReaderView).showGeneralNews(newsSourceName)
+  }
+
   @Test fun onClickAddNewsSource_showsAddNewsSource() {
     newsReaderPresenter.onClickAddNewsSource()
 

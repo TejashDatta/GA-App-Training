@@ -178,6 +178,11 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     changeFragment(nextFragment, RECENT_NEWS_FRAGMENT_TAG, isNewInstance)
   }
 
+  override fun showGeneralNews(newsSourceName: String) {
+//    TODO: make news index fragment usable with general news
+    Log.d("NewsReaderActivity", newsSourceName)
+  }
+
   override fun showAddNewsSource() {
     startActivity(
       Intent(applicationContext, AddNewsSourceActivity::class.java)
@@ -224,8 +229,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
         R.id.action_toyokeizai_news -> presenter.onClickToyokeizaiNews()
         R.id.action_followed_news -> presenter.onClickFollowedNews()
         R.id.action_recent_news -> presenter.onClickRecentNews()
-//        TODO: call event handler in presenter
-        else -> Log.d("NewsReaderActivity", menuItem.title as String)
+        else -> presenter.onClickGeneralNews(menuItem.title as String)
       }
 
       menuItem.isChecked = true
