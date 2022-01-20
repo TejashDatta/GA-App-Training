@@ -200,17 +200,40 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   override fun setupDrawerMainContent(newsSources: List<NewsSource>) {
+    deleteAllItemsInDrawerMain()
+    setupStaticItemsInDrawerMain()
     addSourcesToDrawerMain(newsSources)
+    makeSingleItemCheckableInDrawerMain()
     setDrawerMainItemListeners()
+  }
+
+  private fun deleteAllItemsInDrawerMain() {
+    navigationViewMain.menu.removeGroup(R.id.drawer_main_group)
+  }
+
+  private fun setupStaticItemsInDrawerMain() {
+    val menu = navigationViewMain.menu
+
+    menu.add(R.id.drawer_main_group, R.id.action_all_news, 0, getString(R.string.drawer_all_news))
+    menu.add(R.id.drawer_main_group, R.id.action_google_news, 1, getString(R.string.drawer_google_news))
+    menu.add(R.id.drawer_main_group, R.id.action_toyokeizai_news, 2, getString(R.string.drawer_toyokeizai_news))
+
+    menu.add(R.id.drawer_main_group, R.id.action_followed_news, 1000, getString(R.string.drawer_followed_news))
+    menu.add(R.id.drawer_main_group, R.id.action_recent_news, 1001, getString(R.string.drawer_recent_news))
   }
 
   private fun addSourcesToDrawerMain(newsSources: List<NewsSource>) {
     val menu = navigationViewMain.menu
     val startIndex = menu.findItem(R.id.action_toyokeizai_news).order + 1
     newsSources.forEachIndexed { index, newsSource ->
-      menu.removeItem(index)
       menu.add(R.id.drawer_main_group, index, startIndex + index, newsSource.name)
     }
+  }
+
+  private fun makeSingleItemCheckableInDrawerMain() {
+    val menu = navigationViewMain.menu
+    menu.setGroupCheckable(R.id.drawer_main_group, true, true)
+    menu.getItem(0).isChecked = true
   }
 
   private fun setDrawerMainItemListeners() {

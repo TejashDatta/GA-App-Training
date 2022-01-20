@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item name="action_all_news" type="id" />
+  <item name="action_google_news" type="id" />
+  <item name="action_toyokeizai_news" type="id" />
+  <item name="action_followed_news" type="id" />
+  <item name="action_recent_news" type="id" />
+</resources>
