@@ -3,32 +3,5 @@
 
   <group
     android:id="@+id/drawer_main_group"
-    android:checkableBehavior="single">
-
-    <item
-      android:id="@+id/action_all_news"
-      android:orderInCategory="0"
-      android:title="@string/drawer_all_news"
-      android:checked="true" />
-
-    <item
-      android:id="@+id/action_google_news"
-      android:orderInCategory="1"
-      android:title="@string/drawer_google_news" />
-
-    <item
-      android:id="@+id/action_toyokeizai_news"
-      android:orderInCategory="2"
-      android:title="@string/drawer_toyokeizai_news" />
-
-    <item
-      android:id="@+id/action_followed_news"
-      android:orderInCategory="1000"
-      android:title="@string/drawer_followed_news" />
-
-    <item
-      android:id="@+id/action_recent_news"
-      android:orderInCategory="1001"
-      android:title="@string/drawer_recent_news" />
-  </group>
+    android:checkableBehavior="single" />
 </menu>
