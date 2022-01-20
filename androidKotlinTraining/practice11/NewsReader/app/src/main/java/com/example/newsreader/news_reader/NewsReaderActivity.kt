@@ -86,7 +86,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
 
     if (isNewInstance) {
       NewsIndexPresenter(
-        NewsIndexPresenter.NewsSource.ALL,
+        newsRepository.stockNewsSources.all,
         nextFragment,
         newsRepository,
         SchedulerProvider()
@@ -106,7 +106,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
 
     if (isNewInstance) {
       NewsIndexPresenter(
-        NewsIndexPresenter.NewsSource.GOOGLE,
+        newsRepository.stockNewsSources.google,
         nextFragment,
         newsRepository,
         SchedulerProvider()
@@ -126,7 +126,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
 
     if (isNewInstance) {
       NewsIndexPresenter(
-        NewsIndexPresenter.NewsSource.TOYOKEIZAI,
+        newsRepository.stockNewsSources.toyokeizai,
         nextFragment,
         newsRepository,
         SchedulerProvider()
