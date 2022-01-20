@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.newsreader.R
@@ -82,7 +83,15 @@ class AddNewsSourceFragment: Fragment(), AddNewsSourceContract.View, SaveClickLi
     urlEditTextView.error = null
   }
 
+  override fun showNewsSourceAddedToast(newsSourceName: String) {
+    Toast.makeText(
+      context,
+      getString(R.string.news_source_added, newsSourceName),
+      Toast.LENGTH_LONG
+    ).show()
+  }
+
   override fun goBack() {
-    TODO("Not yet implemented")
+    activity?.finish()
   }
 }

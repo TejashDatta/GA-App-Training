@@ -20,12 +20,9 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-<!--    TODO: test up button -->
     <activity
       android:name=".add_news_source.AddNewsSourceActivity"
-      android:label="@string/add_news_source_title"
-      android:parentActivityName=".news_reader.NewsReaderActivity"
-      android:exported="true"/>
+      android:label="@string/add_news_source_title"/>
   </application>
 
 </manifest>

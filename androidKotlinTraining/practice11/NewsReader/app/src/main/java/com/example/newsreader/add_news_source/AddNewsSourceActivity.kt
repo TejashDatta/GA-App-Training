@@ -18,6 +18,10 @@ class AddNewsSourceActivity : AppCompatActivity() {
     setContentView(R.layout.activity_content_frame)
 
     setSupportActionBar(findViewById(R.id.toolbar))
+    supportActionBar?.apply {
+      setDisplayShowHomeEnabled(true)
+      setDisplayHomeAsUpEnabled(true)
+    }
 
     addNewsSourceFragment = AddNewsSourceFragment.newInstance()
 
@@ -48,6 +52,11 @@ class AddNewsSourceActivity : AppCompatActivity() {
       }
       else -> super.onOptionsItemSelected(item)
     }
+  }
+
+  override fun onSupportNavigateUp(): Boolean {
+    finish()
+    return true
   }
 }
 

@@ -26,6 +26,9 @@ class AddNewsSourcePresenterTest {
 
   private lateinit var newsSourceValidator: NewsSourceValidator
 
+  val validName = "example"
+  val validUrl = "https://www.example.com"
+
   @Before fun setupValidatorAndPresenter() {
     newsSourceValidator = NewsSourceValidator(urlRegexMatcher)
     addNewsSourcePresenter = AddNewsSourcePresenter(view, newsSourceValidator, newsRepository)
@@ -36,22 +39,24 @@ class AddNewsSourcePresenterTest {
   }
 
   @Test fun onNameInput_setsNameInValidator() {
-    val name = "name"
-    addNewsSourcePresenter.onNameInput(name)
-    assertEquals(name, newsSourceValidator.name)
+    addNewsSourcePresenter.onNameInput(validName)
+    assertEquals(validName, newsSourceValidator.name)
   }
 
   @Test fun onUrlInput_setsUrlInValidator() {
-    val url = "url"
-    addNewsSourcePresenter.onUrlInput(url)
-    assertEquals(url, newsSourceValidator.url)
+    addNewsSourcePresenter.onUrlInput(validUrl)
+    assertEquals(validUrl, newsSourceValidator.url)
   }
 
   @Test fun onSaveClick_addsNewsSourceInNewsRepository() {
-    val name = "example"
-    val url = "https://www.example.com"
-    addNewsSourcePresenter.onSaveClick(name, url)
-    verify(newsRepository).addNewsSource(NewsSource(name, url))
+    addNewsSourcePresenter.onSaveClick(validName, validUrl)
+    verify(newsRepository).addNewsSource(NewsSource(validName, validUrl))
+  }
+
+  @Test fun onSaveClick_showsToastThatSourceIsAddedAndGoesBack() {
+    addNewsSourcePresenter.onSaveClick(validName, validUrl)
+    verify(view).showNewsSourceAddedToast(validName)
+    verify(view).goBack()
   }
   
 //  TODO: test that presenter sets error display when validator emits error event

@@ -13,6 +13,7 @@ class AddNewsSourceContract {
     fun setUrlIsTooLongError(maxLength: Int)
     fun setUrlFormatError()
     fun disableUrlError()
+    fun showNewsSourceAddedToast(newsSourceName: String)
     fun goBack()
   }
 

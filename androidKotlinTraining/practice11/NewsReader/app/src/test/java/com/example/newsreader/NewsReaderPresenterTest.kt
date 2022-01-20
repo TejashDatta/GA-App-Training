@@ -31,27 +31,33 @@ class NewsReaderPresenterTest {
     verify(newsReaderView).showAllNews()
   }
 
-  @Test fun onClickAllNews_showsGoogleNews() {
+  @Test fun onClickGoogleNews_showsGoogleNews() {
     newsReaderPresenter.onClickGoogleNews()
 
     verify(newsReaderView).showGoogleNews()
   }
 
-  @Test fun onClickAllNews_showsToyokeizaiNews() {
+  @Test fun onClickToyokeizaiNews_showsToyokeizaiNews() {
     newsReaderPresenter.onClickToyokeizaiNews()
 
     verify(newsReaderView).showToyokeizaiNews()
   }
 
-  @Test fun onClickAllNews_showsFollowedNews() {
+  @Test fun onClickFollowedNews_showsFollowedNews() {
     newsReaderPresenter.onClickFollowedNews()
 
     verify(newsReaderView).showFollowedNews()
   }
 
-  @Test fun onClickAllNews_showsRecentNews() {
+  @Test fun onClickRecentNews_showsRecentNews() {
     newsReaderPresenter.onClickRecentNews()
 
     verify(newsReaderView).showRecentNews()
+  }
+
+  @Test fun onClickAddNewsSource_showsAddNewsSource() {
+    newsReaderPresenter.onClickAddNewsSource()
+
+    verify(newsReaderView).showAddNewsSource()
   }
 }
