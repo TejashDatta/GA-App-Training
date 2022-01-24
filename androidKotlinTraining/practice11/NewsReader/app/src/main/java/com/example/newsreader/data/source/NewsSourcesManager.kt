@@ -11,7 +11,16 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 class NewsSourcesManager(private val sharedPreferences: SharedPreferences) {
   companion object {
     private const val NEWS_SOURCES_KEY = "news_sources"
+    const val ALL_NEWS_NAME = "すべての記事一覧"
+    const val GOOGLE_NEWS_NAME = "Google News"
+    const val TOYOKEIZAI_NEWS_NAME = "東洋経済オンライン"
   }
+
+  private val defaultNewsSources = listOf(
+    NewsSource(ALL_NEWS_NAME, "NA"),
+    NewsSource(GOOGLE_NEWS_NAME, "NA"),
+    NewsSource(TOYOKEIZAI_NEWS_NAME, "https://toyokeizai.net/list/feed/rss/")
+  )
 
   private val jsonAdapter: JsonAdapter<List<NewsSource>> =
     Moshi.Builder().build()
@@ -40,7 +49,7 @@ class NewsSourcesManager(private val sharedPreferences: SharedPreferences) {
   private fun load() {
     val safeJson = sharedPreferences.getString(NEWS_SOURCES_KEY, null) ?: return
     jsonAdapter.fromJson(safeJson)?.let {
-      newsSources = it.toMutableList()
+      newsSources = (defaultNewsSources + it.toMutableList()) as MutableList<NewsSource>
     }
     publishChanges()
   }
