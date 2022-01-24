@@ -48,6 +48,8 @@ class NewsRepositoryTest {
   @Mock private lateinit var recentNewsManager: RecentNewsManager
   @Mock private lateinit var newsSourcesManager: NewsSourcesManager
 
+  @Mock private lateinit var newsSourcesSubject: BehaviorSubject<List<NewsSource>>
+
   @Mock private lateinit var newsItem: NewsItem
   private val exampleNewsSource = NewsSource("example", "www.example.com")
 
@@ -70,6 +72,16 @@ class NewsRepositoryTest {
       followedNewsManager,
       recentNewsManager,
       newsSourcesManager
+    )
+  }
+
+  @Test fun findNewsSource_findsNewsSourceByName() {
+    `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
+    `when`(newsSourcesSubject.value).thenReturn(listOf(exampleNewsSource))
+
+    assertEquals(
+      exampleNewsSource,
+      newsRepository.findNewsSource(exampleNewsSource.name)
     )
   }
 
