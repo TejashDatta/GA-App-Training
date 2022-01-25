@@ -63,12 +63,9 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     drawerLayout = findViewById(R.id.drawer_layout)
     navigationViewMain = findViewById(R.id.navigation_view_main)
     navigationViewFooter = findViewById(R.id.navigation_view_footer)
-
-    presenter = NewsReaderPresenter(this)
-
-//    TODO: subscribe in presenter
-    newsRepository.newsSourcesSubject.subscribe { newsSources -> setupDrawerMainContent(newsSources) }
     setupDrawerFooterContent()
+
+    presenter = NewsReaderPresenter(this, newsRepository)
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -202,7 +199,7 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     }.commit()
   }
 
-  private fun setupDrawerMainContent(newsSources: List<NewsSource>) {
+  override fun setupDrawerMainContent(newsSources: List<NewsSource>) {
     deleteAllItemsInDrawerMain()
     setupStaticItemsInDrawerMain()
     addSourcesToDrawerMain(newsSources)

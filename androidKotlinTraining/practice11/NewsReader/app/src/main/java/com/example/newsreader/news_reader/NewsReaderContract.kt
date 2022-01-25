@@ -2,6 +2,7 @@ package com.example.newsreader.news_reader
 
 import com.example.newsreader.BasePresenter
 import com.example.newsreader.BaseView
+import com.example.newsreader.data.models.NewsSource
 
 class NewsReaderContract {
   interface View: BaseView<Presenter> {
@@ -11,9 +12,11 @@ class NewsReaderContract {
     fun showFollowedNews()
     fun showRecentNews()
     fun showAddNewsSource()
+    fun setupDrawerMainContent(newsSources: List<NewsSource>)
   }
 
   interface Presenter: BasePresenter {
+    fun end()
     fun onClickAllNews()
     fun onClickGoogleNews()
     fun onClickToyokeizaiNews()
