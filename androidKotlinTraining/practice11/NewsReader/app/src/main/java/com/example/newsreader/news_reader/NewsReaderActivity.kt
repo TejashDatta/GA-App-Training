@@ -2,7 +2,6 @@ package com.example.newsreader.news_reader
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
@@ -176,8 +175,24 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   }
 
   override fun showGeneralNews(newsSource: NewsSource) {
-    // TODO: enable news index fragment to use general news    
-    Log.d("NewsReaderActivity", newsSource.name)
+    val fragmentTag = "${newsSource.name}_fragment"
+    val cachedFragment = findNewsIndexFragmentByTag(fragmentTag)
+
+    if(cachedFragment?.isVisible == true) return
+
+    val nextFragment = cachedFragment ?: NewsIndexFragment.newInstance()
+    val isNewInstance = cachedFragment == null
+
+    if (isNewInstance) {
+      NewsIndexPresenter(
+        newsSource,
+        nextFragment,
+        newsRepository,
+        SchedulerProvider()
+      )
+    }
+
+    changeFragment(nextFragment, fragmentTag, isNewInstance)
   }
 
   override fun showAddNewsSource() {
