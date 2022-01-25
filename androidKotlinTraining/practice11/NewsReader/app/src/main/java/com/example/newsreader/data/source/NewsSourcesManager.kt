@@ -19,7 +19,7 @@ class NewsSourcesManager(private val sharedPreferences: SharedPreferences) {
   
   private var newsSources = mutableListOf<NewsSource>()
 
-  val newsSourcesSubject: BehaviorSubject<List<NewsSource>> = BehaviorSubject.create()
+  val newsSourcesSubject: BehaviorSubject<List<NewsSource>> = BehaviorSubject.createDefault((emptyList()))
 
   init {
     load()
