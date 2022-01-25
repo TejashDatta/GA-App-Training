@@ -43,7 +43,7 @@ class NewsReaderPresenter(
   override fun onClickGeneralNews(newsSourceName: String) {
     try {
       newsReaderView.showGeneralNews(newsRepository.findNewsSource(newsSourceName))
-    } catch (e: Exception) {
+    } catch (e: NoSuchElementException) {
       e.message?.let { Log.e("NewsReaderPresenter", it) }
     }
   }
