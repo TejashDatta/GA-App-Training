@@ -9,5 +9,6 @@ import org.threeten.bp.ZonedDateTime
 data class NetworkGeneralNewsItem(
   @PropertyElement val title: String,
   @PropertyElement val link: String,
-  @PropertyElement(converter = DateConverter::class) val pubDate: ZonedDateTime
+  @PropertyElement(converter = DateConverter::class) val pubDate: ZonedDateTime,
+  @PropertyElement val source: String?
 )

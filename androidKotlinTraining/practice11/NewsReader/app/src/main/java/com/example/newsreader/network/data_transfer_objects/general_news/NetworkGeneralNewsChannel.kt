@@ -18,7 +18,7 @@ fun NetworkGeneralNewsChannel.toDomainModel(source: String) : List<NewsItem> {
       title = it.title,
       link = it.link,
       publishedDate = it.pubDate,
-      source = source
+      source = it.source ?: source
     )
   }
 }
