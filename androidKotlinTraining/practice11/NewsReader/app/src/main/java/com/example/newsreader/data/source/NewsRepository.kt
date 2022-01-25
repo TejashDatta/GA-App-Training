@@ -71,7 +71,7 @@ class NewsRepository(
              .getNewsChannel(newsSource.url).map { it.toDomainModel(newsSource.name) }
   }
 
-  fun getGoogleNews(refresh: Boolean): Observable<List<NewsItem>> {
+  private fun getGoogleNews(refresh: Boolean): Observable<List<NewsItem>> {
     return if (refresh || cachedGoogleNews == null) {
       requestGoogleNews().doOnNext { cachedGoogleNews = it }
     } else {
@@ -79,7 +79,7 @@ class NewsRepository(
     }
   }
 
-  fun getToyokeizaiNews(refresh: Boolean): Observable<List<NewsItem>> {
+  private fun getToyokeizaiNews(refresh: Boolean): Observable<List<NewsItem>> {
     return if (refresh || cachedToyokeizaiNews == null) {
       requestToyokeizaiNews().doOnNext { cachedToyokeizaiNews = it }
     } else {
@@ -87,7 +87,7 @@ class NewsRepository(
     }
   }
 
-  fun getGeneralNews(newsSource: NewsSource, refresh: Boolean): Observable<List<NewsItem>> {
+  private fun getGeneralNews(newsSource: NewsSource, refresh: Boolean): Observable<List<NewsItem>> {
     return if (refresh || !generalNewsCache.containsKey(newsSource.name)) {
       requestGeneralNews(newsSource).doOnNext { generalNewsCache[newsSource.name] = it }
     } else {
@@ -95,7 +95,7 @@ class NewsRepository(
     }
   }
 
-  fun getAllNews(refresh: Boolean): Observable<List<NewsItem>> {
+  private fun getAllNews(refresh: Boolean): Observable<List<NewsItem>> {
     val getNewsObservables = mutableListOf<Observable<List<NewsItem>>>()
     getNewsObservables.add(getGoogleNews(refresh))
     getNewsObservables.add(getToyokeizaiNews(refresh))
@@ -112,6 +112,15 @@ class NewsRepository(
     }
   }
 
+  fun getNews(newsSource: NewsSource, refresh: Boolean): Observable<List<NewsItem>> {
+    return when(newsSource) {
+      stockNewsSources.all -> getAllNews(refresh)
+      stockNewsSources.google -> getGoogleNews(refresh)
+      stockNewsSources.toyokeizai -> getToyokeizaiNews(refresh)
+      else -> getGeneralNews(newsSource, refresh)
+    }
+  }
+
   val followedNewsItemsSubject: BehaviorSubject<List<NewsItem>>
     get() = followedNewsManager.itemsSubject
 
@@ -125,6 +134,8 @@ class NewsRepository(
     get() = recentNewsManager.items
 
   fun addRecentNews(newsItem: NewsItem) = recentNewsManager.add(newsItem)
+
+  val stockNewsSources = StockNewsSources()
 
   val newsSourcesSubject: BehaviorSubject<List<NewsSource>>
     get() = newsSourcesManager.newsSourcesSubject

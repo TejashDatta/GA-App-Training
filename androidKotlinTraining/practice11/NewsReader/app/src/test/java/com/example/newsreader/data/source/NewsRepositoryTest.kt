@@ -73,30 +73,33 @@ class NewsRepositoryTest {
     )
   }
 
-  @Test fun getGoogleNews_returnsGoogleNewsItems() {
-    val actual = newsRepository.getGoogleNews(refresh = true).blockingFirst()
+  @Test fun getNews_withStockGoogleNewsSource_returnsGoogleNewsItems() {
+    val actual =
+      newsRepository.getNews(newsRepository.stockNewsSources.google, refresh = true).blockingFirst()
     val expected = googleNewsChannel.toDomainModel()
     assertEquals(actual, expected)
   }
 
-  @Test fun getToyokeizaiNews_returnsToyokeizaiNewsItems() {
-    val actual = newsRepository.getToyokeizaiNews(refresh = true).blockingFirst()
+  @Test fun getNews_withStockToyokeizaiNewsSource_returnsToyokeizaiNewsItems() {
+    val actual =
+      newsRepository.getNews(newsRepository.stockNewsSources.toyokeizai, refresh = true).blockingFirst()
     val expected = toyokeizaiNewsChannel.toDomainModel()
     assertEquals(actual, expected)
   }
 
-  @Test fun getGeneralNews_returnsNewsItemsOfNewsSource() {
-    val actual = newsRepository.getGeneralNews(exampleNewsSource, refresh = true).blockingFirst()
+  @Test fun getNews_withGeneralNewsSource_returnsNewsItemsOfNewsSource() {
+    val actual = newsRepository.getNews(exampleNewsSource, refresh = true).blockingFirst()
     val expected = generalNewsChannel.toDomainModel(exampleNewsSource.name)
     assertEquals(actual, expected)
   }
 
-  @Test fun getAllNews_returnsAllNewsItemsByDescendingOrderOfPublishedDate() {
+  @Test fun getNews_withAllNewsSource_returnsAllNewsItemsByDescendingOrderOfPublishedDate() {
     val newsSourcesSubject: BehaviorSubject<List<NewsSource>> = BehaviorSubject.create()
     newsSourcesSubject.onNext(listOf(exampleNewsSource))
     `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
 
-    val actual = newsRepository.getAllNews(refresh = true).blockingFirst()
+    val actual =
+      newsRepository.getNews(newsRepository.stockNewsSources.all, refresh = true).blockingFirst()
     val expected = (googleNewsChannel.toDomainModel() +
                     toyokeizaiNewsChannel.toDomainModel() +
                     generalNewsChannel.toDomainModel(exampleNewsSource.name)
