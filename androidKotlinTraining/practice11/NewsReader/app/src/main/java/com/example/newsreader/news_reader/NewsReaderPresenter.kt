@@ -1,5 +1,6 @@
 package com.example.newsreader.news_reader
 
+import android.util.Log
 import com.example.newsreader.data.source.NewsRepository
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
@@ -37,6 +38,17 @@ class NewsReaderPresenter(
 
   override fun onClickRecentNews() {
     newsReaderView.showRecentNews()
+  }
+
+  override fun onClickGeneralNews(newsSourceName: String) {
+    val newsSource = newsRepository.newsSourcesSubject.value?.find { it.name == newsSourceName }
+
+    if (newsSource == null) {
+      Log.e("NewsReaderPresenter", "Source name does not exist")
+      return
+    }
+    
+    newsReaderView.showGeneralNews(newsSource)
   }
 
   override fun onClickAddNewsSource() {
