@@ -76,15 +76,15 @@ class NewsRepository(
     }
   }
 
-  fun findNewsSource(newsSourceName: String): NewsSource {
+  private fun findNewsSource(newsSourceName: String): NewsSource {
     return newsSourcesSubject.value?.find { it.name == newsSourceName }
       ?: throw NoSuchElementException("NewsSource with name $newsSourceName does not exist")
   }
 
-  fun getNews(newsSource: NewsSource, refresh: Boolean): Observable<List<NewsItem>> {
-    return when(newsSource.name) {
+  fun getNews(newsSourceName: String, refresh: Boolean): Observable<List<NewsItem>> {
+    return when(newsSourceName) {
       NewsSourcesManager.ALL_NEWS_NAME -> getAllNews(refresh)
-      else -> getGeneralNews(newsSource, refresh)
+      else -> getGeneralNews(findNewsSource(newsSourceName), refresh)
     }
   }
 
