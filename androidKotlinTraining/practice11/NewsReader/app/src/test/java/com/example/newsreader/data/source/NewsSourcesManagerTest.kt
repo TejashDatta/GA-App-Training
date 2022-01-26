@@ -17,8 +17,12 @@ class NewsSourcesManagerTest {
 
   private lateinit var newsSourcesManager: NewsSourcesManager
 
-  private var newsSource = NewsSource("example", "https://example.com")
-  private var newsSourceListJson = "[{\"name\":\"example\",\"url\":\"https://example.com\"}]"
+  private var exampleNewsSource = NewsSource("example", "https://example.com")
+  private var defaultsWithExampleNewsSourceListJson =
+    "[{\"name\":\"すべての記事一覧\",\"url\":\"NA\"}," +
+    "{\"name\":\"Google News\",\"url\":\"https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja\"}," +
+    "{\"name\":\"東洋経済オンライン\",\"url\":\"https://toyokeizai.net/list/feed/rss/\"}," +
+    "{\"name\":\"example\",\"url\":\"https://example.com\"}]"
 
   private val NEWS_SOURCES_KEY = "news_sources"
 
@@ -27,37 +31,37 @@ class NewsSourcesManagerTest {
     `when`(sharedPreferencesEditor.putString(eq(NEWS_SOURCES_KEY), anyString())).thenReturn(sharedPreferencesEditor)
   }
 
-  private fun setupEmptyNewsSourcesManager() {
+  private fun setupDefaultNewsSourcesManager() {
     `when`(sharedPreferences.getString(NEWS_SOURCES_KEY, null)).thenReturn(null)
     newsSourcesManager = NewsSourcesManager(sharedPreferences)
   }
 
-  private fun setupNewsSourcesManagerWithNewsSource() {
-    `when`(sharedPreferences.getString(NEWS_SOURCES_KEY, null)).thenReturn(newsSourceListJson)
+  private fun setupNewsSourcesManagerFromNewsSourcesJson() {
+    `when`(sharedPreferences.getString(NEWS_SOURCES_KEY, null)).thenReturn(defaultsWithExampleNewsSourceListJson)
     newsSourcesManager = NewsSourcesManager(sharedPreferences)
   }
 
   @Test fun initLoadsItemsFromSharedPreferences() {
-    setupNewsSourcesManagerWithNewsSource()
+    setupNewsSourcesManagerFromNewsSourcesJson()
 
     verify(sharedPreferences).getString(NEWS_SOURCES_KEY, null)
     val newsSources = newsSourcesManager.newsSourcesSubject.blockingFirst()
-    assertEquals(newsSources[0], newsSource)
+    assertEquals(newsSources.last(), exampleNewsSource)
   }
 
   @Test fun add_addsToList() {
-    setupEmptyNewsSourcesManager()
+    setupDefaultNewsSourcesManager()
 
-    newsSourcesManager.add(newsSource)
+    newsSourcesManager.add(exampleNewsSource)
     val newsSources = newsSourcesManager.newsSourcesSubject.blockingFirst()
-    assertEquals(newsSources[0], newsSource)
+    assertEquals(newsSources.last(), exampleNewsSource)
   }
 
   @Test fun add_addsToSharedPreferences() {
-    setupEmptyNewsSourcesManager()
+    setupDefaultNewsSourcesManager()
 
-    newsSourcesManager.add(newsSource)
+    newsSourcesManager.add(exampleNewsSource)
     verify(sharedPreferences).edit()
-    verify(sharedPreferencesEditor).putString(NEWS_SOURCES_KEY, newsSourceListJson)
+    verify(sharedPreferencesEditor).putString(NEWS_SOURCES_KEY, defaultsWithExampleNewsSourceListJson)
   }
 }
