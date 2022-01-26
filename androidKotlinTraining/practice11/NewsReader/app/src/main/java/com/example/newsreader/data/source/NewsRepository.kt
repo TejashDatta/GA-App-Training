@@ -46,25 +46,25 @@ class NewsRepository(
   private val newsSourcesManager: NewsSourcesManager
 ) {
 
-  private var generalNewsCache = HashMap<String, List<NewsItem>>()
+  private var newsCache = HashMap<String, List<NewsItem>>()
 
-  private fun requestGeneralNews(newsSource: NewsSource): Observable<List<NewsItem>> {
+  private fun requestNews(newsSource: NewsSource): Observable<List<NewsItem>> {
     return newsApi.retrofitService
              .getNewsChannel(newsSource.url).map { it.toDomainModel(newsSource.name) }
   }
 
-  private fun getGeneralNews(newsSource: NewsSource, refresh: Boolean): Observable<List<NewsItem>> {
-    return if (refresh || !generalNewsCache.containsKey(newsSource.name)) {
-      requestGeneralNews(newsSource).doOnNext { generalNewsCache[newsSource.name] = it }
+  private fun getNewsFromSingleSource(newsSource: NewsSource, refresh: Boolean): Observable<List<NewsItem>> {
+    return if (refresh || !newsCache.containsKey(newsSource.name)) {
+      requestNews(newsSource).doOnNext { newsCache[newsSource.name] = it }
     } else {
-      Observable.just(generalNewsCache[newsSource.name]!!)
+      Observable.just(newsCache[newsSource.name]!!)
     }
   }
 
   private fun getAllNews(refresh: Boolean): Observable<List<NewsItem>> {
     val getNewsObservables = mutableListOf<Observable<List<NewsItem>>>()
     newsSourcesSubject.value?.let { newsSources ->
-      newsSources.forEach { getNewsObservables.add(getGeneralNews(it, refresh)) }
+      newsSources.forEach { getNewsObservables.add(getNewsFromSingleSource(it, refresh)) }
     }
 
     return Observable.zip(
@@ -84,7 +84,7 @@ class NewsRepository(
   fun getNews(newsSourceName: String, refresh: Boolean): Observable<List<NewsItem>> {
     return when(newsSourceName) {
       NewsSourcesManager.ALL_NEWS_NAME -> getAllNews(refresh)
-      else -> getGeneralNews(findNewsSource(newsSourceName), refresh)
+      else -> getNewsFromSingleSource(findNewsSource(newsSourceName), refresh)
     }
   }
 
