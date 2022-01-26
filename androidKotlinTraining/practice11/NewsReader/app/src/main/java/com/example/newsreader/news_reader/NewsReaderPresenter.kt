@@ -41,14 +41,11 @@ class NewsReaderPresenter(
   }
 
   override fun onClickGeneralNews(newsSourceName: String) {
-    val newsSource = newsRepository.newsSourcesSubject.value?.find { it.name == newsSourceName }
-
-    if (newsSource == null) {
-      Log.e("NewsReaderPresenter", "Source name does not exist")
-      return
+    try {
+      newsReaderView.showGeneralNews(newsRepository.findNewsSource(newsSourceName))
+    } catch (e: NoSuchElementException) {
+      e.message?.let { Log.e("NewsReaderPresenter", it) }
     }
-    
-    newsReaderView.showGeneralNews(newsSource)
   }
 
   override fun onClickAddNewsSource() {

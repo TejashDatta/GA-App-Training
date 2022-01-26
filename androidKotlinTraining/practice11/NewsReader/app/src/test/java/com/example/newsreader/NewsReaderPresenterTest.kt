@@ -17,7 +17,6 @@ import org.mockito.junit.MockitoJUnitRunner
 class NewsReaderPresenterTest {
   @Mock private lateinit var newsReaderView: NewsReaderContract.View
   @Mock private lateinit var newsRepository: NewsRepository
-  @Mock private lateinit var newsSourcesSubject: BehaviorSubject<List<NewsSource>>
 
   private lateinit var newsReaderPresenter: NewsReaderPresenter
 
@@ -64,8 +63,7 @@ class NewsReaderPresenterTest {
   @Test fun onClickGeneralNews_showsGeneralNews() {
     val newsSource = NewsSource("example", "https://www.example.com/index.xml")
 
-    `when`(newsRepository.newsSourcesSubject).thenReturn(newsSourcesSubject)
-    `when`(newsSourcesSubject.value).thenReturn(listOf(newsSource))
+    `when`(newsRepository.findNewsSource(newsSource.name)).thenReturn(newsSource)
 
     newsReaderPresenter.onClickGeneralNews(newsSource.name)
 

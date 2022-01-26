@@ -15,6 +15,7 @@ import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.toDo
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -48,6 +49,8 @@ class NewsRepositoryTest {
   @Mock private lateinit var recentNewsManager: RecentNewsManager
   @Mock private lateinit var newsSourcesManager: NewsSourcesManager
 
+  @Mock private lateinit var newsSourcesSubject: BehaviorSubject<List<NewsSource>>
+
   @Mock private lateinit var newsItem: NewsItem
   private val exampleNewsSource = NewsSource("example", "www.example.com")
 
@@ -63,6 +66,8 @@ class NewsRepositoryTest {
     `when`(generalNewsApi.retrofitService).thenReturn(generalNewsRetrofitService)
     `when`(generalNewsRetrofitService.getNewsChannel(exampleNewsSource.url)).thenReturn(Observable.just(generalNewsChannel))
 
+    `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
+
     newsRepository = NewsRepository(
       googleNewsApi,
       toyokeizaiNewsApi,
@@ -71,6 +76,23 @@ class NewsRepositoryTest {
       recentNewsManager,
       newsSourcesManager
     )
+  }
+
+  @Test fun findNewsSource_findsNewsSourceByName() {
+    `when`(newsSourcesSubject.value).thenReturn(listOf(exampleNewsSource))
+
+    assertEquals(
+      exampleNewsSource,
+      newsRepository.findNewsSource(exampleNewsSource.name)
+    )
+  }
+
+  @Test fun findNewsSource_throwsExceptionWhenSourceNotPresent() {
+    `when`(newsSourcesSubject.value).thenReturn(emptyList())
+
+    assertThrows(NoSuchElementException::class.java) {
+      newsRepository.findNewsSource(exampleNewsSource.name)
+    }
   }
 
   @Test fun getNews_withStockGoogleNewsSource_returnsGoogleNewsItems() {
