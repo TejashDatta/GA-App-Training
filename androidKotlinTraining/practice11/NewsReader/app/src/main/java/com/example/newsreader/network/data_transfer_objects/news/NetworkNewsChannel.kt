@@ -1,4 +1,4 @@
-package com.example.newsreader.network.data_transfer_objects.general_news
+package com.example.newsreader.network.data_transfer_objects.news
 
 import com.example.newsreader.data.models.NewsItem
 import com.tickaroo.tikxml.annotation.Element
@@ -6,19 +6,19 @@ import com.tickaroo.tikxml.annotation.Path
 import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "rss")
-data class NetworkGeneralNewsChannel(
+data class NetworkNewsChannel(
   @Path("channel")
   @Element
-  val networkGeneralNewsItems: List<NetworkGeneralNewsItem>
+  val networkNewsItems: List<NetworkNewsItem>
 )
 
-fun NetworkGeneralNewsChannel.toDomainModel(source: String) : List<NewsItem> {
-  return networkGeneralNewsItems.map {
+fun NetworkNewsChannel.toDomainModel(source: String) : List<NewsItem> {
+  return networkNewsItems.map {
     NewsItem(
       title = it.title,
       link = it.link,
       publishedDate = it.pubDate,
-      source = source
+      source = it.source ?: source
     )
   }
 }

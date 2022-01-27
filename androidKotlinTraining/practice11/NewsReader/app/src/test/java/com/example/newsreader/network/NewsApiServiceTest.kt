@@ -1,6 +1,6 @@
 package com.example.newsreader.network
 
-import com.example.newsreader.network.data_transfer_objects.general_news.NetworkGeneralNewsChannel
+import com.example.newsreader.network.data_transfer_objects.news.NetworkNewsChannel
 import com.tickaroo.tikxml.TikXml
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.mockwebserver.MockResponse
@@ -16,10 +16,10 @@ import retrofit2.HttpException
 import java.net.HttpURLConnection
 
 @RunWith(MockitoJUnitRunner::class)
-class GeneralNewsApiServiceTest {
+class NewsApiServiceTest {
   private lateinit var server: MockWebServer
 
-  private val retrofitService = GeneralNewsApi.retrofitService
+  private val retrofitService = NewsApi.retrofitService
 
   private val exampleResponseContent = MockResponseFileReader("example-toyokeizai-news-rss-response.xml").content
 
@@ -60,7 +60,7 @@ class GeneralNewsApiServiceTest {
     val mockWebServerUrl = server.url("/").toString()
 
     val exampleResponseContentSource = exampleResponseContent.toResponseBody().source()
-    val expected = tikXml.read(exampleResponseContentSource, NetworkGeneralNewsChannel::class.java)
+    val expected = tikXml.read(exampleResponseContentSource, NetworkNewsChannel::class.java)
     val response = retrofitService.getNewsChannel(mockWebServerUrl).blockingFirst()
 
     assertEquals(response, expected)
