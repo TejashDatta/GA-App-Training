@@ -2,20 +2,14 @@ package com.example.newsreader.data.source
 
 import com.example.newsreader.data.models.NewsItem
 import com.example.newsreader.data.models.NewsSource
-import com.example.newsreader.network.*
-import com.example.newsreader.network.data_transfer_objects.general_news.NetworkGeneralNewsChannel
-import com.example.newsreader.network.data_transfer_objects.general_news.NetworkGeneralNewsItem
-import com.example.newsreader.network.data_transfer_objects.general_news.toDomainModel
-import com.example.newsreader.network.data_transfer_objects.google_news.NetworkGoogleNewsChannel
-import com.example.newsreader.network.data_transfer_objects.google_news.NetworkGoogleNewsItem
-import com.example.newsreader.network.data_transfer_objects.google_news.toDomainModel
-import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.NetworkToyokeizaiNewsChannel
-import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.NetworkToyokeizaiNewsItem
-import com.example.newsreader.network.data_transfer_objects.toyokeizai_news.toDomainModel
+import com.example.newsreader.network.NewsApi
+import com.example.newsreader.network.NewsApiService
+import com.example.newsreader.network.data_transfer_objects.news.NetworkNewsChannel
+import com.example.newsreader.network.data_transfer_objects.news.NetworkNewsItem
+import com.example.newsreader.network.data_transfer_objects.news.toDomainModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,104 +21,58 @@ import org.threeten.bp.ZonedDateTime
 
 @RunWith(MockitoJUnitRunner::class)
 class NewsRepositoryTest {
-  @Mock private lateinit var googleNewsApi: GoogleNewsApi
-  @Mock private lateinit var googleNewsRetrofitService: GoogleNewsApiService
-  private val googleNewsChannel =
-    NetworkGoogleNewsChannel(listOf(NetworkGoogleNewsItem("test1", "testUrl1", ZonedDateTime.now(), "testSource")))
-
-  @Mock private lateinit var toyokeizaiNewsApi: ToyokeizaiNewsApi
-  @Mock private lateinit var toyokeizaiNewsRetrofitService: ToyokeizaiNewsApiService
-  private val toyokeizaiNewsChannel =
-    NetworkToyokeizaiNewsChannel(listOf(NetworkToyokeizaiNewsItem("test2", "testUrl2", ZonedDateTime.now().minusHours(2))))
-
-  @Mock private lateinit var generalNewsApi: GeneralNewsApi
-  @Mock private lateinit var generalNewsRetrofitService: GeneralNewsApiService
-  private val generalNewsChannel =
-    NetworkGeneralNewsChannel(listOf(
-      NetworkGeneralNewsItem("test3", "testUrl3", ZonedDateTime.now().minusHours(1)),
-      NetworkGeneralNewsItem("test4", "testUrl4", ZonedDateTime.now().minusHours(3))
-    ))
+  @Mock private lateinit var newsApi: NewsApi
+  @Mock private lateinit var newsRetrofitService: NewsApiService
 
   @Mock private lateinit var followedNewsManager: FollowedNewsManager
   @Mock private lateinit var recentNewsManager: RecentNewsManager
   @Mock private lateinit var newsSourcesManager: NewsSourcesManager
 
-  @Mock private lateinit var newsSourcesSubject: BehaviorSubject<List<NewsSource>>
-
   @Mock private lateinit var newsItem: NewsItem
-  private val exampleNewsSource = NewsSource("example", "www.example.com")
+
+  private val newsSource1 = NewsSource("example1", "www.example1.com")
+  private val newsChannel1 =
+    NetworkNewsChannel(listOf(
+      NetworkNewsItem("test1", "testUrl1", ZonedDateTime.now(), null),
+      NetworkNewsItem("test2", "testUrl2", ZonedDateTime.now().minusHours(3), null)
+    ))
+
+  private val newsSource2 = NewsSource("example2", "www.example2.com")
+  private val newsChannel2 =
+    NetworkNewsChannel(listOf(
+      NetworkNewsItem("test3", "testUrl3", ZonedDateTime.now().minusHours(2), "testSource")
+    ))
 
   private lateinit var newsRepository: NewsRepository
 
   @Before fun setupMocksAndNewsItemsRepository() {
-    `when`(googleNewsApi.retrofitService).thenReturn(googleNewsRetrofitService)
-    `when`(googleNewsRetrofitService.getNewsChannel()).thenReturn(Observable.just(googleNewsChannel))
+    `when`(newsApi.retrofitService).thenReturn(newsRetrofitService)
+    `when`(newsRetrofitService.getNewsChannel(newsSource1.url)).thenReturn(Observable.just(newsChannel1))
+    `when`(newsRetrofitService.getNewsChannel(newsSource2.url)).thenReturn(Observable.just(newsChannel2))
 
-    `when`(toyokeizaiNewsApi.retrofitService).thenReturn(toyokeizaiNewsRetrofitService)
-    `when`(toyokeizaiNewsRetrofitService.getNewsChannel()).thenReturn(Observable.just(toyokeizaiNewsChannel))
-
-    `when`(generalNewsApi.retrofitService).thenReturn(generalNewsRetrofitService)
-    `when`(generalNewsRetrofitService.getNewsChannel(exampleNewsSource.url)).thenReturn(Observable.just(generalNewsChannel))
-
+    val newsSourcesSubject: BehaviorSubject<List<NewsSource>> =
+      BehaviorSubject.createDefault(listOf(newsSource1, newsSource2))
     `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
 
     newsRepository = NewsRepository(
-      googleNewsApi,
-      toyokeizaiNewsApi,
-      generalNewsApi,
+      newsApi,
       followedNewsManager,
       recentNewsManager,
       newsSourcesManager
     )
   }
 
-  @Test fun findNewsSource_findsNewsSourceByName() {
-    `when`(newsSourcesSubject.value).thenReturn(listOf(exampleNewsSource))
-
-    assertEquals(
-      exampleNewsSource,
-      newsRepository.findNewsSource(exampleNewsSource.name)
-    )
-  }
-
-  @Test fun findNewsSource_throwsExceptionWhenSourceNotPresent() {
-    `when`(newsSourcesSubject.value).thenReturn(emptyList())
-
-    assertThrows(NoSuchElementException::class.java) {
-      newsRepository.findNewsSource(exampleNewsSource.name)
-    }
-  }
-
-  @Test fun getNews_withStockGoogleNewsSource_returnsGoogleNewsItems() {
-    val actual =
-      newsRepository.getNews(newsRepository.stockNewsSources.google, refresh = true).blockingFirst()
-    val expected = googleNewsChannel.toDomainModel()
-    assertEquals(actual, expected)
-  }
-
-  @Test fun getNews_withStockToyokeizaiNewsSource_returnsToyokeizaiNewsItems() {
-    val actual =
-      newsRepository.getNews(newsRepository.stockNewsSources.toyokeizai, refresh = true).blockingFirst()
-    val expected = toyokeizaiNewsChannel.toDomainModel()
-    assertEquals(actual, expected)
-  }
-
-  @Test fun getNews_withGeneralNewsSource_returnsNewsItemsOfNewsSource() {
-    val actual = newsRepository.getNews(exampleNewsSource, refresh = true).blockingFirst()
-    val expected = generalNewsChannel.toDomainModel(exampleNewsSource.name)
+  @Test fun getNews_returnsNewsItemsOfNewsSource() {
+    val actual = newsRepository.getNews(newsSource1.name, refresh = true).blockingFirst()
+    val expected = newsChannel1.toDomainModel(newsSource1.name)
     assertEquals(actual, expected)
   }
 
   @Test fun getNews_withAllNewsSource_returnsAllNewsItemsByDescendingOrderOfPublishedDate() {
-    val newsSourcesSubject: BehaviorSubject<List<NewsSource>> = BehaviorSubject.create()
-    newsSourcesSubject.onNext(listOf(exampleNewsSource))
-    `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
-
     val actual =
-      newsRepository.getNews(newsRepository.stockNewsSources.all, refresh = true).blockingFirst()
-    val expected = (googleNewsChannel.toDomainModel() +
-                    toyokeizaiNewsChannel.toDomainModel() +
-                    generalNewsChannel.toDomainModel(exampleNewsSource.name)
+      newsRepository.getNews(NewsSourcesManager.ALL_NEWS_NAME, refresh = true).blockingFirst()
+    val expected = (newsChannel1.toDomainModel(newsSource1.name) +
+                    newsChannel2.toDomainModel(newsSource2.name)
                     ).sortedByDescending { it.publishedDate }
     assertEquals(actual, expected)
   }
@@ -163,7 +111,7 @@ class NewsRepositoryTest {
   }
 
   @Test fun addNewsSource_callsAddFromNewsSourcesManager() {
-    newsRepository.addNewsSource(exampleNewsSource)
-    verify(newsSourcesManager).add(exampleNewsSource)
+    newsRepository.addNewsSource(newsSource1)
+    verify(newsSourcesManager).add(newsSource1)
   }
 }
