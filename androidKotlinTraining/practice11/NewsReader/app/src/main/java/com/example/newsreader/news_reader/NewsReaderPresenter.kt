@@ -1,7 +1,7 @@
 package com.example.newsreader.news_reader
 
-import android.util.Log
 import com.example.newsreader.data.source.NewsRepository
+import com.example.newsreader.data.source.NewsSourcesManager
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class NewsReaderPresenter(
@@ -12,7 +12,7 @@ class NewsReaderPresenter(
   private var compositeDisposable = CompositeDisposable()
 
   override fun start() {
-    newsReaderView.showAllNews()
+    newsReaderView.showNews(NewsSourcesManager.ALL_NEWS_NAME)
     setupSubscriberToUpdateMainDrawerContent()
   }
 
@@ -20,16 +20,8 @@ class NewsReaderPresenter(
     clearObservers()
   }
 
-  override fun onClickAllNews() {
-    newsReaderView.showAllNews()
-  }
-
-  override fun onClickGoogleNews() {
-    newsReaderView.showGoogleNews()
-  }
-
-  override fun onClickToyokeizaiNews() {
-    newsReaderView.showToyokeizaiNews()
+  override fun onClickNewsSource(newsSourceName: String) {
+    newsReaderView.showNews(newsSourceName)
   }
 
   override fun onClickFollowedNews() {
@@ -38,14 +30,6 @@ class NewsReaderPresenter(
 
   override fun onClickRecentNews() {
     newsReaderView.showRecentNews()
-  }
-
-  override fun onClickGeneralNews(newsSourceName: String) {
-    try {
-      newsReaderView.showGeneralNews(newsRepository.findNewsSource(newsSourceName))
-    } catch (e: NoSuchElementException) {
-      e.message?.let { Log.e("NewsReaderPresenter", it) }
-    }
   }
 
   override fun onClickAddNewsSource() {
