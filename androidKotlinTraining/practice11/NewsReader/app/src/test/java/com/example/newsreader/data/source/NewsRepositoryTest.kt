@@ -50,8 +50,9 @@ class NewsRepositoryTest {
     `when`(newsRetrofitService.getNewsChannel(newsSource1.url)).thenReturn(Observable.just(newsChannel1))
     `when`(newsRetrofitService.getNewsChannel(newsSource2.url)).thenReturn(Observable.just(newsChannel2))
 
+    val allNewsSource = NewsSource(NewsSourcesManager.ALL_NEWS_NAME, "NA")
     val newsSourcesSubject: BehaviorSubject<List<NewsSource>> =
-      BehaviorSubject.createDefault(listOf(newsSource1, newsSource2))
+      BehaviorSubject.createDefault(listOf(allNewsSource, newsSource1, newsSource2))
     `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
 
     newsRepository = NewsRepository(

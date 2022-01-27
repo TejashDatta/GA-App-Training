@@ -64,7 +64,11 @@ class NewsRepository(
   private fun getAllNews(refresh: Boolean): Observable<List<NewsItem>> {
     val getNewsObservables = mutableListOf<Observable<List<NewsItem>>>()
     newsSourcesSubject.value?.let { newsSources ->
-      newsSources.forEach { getNewsObservables.add(getNewsFromSingleSource(it, refresh)) }
+      newsSources.forEach {
+        if (it.name == NewsSourcesManager.ALL_NEWS_NAME) return@forEach
+        
+        getNewsObservables.add(getNewsFromSingleSource(it, refresh))
+      }
     }
 
     return Observable.zip(
