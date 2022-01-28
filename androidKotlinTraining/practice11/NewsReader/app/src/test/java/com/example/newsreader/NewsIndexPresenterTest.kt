@@ -1,9 +1,8 @@
 package com.example.newsreader
 
 import com.example.newsreader.data.models.NewsItem
-import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsRepository
-import com.example.newsreader.data.source.StockNewsSources
+import com.example.newsreader.data.source.NewsSourcesManager
 import com.example.newsreader.news_index.NewsIndexContract
 import com.example.newsreader.news_index.NewsIndexPresenter
 import com.example.newsreader.news_index.OptionsModalBottomSheet
@@ -28,36 +27,35 @@ class NewsIndexPresenterTest {
 
   private lateinit var newsIndexPresenter: NewsIndexPresenter
 
-  private val stockNewsSources = StockNewsSources()
-
-  private fun createPresenter(newsSource: NewsSource) {
+  private fun createPresenter(newsSourceName: String) {
     newsIndexPresenter =
-      NewsIndexPresenter(newsSource, newsIndexView, newsRepository, TestSchedulerProvider())
+      NewsIndexPresenter(newsSourceName, newsIndexView, newsRepository, TestSchedulerProvider())
   }
 
-  private fun createPresenterWithAllSources() = createPresenter(stockNewsSources.all)
+  private fun createPresenterWithAllSources() = createPresenter(NewsSourcesManager.ALL_NEWS_NAME)
+  private fun createPresenterWithGoogleNewsSource() = createPresenter(NewsSourcesManager.GOOGLE_NEWS_NAME)
 
   @Test fun createPresenter_setsPresenterToView() {
-    createPresenterWithAllSources()
+    createPresenterWithGoogleNewsSource()
     verify(newsIndexView).presenter = newsIndexPresenter
   }
 
   @Test fun onClickNewsItem_opensCustomTabInView() {
-    createPresenterWithAllSources()
+    createPresenterWithGoogleNewsSource()
     newsIndexPresenter.onClickNewsItem(newsItem1)
 
     verify(newsIndexView).openInCustomTab(newsItem1.link)
   }
 
   @Test fun onClickNewsItem_savesToRecentNews() {
-    createPresenterWithAllSources()
+    createPresenterWithGoogleNewsSource()
     newsIndexPresenter.onClickNewsItem(newsItem1)
 
     verify(newsRepository).addRecentNews(newsItem1)
   }
 
   @Test fun onClickNewsItemOptionsMenu_opensOptionsMenu() {
-    createPresenterWithAllSources()
+    createPresenterWithGoogleNewsSource()
     `when`(newsRepository.isNewsFollowed(newsItem1)).thenReturn(isNewsItemSaved)
 
     newsIndexPresenter.onClickNewsItemOptionsMenu(newsItem1)
@@ -66,7 +64,7 @@ class NewsIndexPresenterTest {
   }
 
   @Test fun onClickNewsItemOption_savesNewsItemWhenOptionIsSaveAndItemIsUnsaved() {
-    createPresenterWithAllSources()
+    createPresenterWithGoogleNewsSource()
     `when`(newsRepository.isNewsFollowed(newsItem1)).thenReturn(false)
 
     newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SAVE)
@@ -75,7 +73,7 @@ class NewsIndexPresenterTest {
   }
 
   @Test fun onClickNewsItemOption_unsavesNewsItemWhenOptionIsSaveAndItemIsSaved() {
-    createPresenterWithAllSources()
+    createPresenterWithGoogleNewsSource()
     `when`(newsRepository.isNewsFollowed(newsItem1)).thenReturn(true)
 
     newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SAVE)
@@ -84,7 +82,7 @@ class NewsIndexPresenterTest {
   }
 
   @Test fun onClickNewsItemOption_showsToastWhenOptionIsSave() {
-    createPresenterWithAllSources()
+    createPresenterWithGoogleNewsSource()
     `when`(newsRepository.isNewsFollowed(newsItem1)).thenReturn(isNewsItemSaved)
 
     newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SAVE)
@@ -93,7 +91,7 @@ class NewsIndexPresenterTest {
   }
 
   @Test fun onClickNewsItemOption_sharesNewsWhenOptionIsShare() {
-    createPresenterWithAllSources()
+    createPresenterWithGoogleNewsSource()
     newsIndexPresenter.onClickNewsItemOption(newsItem1, OptionsModalBottomSheet.Option.SHARE)
 
     verify(newsIndexView).shareNews(newsItem1)
@@ -101,38 +99,28 @@ class NewsIndexPresenterTest {
 
   @Test fun start_getsNewsFromRepositoryWhenNewsSourceIsAll() {
     createPresenterWithAllSources()
-    `when`(newsRepository.getNews(stockNewsSources.all, refresh = false))
+    `when`(newsRepository.getNews(NewsSourcesManager.ALL_NEWS_NAME, refresh = false))
       .thenReturn(Observable.just(emptyList()))
 
     newsIndexPresenter.start()
 
-    verify(newsRepository).getNews(stockNewsSources.all, refresh = false)
+    verify(newsRepository).getNews(NewsSourcesManager.ALL_NEWS_NAME, refresh = false)
   }
 
-  @Test fun start_getsNewsFromRepositoryWhenNewsSourceIsGoogle() {
-    createPresenter(stockNewsSources.google)
-    `when`(newsRepository.getNews(stockNewsSources.google, refresh = false))
+  @Test fun start_getsNewsFromRepositoryWhenNewsSourceIsSingle() {
+    createPresenterWithGoogleNewsSource()
+    `when`(newsRepository.getNews(NewsSourcesManager.GOOGLE_NEWS_NAME, refresh = false))
       .thenReturn(Observable.just(emptyList()))
 
     newsIndexPresenter.start()
 
-    verify(newsRepository).getNews(stockNewsSources.google, refresh = false)
-  }
-
-  @Test fun start_getsNewsFromRepositoryWhenNewsSourceIsToyokeizai() {
-    createPresenter(stockNewsSources.toyokeizai)
-    `when`(newsRepository.getNews(stockNewsSources.toyokeizai, refresh = false))
-      .thenReturn(Observable.just(emptyList()))
-
-    newsIndexPresenter.start()
-
-    verify(newsRepository).getNews(stockNewsSources.toyokeizai, refresh = false)
+    verify(newsRepository).getNews(NewsSourcesManager.GOOGLE_NEWS_NAME, refresh = false)
   }
 
   @Test fun start_showsItemsInRecyclerViewWhenThereAreResults() {
-    createPresenterWithAllSources()
+    createPresenterWithGoogleNewsSource()
     val resultsList = listOf(newsItem1, newsItem2)
-    `when`(newsRepository.getNews(stockNewsSources.all, refresh = false))
+    `when`(newsRepository.getNews(NewsSourcesManager.GOOGLE_NEWS_NAME, refresh = false))
       .thenReturn(Observable.just(resultsList))
 
     newsIndexPresenter.start()
@@ -142,8 +130,8 @@ class NewsIndexPresenterTest {
   }
 
   @Test fun start_showNoResultsMessageWhenThereAreNoResults() {
-    createPresenterWithAllSources()
-    `when`(newsRepository.getNews(stockNewsSources.all, refresh = false))
+    createPresenterWithGoogleNewsSource()
+    `when`(newsRepository.getNews(NewsSourcesManager.GOOGLE_NEWS_NAME, refresh = false))
       .thenReturn(Observable.just(emptyList()))
 
     newsIndexPresenter.start()
@@ -153,8 +141,8 @@ class NewsIndexPresenterTest {
   }
 
   @Test fun start_showErrorMessageWhenError () {
-    createPresenterWithAllSources()
-    `when`(newsRepository.getNews(stockNewsSources.all, refresh = false))
+    createPresenterWithGoogleNewsSource()
+    `when`(newsRepository.getNews(NewsSourcesManager.GOOGLE_NEWS_NAME, refresh = false))
       .thenReturn(Observable.error(RuntimeException("example error")))
 
     newsIndexPresenter.start()
@@ -165,38 +153,28 @@ class NewsIndexPresenterTest {
 
   @Test fun refreshNews_getsNewsFromRepositoryWhenNewsSourceIsAll() {
     createPresenterWithAllSources()
-    `when`(newsRepository.getNews(stockNewsSources.all, refresh = true))
+    `when`(newsRepository.getNews(NewsSourcesManager.ALL_NEWS_NAME, refresh = true))
       .thenReturn(Observable.just(emptyList()))
 
     newsIndexPresenter.refreshNews()
 
-    verify(newsRepository).getNews(stockNewsSources.all, refresh = true)
+    verify(newsRepository).getNews(NewsSourcesManager.ALL_NEWS_NAME, refresh = true)
   }
 
-  @Test fun refreshNews_getsNewsFromRepositoryWhenNewsSourceIsGoogle() {
-    createPresenter(stockNewsSources.google)
-    `when`(newsRepository.getNews(stockNewsSources.google, refresh = true))
+  @Test fun refreshNews_getsNewsFromRepositoryWhenNewsSourceIsSingle() {
+    createPresenterWithGoogleNewsSource()
+    `when`(newsRepository.getNews(NewsSourcesManager.GOOGLE_NEWS_NAME, refresh = true))
       .thenReturn(Observable.just(emptyList()))
 
     newsIndexPresenter.refreshNews()
 
-    verify(newsRepository).getNews(stockNewsSources.google, refresh = true)
-  }
-
-  @Test fun refreshNews_getsNewsFromRepositoryWhenNewsSourceIsToyokeizai() {
-    createPresenter(stockNewsSources.toyokeizai)
-    `when`(newsRepository.getNews(stockNewsSources.toyokeizai, refresh = true))
-      .thenReturn(Observable.just(emptyList()))
-
-    newsIndexPresenter.refreshNews()
-
-    verify(newsRepository).getNews(stockNewsSources.toyokeizai, refresh = true)
+    verify(newsRepository).getNews(NewsSourcesManager.GOOGLE_NEWS_NAME, refresh = true)
   }
 
   @Test fun refreshNews_showItemsInRecyclerViewWhenThereAreResults() {
-    createPresenterWithAllSources()
+    createPresenterWithGoogleNewsSource()
     val resultsList = listOf(newsItem1, newsItem2)
-    `when`(newsRepository.getNews(stockNewsSources.all, refresh = true))
+    `when`(newsRepository.getNews(NewsSourcesManager.GOOGLE_NEWS_NAME, refresh = true))
       .thenReturn(Observable.just(resultsList))
 
     newsIndexPresenter.refreshNews()
@@ -206,8 +184,8 @@ class NewsIndexPresenterTest {
   }
 
   @Test fun refreshNews_showNoResultsMessageWhenThereAreNoResults() {
-    createPresenterWithAllSources()
-    `when`(newsRepository.getNews(stockNewsSources.all, refresh = true))
+    createPresenterWithGoogleNewsSource()
+    `when`(newsRepository.getNews(NewsSourcesManager.GOOGLE_NEWS_NAME, refresh = true))
       .thenReturn(Observable.just(emptyList()))
 
     newsIndexPresenter.refreshNews()
@@ -217,8 +195,8 @@ class NewsIndexPresenterTest {
   }
 
   @Test fun refreshNews_showErrorMessageWhenError () {
-    createPresenterWithAllSources()
-    `when`(newsRepository.getNews(stockNewsSources.all, refresh = true))
+    createPresenterWithGoogleNewsSource()
+    `when`(newsRepository.getNews(NewsSourcesManager.GOOGLE_NEWS_NAME, refresh = true))
       .thenReturn(Observable.error(RuntimeException("example error")))
 
     newsIndexPresenter.refreshNews()
