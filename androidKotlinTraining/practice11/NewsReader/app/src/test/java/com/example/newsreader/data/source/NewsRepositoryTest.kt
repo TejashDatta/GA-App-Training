@@ -30,6 +30,9 @@ class NewsRepositoryTest {
 
   @Mock private lateinit var newsItem: NewsItem
 
+  private val allNewsSource = NewsSource(NewsSourcesManager.ALL_NEWS_NAME, "NA")
+  private val errorNewsSource = NewsSource("error news source", "incorrect url")
+
   private val newsSource1 = NewsSource("example1", "www.example1.com")
   private val newsChannel1 =
     NetworkNewsChannel(listOf(
@@ -49,11 +52,7 @@ class NewsRepositoryTest {
     `when`(newsApi.retrofitService).thenReturn(newsRetrofitService)
     `when`(newsRetrofitService.getNewsChannel(newsSource1.url)).thenReturn(Observable.just(newsChannel1))
     `when`(newsRetrofitService.getNewsChannel(newsSource2.url)).thenReturn(Observable.just(newsChannel2))
-
-    val allNewsSource = NewsSource(NewsSourcesManager.ALL_NEWS_NAME, "NA")
-    val newsSourcesSubject: BehaviorSubject<List<NewsSource>> =
-      BehaviorSubject.createDefault(listOf(allNewsSource, newsSource1, newsSource2))
-    `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
+    `when`(newsRetrofitService.getNewsChannel(errorNewsSource.url)).thenThrow(RuntimeException())
 
     newsRepository = NewsRepository(
       newsApi,
@@ -70,11 +69,26 @@ class NewsRepositoryTest {
   }
 
   @Test fun getNews_withAllNewsSource_returnsAllNewsItemsByDescendingOrderOfPublishedDate() {
+    val newsSourcesSubject: BehaviorSubject<List<NewsSource>> =
+      BehaviorSubject.createDefault(listOf(allNewsSource, newsSource1, newsSource2))
+    `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
+
     val actual =
       newsRepository.getNews(NewsSourcesManager.ALL_NEWS_NAME, refresh = true).blockingFirst()
     val expected = (newsChannel1.toDomainModel(newsSource1.name) +
                     newsChannel2.toDomainModel(newsSource2.name)
                     ).sortedByDescending { it.publishedDate }
+    assertEquals(actual, expected)
+  }
+
+  @Test fun getNews_withAllNewsSource_ignoresErrorSource() {
+    val newsSourcesSubject: BehaviorSubject<List<NewsSource>> =
+      BehaviorSubject.createDefault(listOf(allNewsSource, newsSource1, errorNewsSource))
+    `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
+
+    val actual =
+      newsRepository.getNews(NewsSourcesManager.ALL_NEWS_NAME, refresh = true).blockingFirst()
+    val expected = newsChannel1.toDomainModel(newsSource1.name)
     assertEquals(actual, expected)
   }
 
