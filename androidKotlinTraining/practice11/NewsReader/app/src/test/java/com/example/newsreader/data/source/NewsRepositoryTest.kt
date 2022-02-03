@@ -18,6 +18,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 import org.threeten.bp.ZonedDateTime
+import java.io.IOException
 
 @RunWith(MockitoJUnitRunner::class)
 class NewsRepositoryTest {
@@ -50,9 +51,12 @@ class NewsRepositoryTest {
 
   @Before fun setupMocksAndNewsItemsRepository() {
     `when`(newsApi.retrofitService).thenReturn(newsRetrofitService)
-    `when`(newsRetrofitService.getNewsChannel(newsSource1.url)).thenReturn(Observable.just(newsChannel1))
-    `when`(newsRetrofitService.getNewsChannel(newsSource2.url)).thenReturn(Observable.just(newsChannel2))
-    `when`(newsRetrofitService.getNewsChannel(errorNewsSource.url)).thenThrow(RuntimeException())
+    `when`(newsRetrofitService.getNewsChannel(newsSource1.url))
+      .thenReturn(Observable.just(newsChannel1))
+    `when`(newsRetrofitService.getNewsChannel(newsSource2.url))
+      .thenReturn(Observable.just(newsChannel2))
+    `when`(newsRetrofitService.getNewsChannel(errorNewsSource.url))
+      .thenReturn(Observable.error(IOException()))
 
     newsRepository = NewsRepository(
       newsApi,
@@ -63,6 +67,10 @@ class NewsRepositoryTest {
   }
 
   @Test fun getNews_returnsNewsItemsOfNewsSource() {
+    val newsSourcesSubject: BehaviorSubject<List<NewsSource>> =
+      BehaviorSubject.createDefault(listOf(allNewsSource, newsSource1))
+    `when`(newsSourcesManager.newsSourcesSubject).thenReturn(newsSourcesSubject)
+
     val actual = newsRepository.getNews(newsSource1.name, refresh = true).blockingFirst()
     val expected = newsChannel1.toDomainModel(newsSource1.name)
     assertEquals(actual, expected)
