@@ -67,7 +67,9 @@ class NewsRepository(
       newsSources.forEach {
         if (it.name == NewsSourcesManager.ALL_NEWS_NAME) return@forEach
         
-        getNewsObservables.add(getNewsFromSingleSource(it, refresh))
+        getNewsObservables.add(
+          getNewsFromSingleSource(it, refresh).onErrorReturnItem(emptyList())
+        )
       }
     }
 
