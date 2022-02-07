@@ -1,0 +1,14 @@
+AllCops:
+  NewCops: enable
+
+Layout/LineLength:
+  Max: 100
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
