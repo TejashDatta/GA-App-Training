@@ -9,6 +9,8 @@ COPY Gemfile Gemfile.lock /app/
 RUN bundle install
 
 COPY entrypoint.sh /usr/bin/
+RUN apt-get install -y dos2unix
+RUN dos2unix /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
