@@ -15,12 +15,11 @@ ActiveRecord::Schema.define(version: 2022_04_02_145857) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "users" do |t|
-    t.string "user_name", null: false
+  create_table "admin_users" do |t|
+    t.string "username", null: false
     t.string "password", null: false
-    t.boolean "is_admin", null: false, default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_name"], name: "index_users_on_user_name", unique: true
+    t.index ["username"], name: "index_admin_users_on_username", unique: true
   end
 end
