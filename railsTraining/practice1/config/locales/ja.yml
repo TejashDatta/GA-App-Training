@@ -8,6 +8,9 @@ ja:
     login_failure: ログインが失敗しました。
     logout_success: ログアウトしました。
     authenticate_admin_failure: この操作を行う権限を持っていません。
+    create_success: "%{model}の作成が合格しました。"
+    update_success: "%{model}の更新が合格しました。"
+    destroy_success: "%{model}の削除が合格しました。"
 
   activerecord:
     models:
