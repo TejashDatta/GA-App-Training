@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :articles
   root 'temporary#home'
 
   get '/admin-login', to: 'admin_authentication#new', as: :admin_login
