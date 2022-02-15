@@ -1,0 +1,11 @@
+AllCops:
+  NewCops: enable
+
+Layout/LineLength:
+  Max: 100
+
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
