@@ -1,4 +1,6 @@
 class ArticlesController < ApplicationController
+  before_action :authenticate_admin, except: %i[index show]
+
   def index
     @articles = Article.all.order(created_at: :desc)
   end
