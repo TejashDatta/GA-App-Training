@@ -12,7 +12,11 @@ ja:
   activerecord:
     models:
       admin_user: 管理者ユーザー
+      article: 記事
     attributes:
       admin_user:
         username: ユーザー名
         password: パスワード
+      article:
+        title: 題名
+        content: 内容
