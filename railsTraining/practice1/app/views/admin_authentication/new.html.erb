@@ -1,0 +1,13 @@
+<h1><%= t("admin_login") %></h1>
+
+<%= form_with(model: @admin_user, url: admin_login_path, local: true) do |form| %>
+  <%= form.label :username %>
+  <%= form.text_field :username %>
+  <br />
+  <%= form.label :password %>
+  <%= form.password_field :password %>
+
+  <div class="actions">
+    <%= form.submit t("login") %>
+  </div>
+<% end %>

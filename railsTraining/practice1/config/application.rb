@@ -23,6 +23,8 @@ module App
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
+    config.i18n.default_locale = :ja
+    config.time_zone = "Tokyo"
 
     # Configuration for the application, engines, and railties goes here.
     #

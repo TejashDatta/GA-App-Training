@@ -1,8 +1,18 @@
 ja:
+  login: ログイン
+  admin_login: 管理者ログイン
+  logout: ログアウト
+  logout_confirmation: ログアウトして宜しいですか?
+
+  flash_messages:
+    login_failure: ログインが失敗しました。
+    logout_success: ログアウトしました。
+    authenticate_admin_failure: この操作を行う権限を持っていません。
+
   activerecord:
     models:
       admin_user: 管理者ユーザー
     attributes:
       admin_user:
-        user_name: ユーザー名
+        username: ユーザー名
         password: パスワード

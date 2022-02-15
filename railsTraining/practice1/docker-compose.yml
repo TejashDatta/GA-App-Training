@@ -1,9 +1,15 @@
 version: "3.9"
+volumes:
+  postgres-data:
+    driver: local
+
 services:
   database:
     image: postgres
     volumes:
-      - ./tmp/database:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: password
   app:

@@ -11,6 +11,16 @@
   </head>
 
   <body>
+    <% if admin_logged_in? %>
+      <%= current_admin_user.username %>としてログインしています。
+      <%= link_to t("logout"), admin_logout_path, method: :delete, data: { confirm: t("logout_confirmation") } %>
+    <% else %>
+      <%= link_to t("admin_login"), admin_login_path %>
+    <% end %>
+
+    <p id="notice"><%= notice %></p>
+    <p id="alert"><%= alert %></p>
+    
     <%= yield %>
   </body>
 </html>
