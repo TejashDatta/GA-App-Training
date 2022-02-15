@@ -5,10 +5,13 @@ ja:
   logout_confirmation: ログアウトして宜しいですか?
 
   create_model: "%{model}作成"
+  edit_model: "%{model}編集"
+  show: 表示
   edit: 編集
   delete: 削除
   delete_confirmation: 削除は宜しいですか?
   back: 戻る
+  errors_caused_save_failure: "%{error_count} エラーがありまして保存が失敗しました。"
 
   date_format: '%Y年%m月%d日'
 
