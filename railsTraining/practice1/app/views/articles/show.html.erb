@@ -1,14 +1,12 @@
-<p id="notice"><%= notice %></p>
+<h1><%= @article.title %></h1>
 
-<p>
-  <strong>Title:</strong>
-  <%= @article.title %>
-</p>
+<%= @article.created_at.strftime(t('date_format')) %>
 
-<p>
-  <strong>Content:</strong>
-  <%= @article.content %>
-</p>
+<% if admin_logged_in? %>
+  | <%= link_to t('edit'), edit_article_path(@article) %>
+  | <%= link_to t('delete'), @article, method: :delete, data: { confirm: t('delete_confirmation') } %>
+<% end %>
 
-<%= link_to 'Edit', edit_article_path(@article) %> |
-<%= link_to 'Back', articles_path %>
+<p><%= @article.content %></p>
+
+<%= link_to t('back'), articles_path %>
