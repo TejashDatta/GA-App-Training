@@ -4,6 +4,11 @@ ja:
   logout: ログアウト
   logout_confirmation: ログアウトして宜しいですか?
 
+  create_model: "%{model}作成"
+  edit: 編集
+  delete: 削除
+  delete_confirmation: 削除は宜しいですか?
+
   flash_messages:
     login_failure: ログインが失敗しました。
     logout_success: ログアウトしました。
