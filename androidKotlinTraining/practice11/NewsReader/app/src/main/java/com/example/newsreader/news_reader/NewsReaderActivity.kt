@@ -2,6 +2,7 @@ package com.example.newsreader.news_reader
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
@@ -24,9 +25,6 @@ import com.google.android.material.navigation.NavigationView
 
 class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   companion object {
-    private const val NEWS_INDEX_ALL_FRAGMENT_TAG = "NEWS_INDEX_ALL_FRAGMENT"
-    private const val NEWS_INDEX_GOOGLE_FRAGMENT_TAG = "NEWS_INDEX_GOOGLE_FRAGMENT"
-    private const val NEWS_INDEX_TOYOKEIZAI_FRAGMENT_TAG = "NEWS_INDEX_TOYOKEIZAI_FRAGMENT"
     private const val FOLLOWED_NEWS_FRAGMENT_TAG = "FOLLOWED_NEWS_FRAGMENT"
     private const val RECENT_NEWS_FRAGMENT_TAG = "RECENT_NEWS_FRAGMENT"
   }
@@ -75,8 +73,9 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     return super.onOptionsItemSelected(item)
   }
 
-  override fun showAllNews() {
-    val cachedFragment = findNewsIndexFragmentByTag(NEWS_INDEX_ALL_FRAGMENT_TAG)
+  override fun showNews(newsSourceName: String) {
+    val fragmentTag = "${newsSourceName}_fragment"
+    val cachedFragment = findNewsIndexFragmentByTag(fragmentTag)
 
     if(cachedFragment?.isVisible == true) return
 
@@ -85,54 +84,14 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
 
     if (isNewInstance) {
       NewsIndexPresenter(
-        newsRepository.stockNewsSources.all,
+        newsSourceName,
         nextFragment,
         newsRepository,
         SchedulerProvider()
       )
     }
 
-    changeFragment(nextFragment, NEWS_INDEX_ALL_FRAGMENT_TAG, isNewInstance)
-  }
-
-  override fun showGoogleNews() {
-    val cachedFragment = findNewsIndexFragmentByTag(NEWS_INDEX_GOOGLE_FRAGMENT_TAG)
-
-    if(cachedFragment?.isVisible == true) return
-
-    val nextFragment = cachedFragment ?: NewsIndexFragment.newInstance()
-    val isNewInstance = cachedFragment == null
-
-    if (isNewInstance) {
-      NewsIndexPresenter(
-        newsRepository.stockNewsSources.google,
-        nextFragment,
-        newsRepository,
-        SchedulerProvider()
-      )
-    }
-
-    changeFragment(nextFragment, NEWS_INDEX_GOOGLE_FRAGMENT_TAG, isNewInstance)
-  }
-
-  override fun showToyokeizaiNews() {
-    val cachedFragment = findNewsIndexFragmentByTag(NEWS_INDEX_TOYOKEIZAI_FRAGMENT_TAG)
-
-    if(cachedFragment?.isVisible == true) return
-
-    val nextFragment = cachedFragment ?: NewsIndexFragment.newInstance()
-    val isNewInstance = cachedFragment == null
-
-    if (isNewInstance) {
-      NewsIndexPresenter(
-        newsRepository.stockNewsSources.toyokeizai,
-        nextFragment,
-        newsRepository,
-        SchedulerProvider()
-      )
-    }
-
-    changeFragment(nextFragment, NEWS_INDEX_TOYOKEIZAI_FRAGMENT_TAG, isNewInstance)
+    changeFragment(nextFragment, fragmentTag, isNewInstance)
   }
 
   override fun showFollowedNews() {
@@ -174,33 +133,12 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
     changeFragment(nextFragment, RECENT_NEWS_FRAGMENT_TAG, isNewInstance)
   }
 
-  override fun showGeneralNews(newsSource: NewsSource) {
-    val fragmentTag = "${newsSource.name}_fragment"
-    val cachedFragment = findNewsIndexFragmentByTag(fragmentTag)
-
-    if(cachedFragment?.isVisible == true) return
-
-    val nextFragment = cachedFragment ?: NewsIndexFragment.newInstance()
-    val isNewInstance = cachedFragment == null
-
-    if (isNewInstance) {
-      NewsIndexPresenter(
-        newsSource,
-        nextFragment,
-        newsRepository,
-        SchedulerProvider()
-      )
-    }
-
-    changeFragment(nextFragment, fragmentTag, isNewInstance)
-  }
-
   override fun showAddNewsSource() {
     startActivity(
       Intent(applicationContext, AddNewsSourceActivity::class.java)
     )
   }
-  
+
   private fun findNewsIndexFragmentByTag(tag: String): NewsIndexFragment? {
     return supportFragmentManager.findFragmentByTag(tag) as? NewsIndexFragment
   }
@@ -221,8 +159,8 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
 
   override fun setupDrawerMainContent(newsSources: List<NewsSource>) {
     deleteAllItemsInDrawerMain()
-    setupStaticItemsInDrawerMain()
     addSourcesToDrawerMain(newsSources)
+    setupStaticItemsInDrawerMain()
     makeSingleItemCheckableInDrawerMain()
     setDrawerMainItemListeners()
   }
@@ -233,20 +171,15 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
 
   private fun setupStaticItemsInDrawerMain() {
     val menu = navigationViewMain.menu
-
-    menu.add(R.id.drawer_main_group, R.id.action_all_news, 0, getString(R.string.drawer_all_news))
-    menu.add(R.id.drawer_main_group, R.id.action_google_news, 1, getString(R.string.drawer_google_news))
-    menu.add(R.id.drawer_main_group, R.id.action_toyokeizai_news, 2, getString(R.string.drawer_toyokeizai_news))
-
-    menu.add(R.id.drawer_main_group, R.id.action_followed_news, 1000, getString(R.string.drawer_followed_news))
-    menu.add(R.id.drawer_main_group, R.id.action_recent_news, 1001, getString(R.string.drawer_recent_news))
+    val startIndex = menu.size()
+    menu.add(R.id.drawer_main_group, R.id.action_followed_news, startIndex, getString(R.string.drawer_followed_news))
+    menu.add(R.id.drawer_main_group, R.id.action_recent_news, startIndex + 1, getString(R.string.drawer_recent_news))
   }
 
   private fun addSourcesToDrawerMain(newsSources: List<NewsSource>) {
     val menu = navigationViewMain.menu
-    val startIndex = menu.findItem(R.id.action_toyokeizai_news).order + 1
     newsSources.forEachIndexed { index, newsSource ->
-      menu.add(R.id.drawer_main_group, index, startIndex + index, newsSource.name)
+      menu.add(R.id.drawer_main_group, Menu.NONE, index, newsSource.name)
     }
   }
 
@@ -259,12 +192,9 @@ class NewsReaderActivity : AppCompatActivity(), NewsReaderContract.View {
   private fun setDrawerMainItemListeners() {
     navigationViewMain.setNavigationItemSelectedListener { menuItem ->
       when(menuItem.itemId) {
-        R.id.action_all_news -> presenter.onClickAllNews()
-        R.id.action_google_news -> presenter.onClickGoogleNews()
-        R.id.action_toyokeizai_news -> presenter.onClickToyokeizaiNews()
         R.id.action_followed_news -> presenter.onClickFollowedNews()
         R.id.action_recent_news -> presenter.onClickRecentNews()
-        else -> presenter.onClickGeneralNews(menuItem.title as String)
+        else -> presenter.onClickNewsSource(menuItem.title as String)
       }
 
       menuItem.isChecked = true

@@ -2,6 +2,7 @@ package com.example.newsreader
 
 import com.example.newsreader.data.models.NewsSource
 import com.example.newsreader.data.source.NewsRepository
+import com.example.newsreader.data.source.NewsSourcesManager
 import com.example.newsreader.news_reader.NewsReaderContract
 import com.example.newsreader.news_reader.NewsReaderPresenter
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -17,35 +18,27 @@ import org.mockito.junit.MockitoJUnitRunner
 class NewsReaderPresenterTest {
   @Mock private lateinit var newsReaderView: NewsReaderContract.View
   @Mock private lateinit var newsRepository: NewsRepository
+  private var newsSourcesSubject: BehaviorSubject<List<NewsSource>> = BehaviorSubject.create()
 
   private lateinit var newsReaderPresenter: NewsReaderPresenter
 
   @Before fun setupNewsIndexPresenter() {
+    `when`(newsRepository.newsSourcesSubject).thenReturn(newsSourcesSubject)
     newsReaderPresenter = NewsReaderPresenter(newsReaderView, newsRepository)
   }
 
   @Test fun start_showsAllNews() {
     newsReaderPresenter.start()
 
-    verify(newsReaderView).showAllNews()
+    verify(newsReaderView).showNews(NewsSourcesManager.ALL_NEWS_NAME)
   }
 
-  @Test fun onClickAllNews_showsAllNews() {
-    newsReaderPresenter.onClickAllNews()
+  @Test fun onClickNewsSource_showsNews() {
+    val newsSourceName = "example"
 
-    verify(newsReaderView).showAllNews()
-  }
+    newsReaderPresenter.onClickNewsSource(newsSourceName)
 
-  @Test fun onClickGoogleNews_showsGoogleNews() {
-    newsReaderPresenter.onClickGoogleNews()
-
-    verify(newsReaderView).showGoogleNews()
-  }
-
-  @Test fun onClickToyokeizaiNews_showsToyokeizaiNews() {
-    newsReaderPresenter.onClickToyokeizaiNews()
-
-    verify(newsReaderView).showToyokeizaiNews()
+    verify(newsReaderView).showNews(newsSourceName)
   }
 
   @Test fun onClickFollowedNews_showsFollowedNews() {
@@ -58,16 +51,6 @@ class NewsReaderPresenterTest {
     newsReaderPresenter.onClickRecentNews()
 
     verify(newsReaderView).showRecentNews()
-  }
-
-  @Test fun onClickGeneralNews_showsGeneralNews() {
-    val newsSource = NewsSource("example", "https://www.example.com/index.xml")
-
-    `when`(newsRepository.findNewsSource(newsSource.name)).thenReturn(newsSource)
-
-    newsReaderPresenter.onClickGeneralNews(newsSource.name)
-
-    verify(newsReaderView).showGeneralNews(newsSource)
   }
 
   @Test fun onClickAddNewsSource_showsAddNewsSource() {
