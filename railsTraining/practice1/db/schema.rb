@@ -21,4 +21,12 @@ ActiveRecord::Schema.define(version: 2022_04_02_145857) do
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['username'], name: 'index_admin_users_on_username', unique: true
   end
+
+  create_table 'articles' do |t|
+    t.string 'title', null: false
+    t.text 'content', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['title'], name: 'index_articles_on_title', unique: true
+  end
 end
