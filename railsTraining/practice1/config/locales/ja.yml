@@ -15,6 +15,7 @@ ja:
   errors_caused_save_failure: "%{error_count} エラーがありまして保存が失敗しました。"
 
   date_format: '%Y年%m月%d日'
+  time_ago: "%{time_ago}前"
 
   flash_messages:
     login_failure: ログインが失敗しました。
