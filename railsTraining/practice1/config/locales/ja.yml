@@ -7,7 +7,7 @@ ja:
   create_model: "%{model}作成"
   edit: 編集
   delete: 削除
-  delete_confirmation: 削除は宜しいですか?
+  delete_confirmation: 本当に削除しますか？
   back: 戻る
 
   date_format: '%Y年%m月%d日'
