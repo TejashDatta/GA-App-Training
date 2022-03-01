@@ -13,14 +13,14 @@
   <body>
     <div class="top-bar">
       <div>
-        <%= link_to t("home"), root_path %>
+        <%= link_to t('home'), root_path %>
       </div>
       <div>
         <% if admin_logged_in? %>
           <%= current_admin_user.username %>としてログインしています。
-          <%= link_to t("logout"), admin_logout_path, method: :delete, data: { confirm: t("logout_confirmation") } %>
+          <%= link_to t('logout'), admin_logout_path, method: :delete, data: { confirm: t("logout_confirmation") } %>
         <% else %>
-          <%= link_to t("admin_login"), admin_login_path %>
+          <%= link_to t('admin_login'), admin_login_path %>
         <% end %>
       </div>
     </div>
