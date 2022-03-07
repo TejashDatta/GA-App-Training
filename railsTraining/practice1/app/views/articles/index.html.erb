@@ -10,6 +10,7 @@
   <tbody>
     <% @articles.each do |article| %>
       <tr>
+        <td><%= t('time_ago', time_ago: time_ago_in_words(article.created_at)) %></td>
         <td><%= link_to article.title, article %></td>
         <% if admin_logged_in? %>
           <td><%= link_to t('edit'), edit_article_path(article) %></td>
