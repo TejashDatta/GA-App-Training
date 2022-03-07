@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   delete '/admin-logout', to: 'admin_authentication#destroy', as: :admin_logout
 
   root 'articles#index'
+  get '/index.xml', to: 'articles#index'
   resources :articles, path: '/'
 end
