@@ -1,17 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe '/articles', type: :request do
-  let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
+  let(:valid_attributes) { { title: 'title', content: 'content' } }
+  let(:invalid_attributes) { { title: '', content: '' } }
 
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
-  end
+  let(:article) { create(:article) }
 
   describe 'GET /index' do
     it 'renders a successful response' do
-      Article.create! valid_attributes
+      article
       get articles_url
       expect(response).to be_successful
     end
@@ -19,7 +16,6 @@ RSpec.describe '/articles', type: :request do
 
   describe 'GET /show' do
     it 'renders a successful response' do
-      article = Article.create! valid_attributes
       get article_url(article)
       expect(response).to be_successful
     end
@@ -34,7 +30,6 @@ RSpec.describe '/articles', type: :request do
 
   describe 'GET /edit' do
     it 'render a successful response' do
-      article = Article.create! valid_attributes
       get edit_article_url(article)
       expect(response).to be_successful
     end
@@ -61,28 +56,24 @@ RSpec.describe '/articles', type: :request do
         }.to change(Article, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
+      it 'renders an unprocessable entity response' do
         post articles_url, params: { article: invalid_attributes }
-        expect(response).to be_successful
+        expect(response).to have_http_status(422)
       end
     end
   end
 
   describe 'PATCH /update' do
     context 'with valid parameters' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
+      let(:new_attributes) { { content: 'new content' } }
 
       it 'updates the requested article' do
-        article = Article.create! valid_attributes
         patch article_url(article), params: { article: new_attributes }
         article.reload
-        skip('Add assertions for updated state')
+        expect(article.content).to eq 'new content'
       end
 
       it 'redirects to the article' do
-        article = Article.create! valid_attributes
         patch article_url(article), params: { article: new_attributes }
         article.reload
         expect(response).to redirect_to(article_url(article))
@@ -90,24 +81,22 @@ RSpec.describe '/articles', type: :request do
     end
 
     context 'with invalid parameters' do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        article = Article.create! valid_attributes
+      it 'renders an unprocessable entity response' do
         patch article_url(article), params: { article: invalid_attributes }
-        expect(response).to be_successful
+        expect(response).to have_http_status(422)
       end
     end
   end
 
   describe 'DELETE /destroy' do
     it 'destroys the requested article' do
-      article = Article.create! valid_attributes
+      article
       expect {
         delete article_url(article)
       }.to change(Article, :count).by(-1)
     end
 
     it 'redirects to the articles list' do
-      article = Article.create! valid_attributes
       delete article_url(article)
       expect(response).to redirect_to(articles_url)
     end

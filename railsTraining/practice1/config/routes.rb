@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :articles
-  root 'temporary#home'
+  root 'articles#index'
+  resources :articles, path: '/'
 
   get '/admin-login', to: 'admin_authentication#new', as: :admin_login
   post '/admin-login', to: 'admin_authentication#create'
