@@ -37,11 +37,12 @@ class AccountRepository(private val currentUserSharedPreferences: SharedPreferen
     return currentUserEmail != null
   }
 
-  fun login(email: String, password: String) {
+  fun login(email: String, password: String): String? {
     if (email == DEFAULT_EMAIL && password == DEFAULT_PASSWORD) {
       currentUserEmail = email
       saveCurrentUserEmail(email)
     }
+    return currentUserEmail
   }
 
   private fun saveCurrentUserEmail(email: String) {
