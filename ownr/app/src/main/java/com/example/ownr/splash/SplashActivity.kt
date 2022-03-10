@@ -9,8 +9,14 @@ import com.example.ownr.data.source.AccountRepository
 import javax.inject.Inject
 
 // TODO: for testing. remove accountRepository and log later.
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity(), SplashContract.View {
+  override lateinit var presenter: SplashContract.Presenter
   @Inject lateinit var accountRepository: AccountRepository
+
+  override fun onResume() {
+    super.onResume()
+    presenter.start()
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (applicationContext as OwnrApp).appComponent.inject(this)
@@ -19,5 +25,7 @@ class SplashActivity : AppCompatActivity() {
     setContentView(R.layout.activity_splash)
 
     Log.d("SplashActivity", accountRepository.login("user@example.com", "password").toString())
+
+    presenter = SplashPresenter(this, accountRepository)
   }
 }
