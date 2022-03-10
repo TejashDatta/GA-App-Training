@@ -1,7 +1,7 @@
 package com.example.ownr.di
 
 import android.content.Context
-import com.example.ownr.SplashActivity
+import com.example.ownr.splash.SplashActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

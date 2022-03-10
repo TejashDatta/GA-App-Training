@@ -1,8 +1,10 @@
-package com.example.ownr
+package com.example.ownr.splash
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.ownr.OwnrApp
+import com.example.ownr.R
 import com.example.ownr.data.source.AccountRepository
 import javax.inject.Inject
 
