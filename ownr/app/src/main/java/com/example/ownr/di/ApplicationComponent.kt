@@ -8,10 +8,10 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [AccountRepositoryModule::class])
-interface AppComponent {
+interface ApplicationComponent {
   @Component.Factory
   interface Factory {
-    fun create(@BindsInstance applicationContext: Context): AppComponent
+    fun create(@BindsInstance applicationContext: Context): ApplicationComponent
   }
 
 // TODO: for testing. remove later.
