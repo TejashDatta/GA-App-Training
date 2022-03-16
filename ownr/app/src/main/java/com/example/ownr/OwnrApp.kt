@@ -4,7 +4,7 @@ import android.app.Application
 import com.example.ownr.di.AppComponent
 import com.example.ownr.di.DaggerAppComponent
 
-class OwnrApp: Application() {
+class OwnrApplication: Application() {
   lateinit var appComponent: AppComponent
 
   override fun onCreate() {
