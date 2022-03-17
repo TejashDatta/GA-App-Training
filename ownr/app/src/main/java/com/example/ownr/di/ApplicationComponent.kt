@@ -6,10 +6,15 @@ import com.example.ownr.splash.SplashActivity
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AccountRepositoryModule::class])
+@Component(
+  modules = [
+    AndroidSupportInjectionModule::class,
+    AccountRepositoryModule::class
+  ])
 interface ApplicationComponent: AndroidInjector<OwnrApplication> {
   @Component.Factory
   interface Factory {
