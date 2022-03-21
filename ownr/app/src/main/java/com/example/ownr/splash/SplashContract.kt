@@ -9,7 +9,7 @@ class SplashContract {
 
   }
 
-  interface Presenter: BasePresenter {
+  interface Presenter: BasePresenter<View> {
 
   }
 }
