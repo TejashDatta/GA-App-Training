@@ -13,6 +13,7 @@ import javax.inject.Singleton
 @Component(
   modules = [
     AndroidSupportInjectionModule::class,
+    ActivityBindingModule::class,
     AccountRepositoryModule::class
   ])
 interface ApplicationComponent: AndroidInjector<OwnrApplication> {
@@ -23,4 +24,3 @@ interface ApplicationComponent: AndroidInjector<OwnrApplication> {
 
   fun inject(activity: SplashActivity)
 }
-
