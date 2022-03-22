@@ -1,6 +1,5 @@
 package com.example.ownr.splash
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.ownr.R
 import com.example.ownr.data.source.AccountRepository
