@@ -1,8 +1,7 @@
 package com.example.ownr.splash
 
-import com.example.newsreader.BasePresenter
-import com.example.newsreader.BaseView
-
+import com.example.ownr.BasePresenter
+import com.example.ownr.BaseView
 
 class SplashContract {
   interface View: BaseView<Presenter> {
