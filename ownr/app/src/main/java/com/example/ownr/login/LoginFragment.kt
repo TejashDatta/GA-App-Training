@@ -4,13 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import com.example.own.login.LoginContract
 import com.example.ownr.R
+import com.example.ownr.di.ActivityScope
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-class LoginFragment : Fragment() {
-  companion object {
-    fun newInstance() = LoginFragment()
-  }
+@ActivityScope
+class LoginFragment @Inject constructor(): DaggerFragment(), LoginContract.View {
+  @Inject lateinit var presenter: LoginContract.Presenter
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
