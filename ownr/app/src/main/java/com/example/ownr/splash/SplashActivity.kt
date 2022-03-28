@@ -10,6 +10,11 @@ class SplashActivity : DaggerAppCompatActivity(), SplashContract.View {
   @Inject lateinit var presenter: SplashPresenter
   @Inject lateinit var accountRepository: AccountRepository
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_splash)
+  }
+
   override fun onResume() {
     super.onResume()
     presenter.takeView(this)
@@ -18,10 +23,5 @@ class SplashActivity : DaggerAppCompatActivity(), SplashContract.View {
   override fun onDestroy() {
     super.onDestroy()
     presenter.dropView()
-  }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_splash)
   }
 }
