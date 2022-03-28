@@ -21,6 +21,9 @@
     </activity>
     <activity
       android:name=".login.LoginActivity"
+      android:exported="true" />
+    <activity
+      android:name=".article_index.PropertyIndexActivity"
       android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
