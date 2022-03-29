@@ -1,11 +1,11 @@
-package com.example.ownr.article_index
+package com.example.ownr.property_list
 
 import com.example.ownr.di.ActivityScope
 import javax.inject.Inject
 
 @ActivityScope
-class PropertyIndexPresenter @Inject constructor(): PropertyIndexContract.Presenter {
-  override fun takeView(view: PropertyIndexContract.View) {
+class PropertyListPresenter @Inject constructor(): PropertyListContract.Presenter {
+  override fun takeView(view: PropertyListContract.View) {
     TODO("Not yet implemented")
   }
 

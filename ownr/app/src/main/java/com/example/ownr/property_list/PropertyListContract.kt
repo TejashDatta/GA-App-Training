@@ -1,9 +1,9 @@
-package com.example.ownr.article_index
+package com.example.ownr.property_list
 
 import com.example.ownr.BasePresenter
 import com.example.ownr.BaseView
 
-class PropertyIndexContract {
+class PropertyListContract {
   interface View: BaseView<Presenter> {
 
   }

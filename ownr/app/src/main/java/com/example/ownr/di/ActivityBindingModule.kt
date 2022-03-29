@@ -1,9 +1,9 @@
 package com.example.ownr.di
 
-import com.example.ownr.article_index.PropertyIndexActivity
-import com.example.ownr.article_index.PropertyIndexModule
 import com.example.ownr.login.LoginActivity
 import com.example.ownr.login.LoginModule
+import com.example.ownr.property_list.PropertyListActivity
+import com.example.ownr.property_list.PropertyListModule
 import com.example.ownr.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -19,6 +19,6 @@ abstract class ActivityBindingModule {
   abstract fun loginActivity(): LoginActivity
 
   @ActivityScope
-  @ContributesAndroidInjector(modules = [PropertyIndexModule::class])
-  abstract fun propertyIndexActivity(): PropertyIndexActivity
+  @ContributesAndroidInjector(modules = [PropertyListModule::class])
+  abstract fun propertyListActivity(): PropertyListActivity
 }
