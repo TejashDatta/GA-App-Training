@@ -1,14 +1,11 @@
 package com.example.ownr
 
-import android.app.Application
-import com.example.ownr.di.ApplicationComponent
-import com.example.ownr.di.DaggerAppComponent
+import com.example.ownr.di.DaggerApplicationComponent
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 
-class OwnrApplication: Application() {
-  lateinit var appComponent: ApplicationComponent
-
-  override fun onCreate() {
-    super.onCreate()
-    appComponent = DaggerAppComponent.factory().create(applicationContext)
+open class OwnrApplication: DaggerApplication() {
+  override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+    return DaggerApplicationComponent.factory().create(applicationContext)
   }
 }
