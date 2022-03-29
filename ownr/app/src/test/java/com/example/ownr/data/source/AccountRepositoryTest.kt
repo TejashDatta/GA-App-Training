@@ -42,12 +42,12 @@ class AccountRepositoryTest {
 
   @Test fun isLoggedInReturnsFalseWhenCurrentUserEmailsIsNull() {
     setupAccountRepositoryWithoutCurrentUserEmail()
-    assertEquals(accountRepository.isLoggedIn(), false)
+    assertEquals(accountRepository.isLoggedIn().blockingFirst(), false)
   }
 
   @Test fun isLoggedInReturnsTrueWhenCurrentUserEmailsIsNotNull() {
     setupAccountRepositoryWithCurrentUserEmail()
-    assertEquals(accountRepository.isLoggedIn(), true)
+    assertEquals(accountRepository.isLoggedIn().blockingFirst(), true)
   }
 
   @Test fun loginWithCorrectCredentialsReturnsCurrentUserEmail() {
