@@ -1,7 +1,5 @@
 package com.example.ownr.data.source
 
-import android.app.Application
-import android.content.Context
 import android.content.SharedPreferences
 
 class AccountRepository(private val currentUserSharedPreferences: SharedPreferences) {
