@@ -1,6 +1,7 @@
 package com.example.ownr.data.source
 
 import android.content.SharedPreferences
+import io.reactivex.rxjava3.core.Observable
 
 class AccountRepository(private val currentUserSharedPreferences: SharedPreferences) {
   companion object {
@@ -12,11 +13,11 @@ class AccountRepository(private val currentUserSharedPreferences: SharedPreferen
   var currentUserEmail: String? = null
 
   init {
-    loadCurrentUserEmail()
+    loginWithSavedCurrentUserEmail()
   }
 
-  fun isLoggedIn(): Boolean {
-    return currentUserEmail != null
+  fun isLoggedIn(): Observable<Boolean> {
+    return Observable.just(currentUserEmail != null)
   }
 
   fun login(email: String, password: String): String? {
@@ -34,7 +35,7 @@ class AccountRepository(private val currentUserSharedPreferences: SharedPreferen
       .apply()
   }
 
-  private fun loadCurrentUserEmail() {
+  private fun loginWithSavedCurrentUserEmail() {
     currentUserEmail = currentUserSharedPreferences.getString(EMAIL_KEY, null)
   }
 }
