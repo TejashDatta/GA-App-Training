@@ -1,3 +1,7 @@
 <resources>
   <string name="app_name">OWNR</string>
+  <string name="loginHeading">Login</string>
+  <string name="email">Email</string>
+  <string name="password">Password</string>
+  <string name="loginButton">Login</string>
 </resources>
