@@ -13,6 +13,7 @@ import javax.inject.Singleton
   modules = [
     AndroidSupportInjectionModule::class,
     ActivityBindingModule::class,
+    SchedulerProviderModule::class,
     AccountRepositoryModule::class
   ])
 interface ApplicationComponent: AndroidInjector<OwnrApplication> {
