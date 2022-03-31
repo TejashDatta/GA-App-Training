@@ -1,6 +1,7 @@
 package com.example.ownr.data.source
 
 import android.content.SharedPreferences
+import com.example.ownr.data.models.LoginResult
 import io.reactivex.rxjava3.core.Observable
 
 class AccountRepository(private val currentUserSharedPreferences: SharedPreferences) {
@@ -20,12 +21,12 @@ class AccountRepository(private val currentUserSharedPreferences: SharedPreferen
     return Observable.just(currentUserEmail != null)
   }
 
-  fun login(email: String, password: String): String? {
+  fun login(email: String, password: String): Observable<LoginResult> {
     if (email == DEFAULT_EMAIL && password == DEFAULT_PASSWORD) {
       currentUserEmail = email
       saveCurrentUserEmail(email)
     }
-    return currentUserEmail
+    return Observable.just(LoginResult(currentUserEmail))
   }
 
   private fun saveCurrentUserEmail(email: String) {

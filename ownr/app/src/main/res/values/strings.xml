@@ -4,4 +4,5 @@
   <string name="email">メール</string>
   <string name="password">パスワード</string>
   <string name="loginButton">ログイン</string>
+  <string name="loginAuthenticationFailure">ログインが失敗しました。</string>
 </resources>
