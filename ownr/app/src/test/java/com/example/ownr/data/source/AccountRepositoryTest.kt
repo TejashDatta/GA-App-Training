@@ -1,6 +1,7 @@
 package com.example.ownr.data.source
 
 import android.content.SharedPreferences
+import com.example.ownr.data.models.LoginResult
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -52,11 +53,17 @@ class AccountRepositoryTest {
 
   @Test fun loginWithCorrectCredentialsReturnsCurrentUserEmail() {
     setupAccountRepositoryWithoutCurrentUserEmail()
-    assertEquals(accountRepository.login(DEFAULT_EMAIL, DEFAULT_PASSWORD), DEFAULT_EMAIL)
+    assertEquals(
+      accountRepository.login(DEFAULT_EMAIL, DEFAULT_PASSWORD).blockingFirst(),
+      LoginResult(DEFAULT_EMAIL)
+    )
   }
 
   @Test fun loginWithIncorrectCredentialsReturnsNull() {
     setupAccountRepositoryWithoutCurrentUserEmail()
-    assertEquals(accountRepository.login(DEFAULT_EMAIL, ""), null)
+    assertEquals(
+      accountRepository.login(DEFAULT_EMAIL, "").blockingFirst(),
+      LoginResult(null)
+    )
   }
 }
