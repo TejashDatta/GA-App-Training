@@ -1,6 +1,5 @@
 package com.example.ownr.login
 
-import com.example.own.login.LoginContract
 import com.example.ownr.di.ActivityScope
 import com.example.ownr.di.FragmentScope
 import dagger.Binds
