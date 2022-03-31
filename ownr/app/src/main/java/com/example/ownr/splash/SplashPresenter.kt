@@ -30,9 +30,11 @@ class SplashPresenter @Inject constructor(
   }
 
   private fun changeActivity() {
+    val safeView = view ?: return
+
     accountRepository.isLoggedIn().subscribe {
-      if (it == true) view.showPropertyList()
-      else view.showLogin()
+      if (it == true) safeView.showPropertyList()
+      else safeView.showLogin()
     }
   }
 }
