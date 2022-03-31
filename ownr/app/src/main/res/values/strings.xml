@@ -1,3 +1,7 @@
 <resources>
   <string name="app_name">OWNR</string>
+  <string name="loginHeading">ログイン</string>
+  <string name="email">メール</string>
+  <string name="password">パスワード</string>
+  <string name="loginButton">ログイン</string>
 </resources>
