@@ -14,7 +14,7 @@ class SplashPresenter @Inject constructor(
     const val SPLASH_DISPLAY_SECONDS = 2
   }
 
-  lateinit var view: SplashContract.View
+  var view: SplashContract.View? = null
 
   override fun takeView(view: SplashContract.View) {
     this.view = view
@@ -26,6 +26,7 @@ class SplashPresenter @Inject constructor(
   }
 
   override fun dropView() {
+    view = null
   }
 
   private fun changeActivity() {
