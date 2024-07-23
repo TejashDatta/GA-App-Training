@@ -1,5 +1,8 @@
 # GA-App-Training
 
+The training I received as and android developer at GA Technologies.
+Includes 2 calculator apps I made with MVVM and MVP architectures, and an RSS reader app.
+
 # rails ニュースアプリの仕様：
 
 ## アプリ概要
